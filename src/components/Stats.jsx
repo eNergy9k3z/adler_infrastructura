@@ -6,7 +6,7 @@ const statsData = [
     { value: "+$500M", label: "Activos Gestionados" },
     { value: "120+", label: "Auditorías Técnicas" },
     { value: "45", label: "Contratos de Supervisión" },
-    { value: "0%", label: "Desviación Promedio" }
+    { value: "100%", label: "Cumplimiento Normativo" }
 ];
 
 const Stats = () => {
