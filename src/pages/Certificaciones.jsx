@@ -93,10 +93,10 @@ const Certificaciones = () => {
 
                         <div style={{ marginTop: '2rem' }}>
                             <h4 style={{ color: 'white', marginBottom: '1rem' }}>Documentación Disponible</h4>
-                            <Link to="/certificaciones/documentos/politica-calidad" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ccc', padding: '10px', background: '#111', marginBottom: '10px', borderRadius: '4px', textDecoration: 'none' }}>
+                            <Link to="/certificaciones/documentos/politica-calidad" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ccc', padding: '10px', background: '#111', marginBottom: '10px', borderRadius: '4px', textDecoration: 'none' }}>
                                 <FileText size={18} /> Política de Calidad Integrada (PDF)
                             </Link>
-                            <Link to="/certificaciones/documentos/manual-buenas-practicas" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ccc', padding: '10px', background: '#111', borderRadius: '4px', textDecoration: 'none' }}>
+                            <Link to="/certificaciones/documentos/manual-buenas-practicas" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ccc', padding: '10px', background: '#111', borderRadius: '4px', textDecoration: 'none' }}>
                                 <FileText size={18} /> Manual de Buenas Prácticas (PDF)
                             </Link>
                         </div>

@@ -1,4 +1,4 @@
-/* PrintableSpec.css - Clean Print Styles */
+/* PrintableSpec.css - Robust & Clean Styles */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 /* === ON-SCREEN PDF VIEWER STYLES === */
@@ -11,6 +11,9 @@
     padding-top: 80px;
     padding-bottom: 50px;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    /* Ensure visibility */
 }
 
 .doc-controls {
@@ -36,7 +39,7 @@
     gap: 8px;
     padding: 8px 12px;
     border-radius: 4px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .btn-back:hover {
@@ -64,7 +67,7 @@
     transform: translateY(-1px);
 }
 
-/* === DOCUMENT STYLES (SHARED) === */
+/* === DOCUMENT STYLES === */
 .print-page {
     background: white;
     color: black;
@@ -73,10 +76,10 @@
     min-height: 297mm;
     margin: 0 auto;
     padding: 20mm;
-    /* Internal padding for content */
     box-sizing: border-box;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     position: relative;
+    z-index: 10;
 }
 
 .print-header {
@@ -187,58 +190,52 @@
     padding-top: 10px;
 }
 
-
 /* === PRINT ONLY STYLES === */
 @page {
     margin: 0;
-    /* REMOVES BROWSER HEADERS/FOOTERS (URL, Date) */
     size: auto;
 }
 
 @media print {
 
-    /* 1. HIDE EVERYTHING ELSE */
-    body * {
-        visibility: hidden;
-    }
-
-    /* 2. SHOW ONLY THE DOCUMENT */
-    .print-page,
-    .print-page * {
-        visibility: visible;
-    }
-
-    /* 3. POSITION THE DOCUMENT */
-    .print-page {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 20mm !important;
-        /* Re-apply padding since container is gone */
-        box-shadow: none !important;
-        border: none !important;
-    }
-
-    /* 4. HIDE WIDGETS EXPLICITLY (Double Insurance) */
+    /* Hide specific UI elements safely */
     .doc-controls,
     .navbar,
+    nav,
+    header,
+    footer,
+    .footer,
+    .whatsapp-button,
+    #whatsapp-widget,
     iframe,
-    [class*="chat"],
-    [style*="fixed"],
-    .whatsapp-button {
+    button,
+    [class*="chat"] {
         display: none !important;
     }
 
-    /* 5. RESET BACKGROUNDS */
-    html,
+    /* Reset Container */
     body,
+    html,
     .doc-viewer-container {
         background: white !important;
         margin: 0 !important;
         padding: 0 !important;
         height: auto !important;
         overflow: visible !important;
+        width: 100% !important;
+        color: black !important;
+    }
+
+    /* Position Document */
+    .print-page {
+        margin: 0 !important;
+        padding: 20mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
     }
 }
