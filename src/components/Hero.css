@@ -174,33 +174,25 @@
     }
 
     .hero-actions-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        /* 2 columns on mobile for compactness */
+        display: flex;
+        /* Flex column is better for stacking */
+        flex-direction: column;
         width: 100%;
         max-width: 100%;
         gap: 0.8rem;
     }
 
-    /* Make the first button (Primary CTA) full width */
-    .hero-actions-grid .btn:first-child {
-        grid-column: span 2;
-        background: var(--color-accent);
-        color: black;
-        border: none;
-        font-weight: 800;
-    }
-
+    /* Remove specific first-child span rule - all buttons are equal now */
     .hero-actions-grid .btn {
-        padding: 0.7rem 0.5rem;
-        /* Compact padding */
-        font-size: 0.8rem;
-        /* Fit text */
+        width: 100%;
+        /* Force full width equality */
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
         white-space: normal;
         /* Allow multiline if needed */
         line-height: 1.2;
         text-align: center;
-        min-height: 44px;
+        min-height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
