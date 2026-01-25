@@ -25,10 +25,8 @@
     align-items: center;
     width: 100%;
     max-width: 98%;
-    /* Maximize width to separate logo and links */
     margin: 0 auto;
     padding: 0 4rem;
-    /* Extra outer padding */
 }
 
 .logo-wrapper {
@@ -39,7 +37,6 @@
     flex-shrink: 0;
     z-index: 1002;
     margin-right: 6rem;
-    /* FORCE extra separation buffer */
 }
 
 .logo-img {
@@ -53,7 +50,7 @@
     font-weight: 800;
     color: white;
     letter-spacing: -0.5px;
-    line-height: 1;
+    line-height: 1.1;
 }
 
 .logo-accent {
@@ -68,14 +65,12 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    /* Compact links to save space */
 }
 
 .nav-links a {
     color: #ccc;
     font-weight: 500;
     font-size: 0.8rem;
-    /* Smaller text */
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-decoration: none;
@@ -93,7 +88,6 @@
     border-radius: 4px;
     font-weight: 700;
     font-size: 0.8rem;
-    /* Match links */
     text-transform: uppercase;
 }
 
@@ -127,10 +121,19 @@
 
 /* === MOBILE OPTIMIZATION === */
 @media (max-width: 1200px) {
-
-    /* Trigger mobile menu earlier if many links cause clash */
     .menu-icon {
         display: block;
+    }
+
+    .navbar {
+        padding: 0 1.5rem;
+        /* Ensure readable logo even on light sections */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .navbar.scrolled {
+        background: rgba(5, 5, 5, 0.95);
+        /* Solid on scroll */
     }
 
     .nav-links {
@@ -159,11 +162,6 @@
         font-weight: 700;
     }
 
-    .navbar {
-        padding: 0 1.5rem;
-    }
-
-    /* Reset padding for tablet/mobile */
     .navbar-container {
         padding: 0;
     }
@@ -175,22 +173,24 @@
 
 @media (max-width: 480px) {
     .navbar {
-        height: 70px;
+        height: 80px;
     }
 
     .navbar.scrolled {
-        height: 70px;
+        height: 80px;
     }
 
     .logo-img {
-        height: 40px;
+        height: 38px;
     }
 
     .logo-text {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
+        line-height: 1.1;
     }
 
     .logo-accent {
         font-size: 0.7rem;
+        letter-spacing: 1px;
     }
 }
