@@ -54,3 +54,39 @@
     letter-spacing: 1px;
     font-weight: 600;
 }
+
+/* === MOBILE OPTIMIZATION === */
+@media (max-width: 768px) {
+    .stats-grid {
+        /* Keep 2 columns as seen in screenshot, but cleaner */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 1rem;
+        /* Vertical gap 2rem, Horizontal 1rem */
+    }
+
+    .stat-item {
+        /* CRITICAL FIX: Stack content vertically on mobile */
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 0;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        /* Slightly smaller to fit 2 cols */
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    /* Hide icon background to save space if needed, or adjust */
+    .stat-icon-wrapper {
+        margin-bottom: 0.5rem;
+        padding: 0.8rem;
+    }
+}
