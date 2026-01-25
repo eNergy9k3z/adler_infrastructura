@@ -213,3 +213,39 @@ p {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);
 }
+
+/* === MOBILE GLOBAL UPDATES === */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+    /* Scaling down base REM size */
+  }
+
+  .section {
+    padding: 4rem 0;
+    /* Significant reduction from 8rem */
+  }
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    /* Prevents giant headers breaking layout */
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .grid {
+    gap: 2rem;
+  }
+
+  /* Utility to reverse order on mobile if needed */
+  .mobile-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

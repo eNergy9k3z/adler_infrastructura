@@ -165,6 +165,7 @@
 @media (max-width: 900px) {
     .sd-content-grid {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .sd-title {
@@ -174,5 +175,16 @@
     .cta-card {
         position: static;
         margin-top: 3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sd-title {
+        font-size: 2rem;
+        /* Even smaller for phones */
     }
 }
