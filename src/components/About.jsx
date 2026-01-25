@@ -1,8 +1,8 @@
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Target, Users, Settings, MapPin, Briefcase } from 'lucide-react';
 import './About.css';
-import aboutImage from '../assets/venezuela_road.png'; // Use road image as "Outcome"
+import aboutImage from '../assets/venezuela_road.png';
 
 const About = () => {
     return (
@@ -84,7 +84,7 @@ const About = () => {
                         </div>
 
                         <div style={{ marginTop: '3rem' }}>
-                            <button className="btn btn-primary">Conozca al Equipo</button>
+                            <Link to="/equipo" className="btn btn-primary">Conozca al Equipo</Link>
                         </div>
                     </div>
                 </div>

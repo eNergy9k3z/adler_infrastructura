@@ -18,6 +18,7 @@ import ServiceDetail from './pages/ServiceDetail';
 import Certificaciones from './pages/Certificaciones';
 import PrintableSpec from './pages/PrintableSpec';
 import PrintableDoc from './pages/PrintableDoc';
+import Profile from './pages/Profile';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/servicios/:id/ficha-tecnica" element={<PrintableSpec />} />
           <Route path="/certificaciones" element={<Certificaciones />} />
           <Route path="/certificaciones/documentos/:docId" element={<PrintableDoc />} />
+          <Route path="/equipo" element={<Profile />} />
         </Routes>
         <Footer />
         <WhatsAppButton />
