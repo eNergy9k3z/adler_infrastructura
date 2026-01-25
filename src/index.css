@@ -1,29 +1,19 @@
 :root {
   /* Premium Dark Construction Theme - Refined */
   --color-primary: #0a0a0a;
-  /* Deepest Black */
   --color-secondary: #141414;
-  /* Sophisticated Dark Grey */
-
-  /* Industrial Gold - Precision & Value */
   --color-accent: #FFC107;
   --color-accent-subtle: rgba(255, 193, 7, 0.15);
   --color-accent-hover: #FFD54F;
-
   --color-text-main: #ffffff;
   --color-text-secondary: #e0e0e0;
   --color-text-muted: #9e9e9e;
-  /* More muted for hierarchy */
   --color-text-dark: #121212;
-
   --color-bg-body: #050505;
   --color-bg-card: #141414;
-
   --radius-sm: 2px;
-  /* German precision: Sharp corners */
   --radius-md: 4px;
   --radius-lg: 8px;
-
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
@@ -41,10 +31,11 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll globally */
 }
 
 body {
-  /* Inter for UI, Manrope for Headers - Best combination */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--color-text-main);
   background-color: var(--color-bg-body);
@@ -52,9 +43,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* Double protection */
+  width: 100%;
 }
 
-/* GLOBAL RESET FOR IMAGES */
 img,
 video,
 canvas,
@@ -79,11 +71,12 @@ a {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 2rem;
+  width: 100%;
+  /* Ensure it fits */
 }
 
 .section {
   padding: 8rem 0;
-  /* More breathing room */
 }
 
 /* Typography Enhancements */
@@ -94,17 +87,14 @@ h4,
 h5,
 h6 {
   font-family: 'Manrope', sans-serif;
-  /* Strong geometric headers */
   line-height: 1.1;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
-  /* Tighter, more modern */
 }
 
 p {
   font-size: 1.05rem;
   line-height: 1.8;
-  /* Better readability */
   color: var(--color-text-muted);
 }
 
@@ -126,7 +116,7 @@ p {
   -webkit-text-fill-color: transparent;
 }
 
-/* Modern Button Styles - Precise & Technical */
+/* Modern Button Styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -137,7 +127,6 @@ p {
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: var(--radius-sm);
-  /* Sharper */
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -149,7 +138,6 @@ p {
 .btn-primary {
   background: var(--color-accent);
   color: black;
-  /* High contrast industrial look */
   border-color: var(--color-accent);
   box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
 }
@@ -172,7 +160,7 @@ p {
   background: rgba(255, 193, 7, 0.05);
 }
 
-/* Grid Layouts - Fixed Alignment */
+/* Grid Layouts */
 .grid {
   display: grid;
   gap: 2.5rem;
@@ -214,36 +202,56 @@ p {
   background: var(--color-accent);
 }
 
-/* === MOBILE GLOBAL UPDATES === */
+/* === MOBILE OPTIMIZATIONS (CRITICAL) === */
 @media (max-width: 768px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
   html {
     font-size: 14px;
-    /* Scaling down base REM size */
   }
 
   .section {
-    padding: 4rem 0;
-    /* Significant reduction from 8rem */
+    padding: 3rem 0;
+    /* Reduced vertical spacing */
   }
 
   .container {
     padding: 0 1.25rem;
+    /* Slightly more edge space */
+    width: 100%;
+    max-width: 100%;
   }
 
   h1 {
-    font-size: 2.5rem;
-    /* Prevents giant headers breaking layout */
+    font-size: 2.2rem;
+    word-wrap: break-word;
+    /* Prevent overflowing words */
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    width: 100%;
+    /* Full width buttons usually better on mobile */
+    padding: 1rem;
   }
 
   .grid {
     gap: 2rem;
   }
 
-  /* Utility to reverse order on mobile if needed */
   .mobile-reverse {
     display: flex;
     flex-direction: column-reverse;
