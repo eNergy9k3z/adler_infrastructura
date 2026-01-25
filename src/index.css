@@ -182,16 +182,29 @@ p {
   }
 
   h1 {
-    font-size: 2.25rem;
-    line-height: 1.1;
+    font-size: 2.2rem;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    word-wrap: break-word;
   }
 
   h2 {
-    font-size: 1.85rem;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 1.5rem;
   }
 
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.7;
+    /* Better breathing room */
+    color: #ccc;
+    /* Slightly brighter for readability */
+    margin-bottom: 1.5rem;
   }
 
   .grid,

@@ -174,16 +174,35 @@
     }
 
     .hero-actions-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns on mobile for compactness */
         width: 100%;
         max-width: 100%;
         gap: 0.8rem;
-        /* tighter gap */
+    }
+
+    /* Make the first button (Primary CTA) full width */
+    .hero-actions-grid .btn:first-child {
+        grid-column: span 2;
+        background: var(--color-accent);
+        color: black;
+        border: none;
+        font-weight: 800;
     }
 
     .hero-actions-grid .btn {
-        padding: 0.8rem;
-        /* thinner buttons */
-        font-size: 0.9rem;
+        padding: 0.7rem 0.5rem;
+        /* Compact padding */
+        font-size: 0.8rem;
+        /* Fit text */
+        white-space: normal;
+        /* Allow multiline if needed */
+        line-height: 1.2;
+        text-align: center;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
