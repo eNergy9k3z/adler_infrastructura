@@ -8,16 +8,15 @@
   --color-text-main: #ffffff;
   --color-text-secondary: #e0e0e0;
   --color-text-muted: #9e9e9e;
-  --color-text-dark: #121212;
   --color-bg-body: #050505;
   --color-bg-card: #141414;
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  --radius-sm: 4px;
+  /* Softened for mobile feel */
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 30px rgba(255, 193, 7, 0.1);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;700;800&display=swap');
@@ -26,13 +25,14 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  /* Remove blue highlight on tap */
 }
 
 html {
   scroll-behavior: smooth;
   font-size: 16px;
   overflow-x: hidden;
-  /* Prevent horizontal scroll globally */
 }
 
 body {
@@ -41,19 +41,16 @@ body {
   background-color: var(--color-bg-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  /* Double protection */
   width: 100%;
 }
 
 img,
-video,
-canvas,
-svg {
+video {
   display: block;
   max-width: 100%;
   height: auto;
+  border-radius: var(--radius-sm);
+  /* Global soften */
 }
 
 ul {
@@ -72,14 +69,14 @@ a {
   margin: 0 auto;
   padding: 0 2rem;
   width: 100%;
-  /* Ensure it fits */
 }
 
 .section {
-  padding: 8rem 0;
+  padding: 6rem 0;
+  /* Balanced padding */
 }
 
-/* Typography Enhancements */
+/* Typography */
 h1,
 h2,
 h3,
@@ -87,15 +84,26 @@ h4,
 h5,
 h6 {
   font-family: 'Manrope', sans-serif;
-  line-height: 1.1;
+  line-height: 1.15;
   margin-bottom: 1rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
 p {
   font-size: 1.05rem;
-  line-height: 1.8;
+  line-height: 1.75;
   color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
 }
 
 .text-accent {
@@ -105,18 +113,10 @@ p {
 .text-gradient {
   background: linear-gradient(135deg, #ffffff 40%, #909090 100%);
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-gold {
-  background: linear-gradient(135deg, #FFC107 20%, #FFECB3 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Modern Button Styles */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -124,132 +124,98 @@ p {
   padding: 0.9rem 2rem;
   font-weight: 600;
   font-size: 0.95rem;
-  letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  /* Touch friendly */
 }
 
 .btn-primary {
   background: var(--color-accent);
   color: black;
-  border-color: var(--color-accent);
-  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.25);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  background: var(--color-accent-hover);
-  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+.btn-primary:active {
+  transform: scale(0.98);
 }
 
 .btn-outline {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
 }
 
-.btn-outline:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: rgba(255, 193, 7, 0.05);
-}
-
-/* Grid Layouts */
+/* Grids */
 .grid {
   display: grid;
   gap: 2.5rem;
 }
 
 .grid-2 {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .grid-3 {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-@media (min-width: 768px) {
-  .grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
-}
-
-/* === MOBILE OPTIMIZATIONS (CRITICAL) === */
+/* === MOBILE PREMIUN FACE-LIFT === */
 @media (max-width: 768px) {
-
-  html,
-  body {
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
-  }
-
   html {
-    font-size: 14px;
+    font-size: 15px;
   }
+
+  /* Slightly larger base for readability */
 
   .section {
-    padding: 3rem 0;
-    /* Reduced vertical spacing */
+    padding: 4rem 0;
+    /* Comfortable vertical rhythm */
   }
 
   .container {
-    padding: 0 1.25rem;
-    /* Slightly more edge space */
-    width: 100%;
-    max-width: 100%;
+    padding: 0 1.5rem;
+    /* More breathing room (24px) */
   }
 
   h1 {
-    font-size: 2.2rem;
-    word-wrap: break-word;
-    /* Prevent overflowing words */
+    font-size: 2.25rem;
+    line-height: 1.1;
   }
 
   h2 {
-    font-size: 1.8rem;
+    font-size: 1.85rem;
   }
 
   h3 {
     font-size: 1.5rem;
   }
 
-  .btn {
-    width: 100%;
-    /* Full width buttons usually better on mobile */
-    padding: 1rem;
+  .grid,
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+    /* Force stack */
+    gap: 2rem;
+    /* Clean separation */
   }
 
-  .grid {
-    gap: 2rem;
+  /* Image improvements */
+  img {
+    width: 100%;
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+    /* Add depth */
+  }
+
+  .btn {
+    width: 100%;
+    /* Full width actions */
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .mobile-reverse {

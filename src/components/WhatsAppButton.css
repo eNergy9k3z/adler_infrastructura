@@ -1,6 +1,7 @@
 .whatsapp-float {
     position: fixed;
     bottom: 30px;
+    /* Desktop default */
     right: 30px;
     background-color: #25D366;
     color: white;
@@ -13,7 +14,22 @@
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
     z-index: 9999;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ... tooltip styles remain ... */
+
+@media (max-width: 768px) {
+    .whatsapp-tooltip {
+        display: none;
+    }
+
+    .whatsapp-float {
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+    }
 }
 
 .whatsapp-float:hover {

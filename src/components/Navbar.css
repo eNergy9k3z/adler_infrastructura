@@ -24,9 +24,11 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1400px;
+    max-width: 98%;
+    /* Maximize width to separate logo and links */
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 4rem;
+    /* Extra outer padding */
 }
 
 .logo-wrapper {
@@ -36,7 +38,8 @@
     cursor: pointer;
     flex-shrink: 0;
     z-index: 1002;
-    /* Ensure logo stays above mobile menu */
+    margin-right: 6rem;
+    /* FORCE extra separation buffer */
 }
 
 .logo-img {
@@ -64,17 +67,20 @@
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    /* Compact links to save space */
 }
 
 .nav-links a {
     color: #ccc;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    /* Smaller text */
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-decoration: none;
     transition: color 0.2s;
+    white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -86,7 +92,8 @@
     padding: 0.6rem 1.2rem;
     border-radius: 4px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    /* Match links */
     text-transform: uppercase;
 }
 
@@ -116,35 +123,12 @@
     display: none;
     cursor: pointer;
     z-index: 1002;
-    /* Above menu overlay */
 }
 
 /* === MOBILE OPTIMIZATION === */
-@media (max-width: 1024px) {
-    .navbar {
-        padding: 0 1rem;
-        height: 70px;
-        /* Smaller navbar on mobile */
-    }
+@media (max-width: 1200px) {
 
-    .navbar.scrolled {
-        height: 70px;
-    }
-
-    .logo-img {
-        height: 40px;
-        /* Smaller logo */
-    }
-
-    .logo-text {
-        font-size: 1.2rem;
-        /* Readable but compact */
-    }
-
-    .logo-accent {
-        font-size: 0.7rem;
-    }
-
+    /* Trigger mobile menu earlier if many links cause clash */
     .menu-icon {
         display: block;
     }
@@ -154,14 +138,12 @@
         top: 0;
         right: 0;
         width: 100%;
-        /* Full width */
         height: 100vh;
         background-color: #000;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding-top: 80px;
-        /* Clear header */
         gap: 2rem;
         transform: translateX(100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -174,13 +156,41 @@
 
     .nav-links a {
         font-size: 1.2rem;
-        /* Larger touch targets */
         font-weight: 700;
     }
 
-    .nav-btn {
-        width: 80%;
-        text-align: center;
-        padding: 1rem;
+    .navbar {
+        padding: 0 1.5rem;
+    }
+
+    /* Reset padding for tablet/mobile */
+    .navbar-container {
+        padding: 0;
+    }
+
+    .logo-wrapper {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 70px;
+    }
+
+    .navbar.scrolled {
+        height: 70px;
+    }
+
+    .logo-img {
+        height: 40px;
+    }
+
+    .logo-text {
+        font-size: 1.2rem;
+    }
+
+    .logo-accent {
+        font-size: 0.7rem;
     }
 }
