@@ -1,0 +1,83 @@
+.contact-section {
+    background-color: var(--color-bg-card);
+    /* Should match the dark theme */
+    padding-bottom: 8rem;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 900px) {
+    .contact-layout {
+        grid-template-columns: 1fr 1.5fr;
+        /* More space for form */
+        gap: 6rem;
+    }
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.contact-icon {
+    /* Ensure icon is visible against dark bg */
+    color: var(--color-accent);
+    min-width: 24px;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    /* Add spacing between groups explicitly */
+}
+
+.form-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    /* Tighter spacing */
+    color: #ddd;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    font-family: 'Manrope', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Darker, more premium */
+    color: white;
+    font-size: 1rem;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: rgba(255, 159, 28, 0.05);
+    box-shadow: 0 0 0 4px rgba(255, 159, 28, 0.1);
+}
+
+.form-textarea {
+    min-height: 180px;
+    /* Taller textarea */
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1.25rem;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}

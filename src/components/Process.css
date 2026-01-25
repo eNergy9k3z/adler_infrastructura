@@ -1,0 +1,139 @@
+.process-section {
+    background-color: var(--color-bg-body);
+}
+
+.process-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Flex align center ensures items are centered even if text-align fails */
+}
+
+.process-eyebrow {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.process-heading {
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    /* Ensure consistent size */
+    color: white;
+}
+
+.process-sub {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 650px;
+    /* Reduced width for better text wrapping balance */
+    margin: 0 auto;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Force 4 columns for perfect symmetry */
+    gap: 2rem;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Continuous Line Background */
+.process-grid::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    /* Center of 80px icon */
+    left: 12.5%;
+    /* Center of first column (100% / 4 / 2) */
+    width: 75%;
+    /* Distance to center of last column (100% - 12.5% - 12.5%) */
+    height: 1px;
+    background: linear-gradient(90deg,
+            rgba(255, 159, 28, 0) 0%,
+            rgba(255, 159, 28, 0.5) 15%,
+            rgba(255, 159, 28, 0.5) 85%,
+            rgba(255, 159, 28, 0) 100%);
+    z-index: 1;
+}
+
+@media (max-width: 900px) {
+    .process-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    /* Vertical line for mobile */
+    .process-grid::before {
+        top: 0;
+        left: 50%;
+        width: 1px;
+        height: 100%;
+        background: linear-gradient(180deg,
+                rgba(255, 159, 28, 0) 0%,
+                rgba(255, 159, 28, 0.5) 15%,
+                rgba(255, 159, 28, 0.5) 85%,
+                rgba(255, 159, 28, 0) 100%);
+        transform: translateX(-50%);
+    }
+}
+
+.process-card {
+    text-align: center;
+    position: relative;
+    padding: 1rem;
+    display: flex;
+    /* Flex to align content and check z-index */
+    flex-direction: column;
+    align-items: center;
+}
+
+.process-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-bg-body);
+    /* Ensure it covers the line */
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    margin: 0 auto 1.5rem auto;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(255, 159, 28, 0.1);
+    position: relative;
+    z-index: 2;
+    /* Above the line */
+}
+
+/* Remove old connector styles if any remain */
+.process-connector {
+    display: none;
+}
+
+.process-title {
+    color: white;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.process-desc {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 250px;
+    margin: 0 auto;
+    /* Center text block */
+}

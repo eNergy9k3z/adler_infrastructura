@@ -1,0 +1,244 @@
+/* PrintableSpec.css - Clean Print Styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* === ON-SCREEN PDF VIEWER STYLES === */
+.doc-viewer-container {
+    background-color: #525659;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+.doc-controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #323639;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    z-index: 99999;
+    color: white;
+}
+
+.btn-back {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-print {
+    background-color: #FFC107;
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-print:hover {
+    background-color: #FFD54F;
+    transform: translateY(-1px);
+}
+
+/* === DOCUMENT STYLES (SHARED) === */
+.print-page {
+    background: white;
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    /* Internal padding for content */
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.print-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.brand h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.doc-info {
+    text-align: right;
+}
+
+.doc-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #444;
+}
+
+.doc-info p {
+    margin: 2px 0;
+    font-size: 12px;
+}
+
+.print-title {
+    font-size: 28px;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0;
+    border-left: 5px solid #FFC107;
+    padding-left: 15px;
+    line-height: 1.2;
+}
+
+.desc-section {
+    margin-bottom: 30px;
+}
+
+.desc-section h4,
+.specs-section h4 {
+    font-size: 16px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.desc-section p,
+.desc-section li {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: justify;
+    color: #222;
+}
+
+.print-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.specs-table th,
+.specs-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.specs-table th {
+    background-color: #f5f5f5;
+    font-weight: 700;
+    width: 40%;
+}
+
+.signature-line {
+    margin-top: 40px;
+    border-top: 1px solid #000;
+    width: 200px;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 12px;
+}
+
+.print-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+
+/* === PRINT ONLY STYLES === */
+@page {
+    margin: 0;
+    /* REMOVES BROWSER HEADERS/FOOTERS (URL, Date) */
+    size: auto;
+}
+
+@media print {
+
+    /* 1. HIDE EVERYTHING ELSE */
+    body * {
+        visibility: hidden;
+    }
+
+    /* 2. SHOW ONLY THE DOCUMENT */
+    .print-page,
+    .print-page * {
+        visibility: visible;
+    }
+
+    /* 3. POSITION THE DOCUMENT */
+    .print-page {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20mm !important;
+        /* Re-apply padding since container is gone */
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* 4. HIDE WIDGETS EXPLICITLY (Double Insurance) */
+    .doc-controls,
+    .navbar,
+    iframe,
+    [class*="chat"],
+    [style*="fixed"],
+    .whatsapp-button {
+        display: none !important;
+    }
+
+    /* 5. RESET BACKGROUNDS */
+    html,
+    body,
+    .doc-viewer-container {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+}

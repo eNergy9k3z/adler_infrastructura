@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formatos de Gestión de Obra - Adler Infraestructura</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Roboto:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #555;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .document-container {
+            width: 216mm;
+            margin: 0 auto;
+        }
+
+        .page {
+            background: white;
+            width: 216mm;
+            min-height: 279mm;
+            padding: 20mm;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            font-size: 11px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                margin: 0;
+                width: 100%;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+                height: 100vh;
+            }
+
+            .page:last-child {
+                page-break-after: auto;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .doc-code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border: 1px solid #000;
+            padding: 8px;
+            background: #f9f9f9;
+        }
+
+        .section-title {
+            background: #eee;
+            padding: 4px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            border-left: 4px solid #333;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .field-line {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            width: 100%;
+            height: 14px;
+        }
+
+        .field-label {
+            font-weight: bold;
+            margin-bottom: 2px;
+            display: block;
+            font-size: 10px;
+            margin-top: 8px;
+        }
+
+        table.form-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        table.form-table th,
+        table.form-table td {
+            border: 1px solid #000;
+            padding: 4px;
+        }
+
+        table.form-table th {
+            background: #f0f0f0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .signatures {
+            position: absolute;
+            bottom: 25mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sign-box {
+            width: 40%;
+            border-top: 1px solid #000;
+            text-align: center;
+            padding-top: 5px;
+            font-size: 10px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .btn-print {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ffc107;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="btn-print no-print" onclick="window.print()">IMPRIMIR PACK DE FORMATOS</button>
+
+    <div class="document-container">
+
+        <!-- ========================================================================== -->
+        <!-- REPORTE DIARIO DE OBRA (3 PÁGINAS) -->
+        <!-- ========================================================================== -->
+
+        <!-- RDO PÁGINA 1: RESUMEN Y PERSONAL -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: OBR-020-A<br>HOJA 1 DE 3</div>
+            </div>
+            <h1>REPORTE DIARIO DE OBRA (RDO)</h1>
+
+            <table class="form-table" style="margin-bottom: 20px;">
+                <tr>
+                    <td width="15%"><strong>FECHA:</strong></td>
+                    <td width="35%"></td>
+                    <td width="15%"><strong>REPORTE Nº:</strong></td>
+                    <td width="35%"></td>
+                </tr>
+                <tr>
+                    <td><strong>OBRA:</strong></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td><strong>UBICACIÓN:</strong></td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+
+            <!-- CLIMA -->
+            <div class="section-title">1. CONDICIONES CLIMÁTICAS</div>
+            <table class="form-table">
+                <tr>
+                    <th>TURNO</th>
+                    <th>SOLEADO</th>
+                    <th>NUBLADO</th>
+                    <th>LLUVIA LEVE</th>
+                    <th>LLUVIA FUERTE</th>
+                    <th>HORAS PERDIDAS</th>
+                </tr>
+                <tr>
+                    <td>MAÑANA (7:00 - 12:00)</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>__________ Has.</td>
+                </tr>
+                <tr>
+                    <td>TARDE (13:00 - 18:00)</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>[ ]</td>
+                    <td>__________ Has.</td>
+                </tr>
+            </table>
+
+            <!-- PERSONAL -->
+            <div class="section-title">2. CONTROL DE PERSONAL EN SITIO</div>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">PERSONAL TÉCNICO / ADMINISTRATIVO</th>
+                        <th colspan="2">PERSONAL OBRERO DIRECTO</th>
+                        <th colspan="2">SUBCONTRATISTAS</th>
+                    </tr>
+                    <tr>
+                        <th>CARGO</th>
+                        <th>CANT</th>
+                        <th>CARGO</th>
+                        <th>CANT</th>
+                        <th>ESPECIALIDAD</th>
+                        <th>CANT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ing. Residente</td>
+                        <td></td>
+                        <td>Maestro General</td>
+                        <td></td>
+                        <td>Mov. Tierra</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ing. Campo</td>
+                        <td></td>
+                        <td>Capataz</td>
+                        <td></td>
+                        <td>Electricidad</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Topógrafo</td>
+                        <td></td>
+                        <td>Albañil 1ra</td>
+                        <td></td>
+                        <td>Acero</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Administrador</td>
+                        <td></td>
+                        <td>Albañil 2da</td>
+                        <td></td>
+                        <td>Encofrado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguridad (HSE)</td>
+                        <td></td>
+                        <td>Ayudante</td>
+                        <td></td>
+                        <td>Instalaciones</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Almacenista</td>
+                        <td></td>
+                        <td>Soldador</td>
+                        <td></td>
+                        <td>Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Choferes</td>
+                        <td></td>
+                        <td>Electricista</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros</td>
+                        <td></td>
+                        <td>Vigilancia</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="font-weight: bold; background: #eee;">
+                        <td align="right">SUBTOTAL:</td>
+                        <td></td>
+                        <td align="right">SUBTOTAL:</td>
+                        <td></td>
+                        <td align="right">SUBTOTAL:</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 10px; border: 1px solid #000; padding: 5px;">
+                <strong>TOTAL GENERAL DE PERSONAS EN OBRA:</strong> ______________
+            </div>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>ELABORADO POR (RESIDENTE)</strong></div>
+                <div class="sign-box"><strong>RECIBIDO POR (INSPECTOR)</strong></div>
+            </div>
+        </div>
+
+        <!-- RDO PÁGINA 2: EQUIPOS Y MATERIALES -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: OBR-020-B<br>HOJA 2 DE 3</div>
+            </div>
+            <h1>REPORTE DIARIO - RECURSOS</h1>
+
+            <div class="section-title">3. MAQUINARIA Y EQUIPOS PESADOS</div>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th width="30%">DESCRIPCIÓN DEL EQUIPO</th>
+                        <th width="10%">CANT</th>
+                        <th width="15%">ESTADO</th>
+                        <th width="15%">HRS TRABAJO</th>
+                        <th width="15%">HRS STANDBY</th>
+                        <th width="15%">OBSERVACIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Excavadora sobre orugas</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Retroexcavadora</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Camión Volteo (14m3)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Compactadora Vibratoria</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Motoniveladora</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Camión Cisterna</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Grúa Telescópica</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Mezcladora de Concreto</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Generador Eléctrico</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Compresor de Aire</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">4. RECEPCIÓN DE MATERIALES</div>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th>MATERIAL</th>
+                        <th>PROVEEDOR</th>
+                        <th>Nº GUÍA / NOTA</th>
+                        <th>UNIDAD</th>
+                        <th>CANTIDAD</th>
+                        <th>DESTINO / USO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">5. SALIDA / CONSUMO DE MATERIALES (ALMACÉN)</div>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th>MATERIAL</th>
+                        <th>UNIDAD</th>
+                        <th>CANTIDAD</th>
+                        <th>FRENTE DE TRABAJO</th>
+                        <th>CAPATAZ RESPONSABLE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cemento Gris</td>
+                        <td>Sacos</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cabilla 1/2"</td>
+                        <td>Kg</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bloques 15cm</td>
+                        <td>Pza</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>CONTROL ALMACÉN</strong></div>
+                <div class="sign-box"><strong>CONTROL EQUIPOS</strong></div>
+            </div>
+        </div>
+
+        <!-- RDO PÁGINA 3: ACTIVIDADES Y HSE -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: OBR-020-C<br>HOJA 3 DE 3</div>
+            </div>
+            <h1>REPORTE DIARIO - EJECUCIÓN</h1>
+
+            <div class="section-title">6. DESCRIPCIÓN DE ACTIVIDADES EJECUTADAS POR FRENTE</div>
+
+            <div style="border-bottom: 1px dotted #999; margin-bottom: 5px;"><strong>FRENTE 1 (Movimiento de Tierra /
+                    Fundaciones):</strong></div>
+            <div style="height: 60px; border: 1px solid #ccc; margin-bottom: 10px;"></div>
+
+            <div style="border-bottom: 1px dotted #999; margin-bottom: 5px;"><strong>FRENTE 2 (Estructura /
+                    Concreto):</strong></div>
+            <div style="height: 60px; border: 1px solid #ccc; margin-bottom: 10px;"></div>
+
+            <div style="border-bottom: 1px dotted #999; margin-bottom: 5px;"><strong>FRENTE 3 (Instalaciones /
+                    Acabados):</strong></div>
+            <div style="height: 60px; border: 1px solid #ccc; margin-bottom: 10px;"></div>
+
+            <div class="section-title">7. SEGURIDAD, HIGIENE Y AMBIENTE (HSE)</div>
+            <table class="form-table">
+                <tr>
+                    <td><strong>Charla de Seguridad (5 min):</strong> [ ] SÍ [ ] NO</td>
+                    <td><strong>Tema:</strong> ________________________________</td>
+                    <td><strong>Asistentes:</strong> ______ pers.</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Permisos de Trabajo de Alto Riesgo emitidos hoy:</strong> [ ] Altura [ ]
+                        Caliente [ ] Espacio Confinado [ ] Izaje</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Incidentes / Accidentes:</strong> [ ] NO HUBO. [ ] SÍ (Anexar Reporte).</td>
+                </tr>
+            </table>
+
+            <div class="section-title">8. PRINCIPALES OBSTÁCULOS / REQUERIMIENTOS</div>
+            <table class="form-table">
+                <tr>
+                    <th>DESCRIPCIÓN DE LA NOVEDAD</th>
+                    <th>ACCIÓN REQUERIDA</th>
+                    <th>RESPONSABLE</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <div class="section-title">9. INSTRUCCIONES DE LA INSPECCIÓN (LIBRO DE OBRA)</div>
+            <div style="height: 60px; border: 1px solid #000;"></div>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>ING. RESIDENTE</strong><br>Firma y Sello</div>
+                <div class="sign-box"><strong>ING. INSPECTOR</strong><br>Valida ejecución</div>
+            </div>
+        </div>
+
+
+        <!-- ========================================================================== -->
+        <!-- SOLICITUD DE PRÓRROGA (EXTENDIDA A 1 PÁGINA) -->
+        <!-- ========================================================================== -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: LEG-005<br>Rev. 03</div>
+            </div>
+            <h1>SOLICITUD FORMAL DE PRÓRROGA DE PLAZO</h1>
+
+            <div style="float: right;">Fecha: _______________</div><br><br>
+
+            <span class="field-label">A LA ATENCIÓN DE:</span>
+            <span class="field-line"></span>
+            <span class="field-label">REFERENCIA: CONTRATO Nº</span>
+            <span class="field-line"></span>
+
+            <p style="margin-top: 30px;">
+                De nuestra mayor consideración:
+            </p>
+            <p>
+                Nos dirigimos a usted en la oportunidad de solicitar formalmente una <strong>EXTENSIÓN DEL PLAZO DE
+                    EJECUCIÓN (PRÓRROGA)</strong> para el contrato de la referencia. Esta solicitud se fundamenta en
+                hechos objetivos, verificables y no imputables a nuestra empresa, que han impactado la Ruta Crítica del
+                proyecto.
+            </p>
+
+            <div class="section-title">I. EXPOSICIÓN DE MOTIVOS</div>
+            <p>Durante la ejecución de la obra, se han presentado las siguientes circunstancias que han impedido el
+                normal desarrollo de los trabajos:</p>
+            <div style="height: 250px; border: 1px solid #000; padding: 10px;">
+                <!-- Espacio para redactar -->
+                <p style="color: #ccc; font-style: italic;">(Describa aquí detalladamente las causas: Lluvias
+                    extraordinarias según registro pluviométrico, paralización por falta de suministros a nivel
+                    nacional, atrasos en la entrega de planos por el cliente, huelgas legales, cambios de alcance
+                    mayores, etc.)</p>
+            </div>
+
+            <div class="section-title">II. BASAMENTO LEGAL</div>
+            <p>
+                Esta solicitud se ampara en las Cláusulas Contractuales sobre "Causas no Imputables al Contratista" y en
+                el Principio de Equilibrio Económico del Contrato, así como en lo estipulado en la Ley de Contrataciones
+                Públicas vigente sobre las modificaciones de plazo.
+            </p>
+
+            <div class="section-title">III. CÁLCULO DE DÍAS SOLICITADOS</div>
+            <table class="form-table" style="width: 60%; margin: 0 auto;">
+                <tr>
+                    <td>Días de Lluvia (Soportados en RDO):</td>
+                    <td width="30%">__________ Días</td>
+                </tr>
+                <tr>
+                    <td>Días por Atraso de Insumos/Materiales:</td>
+                    <td>__________ Días</td>
+                </tr>
+                <tr>
+                    <td>Días por Paralización Administrativa:</td>
+                    <td>__________ Días</td>
+                </tr>
+                <tr>
+                    <td>Días por Trabajos Adicionales (Obras Extras):</td>
+                    <td>__________ Días</td>
+                </tr>
+                <tr style="font-weight: bold; background: #eee;">
+                    <td align="right">TOTAL PRÓRROGA SOLICITADA:</td>
+                    <td>__________ Días</td>
+                </tr>
+            </table>
+
+            <p style="margin-top: 20px;">
+                Anexamos a la presente el Cronograma Reprogramado y los soportes documentales correspondientes.
+            </p>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>REPRESENTANTE LEGAL</strong><br>Empresa Contratista</div>
+                <div class="sign-box"><strong>RECIBIDO POR</strong><br>Ente Contratante</div>
+            </div>
+        </div>
+
+
+        <!-- ========================================================================== -->
+        <!-- ACTA DE RECEPCIÓN DEFINITIVA (EXTENDIDA A 1 PÁGINA) -->
+        <!-- ========================================================================== -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: OBR-099<br>Rev. 04</div>
+            </div>
+            <h1>ACTA DE RECEPCIÓN DEFINITIVA DE OBRA</h1>
+
+            <div style="margin-top: 20px;">
+                <p>
+                    En la ciudad de __________________, a los ______ días del mes de _____________ del año ________.
+                </p>
+                <p>
+                    Reunidos en la sede del Ente Contratante, los abajo firmantes:
+                </p>
+                <p>
+                    Por una parte, __________________________________ (El Inspector), y por la otra
+                    __________________________________ (El Contratista), proceden a suscribir la presente ACTA DE
+                    RECEPCIÓN DEFINITIVA correspondiente al Contrato Nº: __________________.
+                </p>
+            </div>
+
+            <div class="section-title">I. ANTECEDENTES</div>
+            <p>
+                1. El Acta de Recepción Provisional fue firmada en fecha: __________________.<br>
+                2. El lapso de garantía contractual de ______ meses ha transcurrido en su totalidad.<br>
+                3. Durante este periodo, la obra ha sido sometida a condiciones normales de uso y operación.
+            </p>
+
+            <div class="section-title">II. CERTIFICACIÓN DE CALIDAD Y FUNCIONAMIENTO</div>
+            <p>
+                Se certifica mediante inspección visual y pruebas de funcionamiento que:
+            </p>
+            <ul style="list-style: none; padding-left: 10px;">
+                <li>[__] La obra se encuentra en perfecto estado de funcionamiento y conservación.</li>
+                <li>[__] No se evidencian vicios ocultos, fallas estructurales ni defectos de construcción.</li>
+                <li>[__] Todas las observaciones (Punch List) de la Recepción Provisional fueron subsanadas a
+                    satisfacción.</li>
+                <li>[__] Los manuales de operación y planos "As-Built" definitivos fueron entregados.</li>
+            </ul>
+
+            <div class="section-title">III. LIBERACIÓN DE FIANZAS Y RETENCIONES</div>
+            <p>
+                En virtud de lo anterior, el Ente Contratante procede a otorgar el <strong>FINIQUITO TÉCNICO</strong> y
+                autoriza la liberación inmediata de:
+            </p>
+            <table class="form-table">
+                <tr>
+                    <th>CONCEPTO</th>
+                    <th>BANCO / ASEGURADORA</th>
+                    <th>Nº FIANZA / POLIZA</th>
+                    <th>ESTATUS</th>
+                </tr>
+                <tr>
+                    <td>Fianza de Fiel Cumplimiento</td>
+                    <td></td>
+                    <td></td>
+                    <td>LIBERADA</td>
+                </tr>
+                <tr>
+                    <td>Fianza Laboral</td>
+                    <td></td>
+                    <td></td>
+                    <td>LIBERADA</td>
+                </tr>
+                <tr>
+                    <td>Fianza de Calidad de Obra</td>
+                    <td></td>
+                    <td></td>
+                    <td>LIBERADA</td>
+                </tr>
+                <tr>
+                    <td>Retención de Garantía (Efectivo)</td>
+                    <td>N/A</td>
+                    <td>(En Custodia)</td>
+                    <td>LIBERADA PARA PAGO</td>
+                </tr>
+            </table>
+
+            <div class="section-title">IV. CIERRE</div>
+            <p>
+                Con la firma de la presente Acta, las partes declaran no tener reclamos mutuos pendientes de índole
+                técnica relacionados con la ejecución física de la obra, dándose por terminada la relación contractual
+                en lo referente a la ingeniería y construcción.
+            </p>
+
+            <div class="signatures">
+                <div class="sign-box">
+                    <br>__________________________<br>
+                    <strong>POR LA CONTRATISTA</strong><br>
+                    Representante Legal
+                </div>
+                <div class="sign-box">
+                    <br>__________________________<br>
+                    <strong>POR EL ENTE CONTRATANTE</strong><br>
+                    Director de Obras / Gerencia
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================================================================================== -->
+        <!-- DOCUMENTOS ADICIONALES (EX-ALEMANES YA TRADUCIDOS Y ADAPTADOS) -->
+        <!-- ==================================================================================== -->
+
+        <!-- NOTIFICACIÓN DE ATRASO (Behinderungsanzeige adaptado) -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: GEST-001</div>
+            </div>
+            <h1>NOTIFICACIÓN FORMAL DE OBSTACULIZACIÓN Y ATRASO</h1>
+
+            <p><strong>OBJETO:</strong> Notificación de causas exógenas que impiden el avance normal de la obra.</p>
+
+            <p>Cumplimos con informarle que, a partir de la fecha ____________, nuestros trabajos en el Frente
+                __________________ se encuentran detenidos o con rendimiento reducido debido a:</p>
+
+            <div class="section-title">CAUSA DEL IMPEDIMENTO</div>
+            <table class="form-table">
+                <tr>
+                    <td>[ ] Falta de definición en planos / Detalles insuficientes.</td>
+                </tr>
+                <tr>
+                    <td>[ ] Área de trabajo no liberada por contratistas previos.</td>
+                </tr>
+                <tr>
+                    <td>[ ] Falta de suministro eléctrico / agua industrial.</td>
+                </tr>
+                <tr>
+                    <td>[ ] Instrucciones contradictorias de la Inspección.</td>
+                </tr>
+            </table>
+
+            <p>Esta notificación tiene el fin de salvaguardar nuestro derecho a la extensión del plazo y al
+                reconocimiento de mayores costos operativos (Gastos Generales) derivados de esta ineficiencia forzada.
+            </p>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>CONTRATISTA</strong></div>
+                <div class="sign-box"><strong>RECIBIDO (FECHA Y HORA)</strong></div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN DE RIESGO (Bedenkenanmeldung adaptado) -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: GEST-003</div>
+            </div>
+            <h1>NOTIFICACIÓN DE RIESGO TÉCNICO (SALVEDAD DE RESPONSABILIDAD)</h1>
+
+            <div class="section-title">ADVERTENCIA</div>
+            <p>
+                En cumplimiento de nuestro deber profesional, <strong>ADVERTIMOS</strong> formalmente a la Inspección
+                sobre los riesgos técnicos asociados a la instrucción recibida:
+            </p>
+
+            <div style="border: 1px solid #000; padding: 10px; min-height: 100px; margin-bottom: 20px;">
+                (Describir el riesgo aquí: Ej. "Vaciar concreto bajo lluvia sin protección", "Usar relleno con humedad
+                excesiva por orden del cliente", etc.)
+            </div>
+
+            <p>
+                Sugerimos proceder de la siguiente manera técnica correcta:
+                _________________________________________________________________________
+            </p>
+
+            <p>
+                Si la Inspección ratifica la orden original haciendo caso omiso a esta advertencia, nuestra empresa
+                queda <strong>EXIMIDA DE TODA RESPONSABILIDAD</strong> civil y administrativa por las fallas futuras que
+                de ello deriven.
+            </p>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>DIRECCIÓN TÉCNICA</strong></div>
+                <div class="sign-box"><strong>ENTERADO (CLIENTE)</strong></div>
+            </div>
+        </div>
+
+        <!-- PRESUPUESTO DE ADICIONALES (Nachtrag adaptado) -->
+        <div class="page">
+            <div class="header">
+                <div class="logo">ADLER INFRAESTRUCTURA</div>
+                <div class="doc-code">FORMATO: GEST-005</div>
+            </div>
+            <h1>OFERTA DE OBRA ADICIONAL / EXTRA</h1>
+
+            <p>Presupuesto para ejecución de partidas no contractuales o modificaciones de alcance.</p>
+
+            <table class="form-table">
+                <tr>
+                    <th>DESCRIPCIÓN DE LA PARTIDA NUEVA</th>
+                    <th>UND</th>
+                    <th>CANT</th>
+                    <th>P.UNITARIO</th>
+                    <th>TOTAL</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><i>Gastos Administrativos (%)</i></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><i>Utilidad (%)</i></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr style="font-weight:bold;">
+                    <td>TOTAL PRESUPUESTO ADICIONAL</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <p>Este presupuesto tiene validez de _____ días.</p>
+
+            <div class="signatures">
+                <div class="sign-box"><strong>PREPARADO POR</strong></div>
+                <div class="sign-box"><strong>APROBACIÓN DE PRESUPUESTO</strong></div>
+            </div>
+        </div>
+
+    </div> <!-- Fin Document Container -->
+
+</body>
+
+</html>

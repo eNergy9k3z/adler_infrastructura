@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Integral de Fiscalización e Inspección de Obras - Adler Infraestructura</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #ffc107;
+            --text: #333;
+            --light-bg: #f8f9fa;
+            --border: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            /* Serif for body text looks more like a formal doc */
+            line-height: 1.6;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background-color: #555;
+            /* Dark background for the viewer */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Inter', sans-serif;
+            /* Sans-serif for headers */
+            color: var(--primary);
+        }
+
+        .document-container {
+            max-width: 210mm;
+            margin: 40px auto;
+        }
+
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            /* A4 height */
+            padding: 25mm;
+            /* Standard margins */
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Print controls */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+            }
+
+            .document-container {
+                margin: 0;
+                width: 100%;
+                max-width: none;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+                page-break-after: always;
+                min-height: auto;
+                /* Let content flow naturally mostly, but enforce breaks */
+                height: 297mm;
+                width: 210mm;
+            }
+
+            .page:last-child {
+                page-break-after: auto;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Header & Footer */
+        .doc-header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .meta-data {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            text-align: right;
+            color: #666;
+        }
+
+        .doc-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 25mm;
+            right: 25mm;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            color: #999;
+        }
+
+        /* Content Styling */
+        .title-block {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            border: 1px solid var(--border);
+            padding: 40px;
+            background: var(--light-bg);
+        }
+
+        h1.main-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: #666;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .version-table {
+            width: 100%;
+            margin-top: 40px;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+        }
+
+        .version-table th,
+        .version-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .version-table th {
+            background: #eee;
+        }
+
+        h2 {
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-top: 30px;
+            font-size: 18px;
+            background: linear-gradient(to right, var(--light-bg), transparent);
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-top: 25px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            color: #444;
+        }
+
+        p,
+        ul,
+        ol {
+            font-size: 12px;
+            text-align: justify;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        table.technical-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            margin: 20px 0;
+        }
+
+        table.technical-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table.technical-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        table.technical-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            border-left: 4px solid #ffc107;
+        }
+
+        .signature-block {
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sign-line {
+            width: 45%;
+            border-top: 1px solid black;
+            padding-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Floating Print Button */
+        .btn-print {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: transform 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-print:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="btn-print no-print" onclick="window.print()">🖨️ IMPRIMIR / GUARDAR PDF</button>
+
+    <div class="document-container">
+
+        <!-- ================= PAGE 1: PORTADA ================= -->
+        <div class="page" id="page-1">
+            <header class="doc-header">
+                <div class="logo">ADLER <span>INFRAESTRUCTURA</span></div>
+                <div class="meta-data">
+                    CÓDIGO: MAN-FIS-2026<br>
+                    REV: 3.0
+                </div>
+            </header>
+
+            <div class="title-block">
+                <h1 class="main-title">Manual de Fiscalización e Inspección de Obras Civiles</h1>
+                <p class="subtitle">Procedimientos Técnicos, Administrativos y Normativos</p>
+            </div>
+
+            <div style="margin-top: 60px;">
+                <h3>INFORMACIÓN DEL PROYECTO</h3>
+                <table class="technical-table">
+                    <tr>
+                        <th width="30%">Departamento Emisor:</th>
+                        <td>Gerencia Técnica de Proyectos</td>
+                    </tr>
+                    <tr>
+                        <th>Alcance Geográfico:</th>
+                        <td>Proyectos Nacionales e Internacionales</td>
+                    </tr>
+                    <tr>
+                        <th>Normativa Base:</th>
+                        <td>COVENIN, ASTM, ACI, FIDIC (Red Book)</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Vigencia:</th>
+                        <td>Enero 2026 - Diciembre 2028</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="margin-top: 60px;">
+                <h3>CONTROL DE REVISIONES</h3>
+                <table class="version-table">
+                    <thead>
+                        <tr>
+                            <th>Ver.</th>
+                            <th>Fecha</th>
+                            <th>Descripción del Cambio</th>
+                            <th>Autor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1.0</td>
+                            <td>Jan 2024</td>
+                            <td>Emisión inicial</td>
+                            <td>Ing. R. Méndez</td>
+                        </tr>
+                        <tr>
+                            <td>2.0</td>
+                            <td>Jun 2025</td>
+                            <td>Actualización Normas ISO 9001:2015</td>
+                            <td>Ing. S. Schmidt</td>
+                        </tr>
+                        <tr>
+                            <td>3.0</td>
+                            <td>Ene 2026</td>
+                            <td>Inclusión de Cap. 5 (Tecnología BIM)</td>
+                            <td>Ing. C. Torres</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 50px; text-align: center;">
+                <p style="text-align: center; color: #888; font-size: 11px;">
+                    Este documento es propiedad intelectual de ADLER INFRAESTRUCTURA. <br>
+                    Su reproducción parcial o total está prohibida sin autorización escrita.
+                </p>
+            </div>
+
+            <footer class="doc-footer">
+                <span>MAN-FIS-2026</span>
+                <span>Página 1 de 4</span>
+            </footer>
+        </div>
+
+        <!-- ================= PAGE 2: ROLES Y MARCO LEGAL ================= -->
+        <div class="page" id="page-2">
+            <header class="doc-header">
+                <div class="logo">ADLER <span>INFRAESTRUCTURA</span></div>
+                <div class="meta-data">CAPÍTULO I: GENERALIDADES</div>
+            </header>
+
+            <h2>1. Objeto y Alcance</h2>
+            <p>
+                El presente manual establece los lineamientos obligatorios para el personal encargado de la Inspección y
+                Fiscalización de obras ejecutadas por o para Adler Infraestructura. Su objetivo es asegurar que la obra
+                se ejecute conforme a los planos, especificaciones técnicas, presupuesto contratado y normas de calidad
+                vigentes.
+            </p>
+
+            <h2>2. Responsabilidades del Fiscal de Obra</h2>
+            <p>El Ingeniero Inspector/Fiscal es la máxima autoridad técnica en el sitio de la obra y sus
+                responsabilidades incluyen:</p>
+            <ul>
+                <li><strong>Control Técnico:</strong> Verificar la calidad de materiales, equipos y procesos
+                    constructivos. Rechazar cualquier elemento que no cumpla con las especificaciones.</li>
+                <li><strong>Control Administrativo:</strong> Validar las mediciones de obra ejecutada para las
+                    valuaciones de pago. Mantener actualizado el Libro de Obra.</li>
+                <li><strong>Control de Plazos:</strong> Monitorear el avance físico contra el cronograma aprobado.
+                    Alertar desviaciones críticas.</li>
+                <li><strong>HSE:</strong> Exigir el cumplimiento estricto de las normas de Seguridad Industrial e
+                    Higiene Ocupacional.</li>
+            </ul>
+
+            <h2>3. Documentación Obligatoria en Sitio</h2>
+            <div class="warning-box">
+                <strong>ATENCIÓN:</strong> El inicio de actividades sin la presencia física de los siguientes documentos
+                en obra está PROHIBIDO y será causal de paralización inmediata.
+            </div>
+            <ol>
+                <li>Juego completo de Planos de Construcción (aptos para construcción, firmados).</li>
+                <li>Especificaciones Técnicas Particulares del contrato.</li>
+                <li>Permisos de construcción (Municipales, Ambientales, Bomberos).</li>
+                <li>Libro de Obra (Bitácora) debidamente foliado y sellado por el ente contratante.</li>
+                <li>Plan de Seguridad y Salud en el Trabajo aprobado.</li>
+                <li>Cronograma de Ejecución (Diagrama de Gantt) actualizado.</li>
+            </ol>
+
+            <h2>4. Marco Legal Referencial</h2>
+            <p>La actuación del Fiscal se ampara en las siguientes leyes y reglamentos:</p>
+            <ul style="column-count: 2;">
+                <li>Ley de Contrataciones Públicas.</li>
+                <li>Ley del Ejercicio de la Ingeniería y Arquitectura.</li>
+                <li>Normas Venezolanas COVENIN (Sector Construcción).</li>
+                <li>Normas ASTM (American Society for Testing and Materials).</li>
+                <li>Normas ACI (American Concrete Institute).</li>
+                <li>Ley Orgánica de Prevención, Condiciones y Medio Ambiente de Trabajo (LOPCYMAT).</li>
+            </ul>
+
+            <footer class="doc-footer">
+                <span>MAN-FIS-2026</span>
+                <span>Página 2 de 4</span>
+            </footer>
+        </div>
+
+        <!-- ================= PAGE 3: CONTROL DE CALIDAD ================= -->
+        <div class="page" id="page-3">
+            <header class="doc-header">
+                <div class="logo">ADLER <span>INFRAESTRUCTURA</span></div>
+                <div class="meta-data">CAPÍTULO II: CONTROL TÉCNICO</div>
+            </header>
+
+            <h2>5. Control de Calidad: Concreto Armado</h2>
+            <p>El concreto es el material estructural crítico. Se deben seguir rigurosamente los siguientes protocolos
+                de ensayo:</p>
+
+            <table class="technical-table">
+                <thead>
+                    <tr>
+                        <th>Ensayo</th>
+                        <th>Norma ASTM Ref.</th>
+                        <th>Frecuencia de Muestreo</th>
+                        <th>Criterio de Aceptación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Asentamiento (Slump)</strong></td>
+                        <td>ASTM C143</td>
+                        <td>Cada camión mixer al llegar a obra.</td>
+                        <td>±1 pulgada del diseño de mezcla.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resistencia a Compresión</strong></td>
+                        <td>ASTM C39</td>
+                        <td>4 cilindros por cada 50m³ o por día de vaciado.</td>
+                        <td>f'c promedio ≥ f'c diseño. Ningún individual < 90%.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperatura</strong></td>
+                        <td>ASTM C1064</td>
+                        <td>Cada hora o cambio de condiciones.</td>
+                        <td>Máximo 32°C. Mínimo 10°C.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contenido de Aire</strong></td>
+                        <td>ASTM C231</td>
+                        <td>Diario si se especifica aire incluido.</td>
+                        <td>Según diseño (ej. 4% ± 1.5%).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5.1 Lista de Chequeo Pre-Vaciado (Hold Point)</h3>
+            <p>El Fiscal NO autorizará el vaciado sin verificar:</p>
+            <ul>
+                <li>[ ] Limpieza de encofrados (sin basura, virutas o agua estancada).</li>
+                <li>[ ] Aplicación de desmoldante.</li>
+                <li>[ ] Acero de refuerzo: Diámetros, separación, recubrimientos (tacos) según plano.</li>
+                <li>[ ] Instalaciones sanitarias/eléctricas embutidas fijadas correctamente.</li>
+                <li>[ ] Equipos de vibrado (principales y reserva) operativos en sitio.</li>
+            </ul>
+
+            <h2>6. Control de Calidad: Movimiento de Tierras</h2>
+            <p>Para terraplenes y bases de pavimentos:</p>
+            <ul>
+                <li><strong>Compactación:</strong> Se exigirá el 95% del Proctor Modificado (ASTM D1557) para bases y
+                    sub-bases.</li>
+                <li><strong>Pruebas de Campo:</strong> Densidad in-situ mediante Cono de Arena (ASTM D1556) o Densímetro
+                    Nuclear. Frecuencia: 1 punto cada 200m² por capa.</li>
+                <li><strong>Materiales:</strong> Deben estar libres de materia orgánica, raíces y escombros. Índice de
+                    Plasticidad controlado.</li>
+            </ul>
+
+            <h2>7. Acero de Refuerzo</h2>
+            <p>Se rechazará cualquier acero con:</p>
+            <ul>
+                <li>Oxidación laminar (que se desprenda al golpe).</li>
+                <li>Grasa, aceite o pintura que impida la adherencia.</li>
+                <li>Dobles en frío no autorizados o soldaduras no certificadas.</li>
+            </ul>
+
+            <footer class="doc-footer">
+                <span>MAN-FIS-2026</span>
+                <span>Página 3 de 4</span>
+            </footer>
+        </div>
+
+        <!-- ================= PAGE 4: ADMINISTRACION Y CIERRE ================= -->
+        <div class="page" id="page-4">
+            <header class="doc-header">
+                <div class="logo">ADLER <span>INFRAESTRUCTURA</span></div>
+                <div class="meta-data">CAPÍTULO III: GESTIÓN ADMINISTRATIVA</div>
+            </header>
+
+            <h2>8. Libro de Obra (Bitácora)</h2>
+            <p>Es el documento legal más importante de la obra. Su manejo es obligatorio y diario.</p>
+            <ul>
+                <li><strong>Custodia:</strong> Permanece en la oficina de campo bajo custodia del Residente, accesible
+                    al Fiscal en todo momento.</li>
+                <li><strong>Contenido Diario:</strong> Clima, personal activo, equipos operativos/paralizados,
+                    actividades ejecutadas, instrucciones impartidas.</li>
+                <li><strong>Prohibiciones:</strong> No se permite arrancar hojas, borrar (usar tachaduras legibles), ni
+                    dejar espacios en blanco.</li>
+            </ul>
+
+            <h2>9. Procedimiento de Valuaciones</h2>
+            <p>El pago de obra se realizará mediante valuaciones periódicas (usualmente mensuales).</p>
+            <ol>
+                <li><strong>Corte de Obra:</strong> Día 25 de cada mes.</li>
+                <li><strong>Medición Conjunta:</strong> El Residente y el Fiscal miden en sitio las cantidades realmente
+                    ejecutadas.</li>
+                <li><strong>Elaboración:</strong> El Residente prepara la hoja de cálculo con los precios unitarios del
+                    contrato.</li>
+                <li><strong>Soportes:</strong> Se deben anexar croquis de detalle, fotografías fechadas y resultados de
+                    laboratorio que avalen la calidad. La falta de ensayos es causal de devolución.</li>
+                <li><strong>Revisión y Firma:</strong> El Fiscal tiene 5 días hábiles para revisar y firmar o devolver
+                    con observaciones.</li>
+            </ol>
+
+            <h2>10. Recepción de Obra y Cierre</h2>
+            <p>Para la Recepción Provisional, se requiere:</p>
+            <ul>
+                <li>Obra 100% terminada y funcional.</li>
+                <li>Pruebas de puesta en marcha de sistemas (eléctrico, hidráulico) aprobadas.</li>
+                <li>Planos "As-Built" (Como Construido) entregados.</li>
+                <li>Limpieza general del sitio.</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>GARANTÍA:</strong> Tras la Recepción Provisional, comienza el lapso de garantía (usualmente 1
+                año) donde el Contratista es responsable de vicios ocultos. Se retiene un porcentaje (ej. 10%) como Fiel
+                Cumplimiento.
+            </div>
+
+            <div class="signature-block">
+                <div class="sign-line">
+                    <br>
+                    <strong>ING. RESIDENTE</strong><br>
+                    Por la Contratista
+                </div>
+                <div class="sign-line">
+                    <br>
+                    <strong>ING. INSPECTOR</strong><br>
+                    Por Adler Infraestructura
+                </div>
+            </div>
+
+            <footer class="doc-footer">
+                <span>MAN-FIS-2026</span>
+                <span>Página 4 de 4</span>
+            </footer>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

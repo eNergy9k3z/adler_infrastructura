@@ -1,0 +1,160 @@
+.navbar {
+    background-color: transparent;
+    height: 100px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar.scrolled {
+    background-color: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(15px);
+    height: 90px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+}
+
+/* FINAL FIX: Restore constraint but make it wide enough to avoid overlap */
+.navbar-container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1550px !important;
+    /* Wide enough (no overlap) but constrained (not too far) */
+    margin: 0 auto;
+    /* Center the container */
+    padding: 0 1rem;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.logo-img {
+    height: 72px;
+    /* Was 56px, now 72px (+2 sizes) */
+    width: auto;
+    border-radius: 6px;
+}
+
+.logo-text {
+    font-size: 1.75rem;
+    /* Was 1.35rem, now 1.75rem (+2 sizes) */
+    font-weight: 800;
+    color: white;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+.logo-accent {
+    display: block;
+    font-size: 1rem;
+    /* Was 0.75rem, now 1rem (+2 sizes) */
+    font-weight: 600;
+    color: var(--color-accent);
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    /* Adjusted gap */
+    margin-left: 0;
+    /* Let space-between handle it */
+}
+
+.nav-links a {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav-links a:not(.nav-cta):hover {
+    color: white;
+}
+
+.nav-btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-btn-primary {
+    background-color: var(--color-accent);
+    color: black !important;
+    border: 2px solid var(--color-accent);
+}
+
+.nav-btn-primary:hover {
+    background-color: white;
+    border-color: white;
+    color: black !important;
+}
+
+.nav-btn-outline {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white !important;
+}
+
+.nav-btn-outline:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent) !important;
+}
+
+.menu-icon {
+    display: none;
+    cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    .logo-text {
+        display: none;
+    }
+
+    .menu-icon {
+        display: block;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 90px;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-bg-body);
+        flex-direction: column;
+        padding: 3rem;
+        gap: 2rem;
+        transform: translateY(-200%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-lg);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        align-items: center;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+}

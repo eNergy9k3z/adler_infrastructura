@@ -1,0 +1,123 @@
+.jobs-hero {
+    padding: 180px 0 100px;
+    /* Reduced top padding slightly */
+    background-color: var(--color-bg-body);
+    position: relative;
+    text-align: center;
+}
+
+.jobs-hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.jobs-hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
+.values-section {
+    padding: 5rem 0;
+    background-color: var(--color-secondary);
+    /* Darker contrast */
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.value-card {
+    background: var(--color-bg-body);
+    padding: 2.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-accent);
+}
+
+.value-icon {
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+}
+
+.value-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.value-desc {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.jobs-list-section {
+    padding: 5rem 0;
+    background-color: var(--color-bg-body);
+}
+
+.job-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-secondary);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.job-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.job-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.job-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .job-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .job-actions {
+        width: 100%;
+    }
+
+    .job-actions .btn {
+        width: 100%;
+    }
+}

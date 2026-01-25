@@ -1,0 +1,41 @@
+.certifications-ticker {
+    background-color: #000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem 0;
+}
+
+.cert-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.cert-label {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.cert-list {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* Center on mobile too */
+}
+
+.cert-item {
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.cert-divider {
+    color: var(--color-accent);
+}

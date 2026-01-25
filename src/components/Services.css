@@ -1,0 +1,159 @@
+.section-header {
+    margin-bottom: 5rem;
+    text-align: left;
+    /* Consistent left align */
+}
+
+.section-eyebrow {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    letter-spacing: 3px;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.section-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    max-width: 700px;
+    line-height: 1.8;
+}
+
+/* Premium Card Refinements */
+.service-card-premium {
+    background: var(--color-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* More visible border */
+    border-radius: 4px;
+    /* Sharper corners for construction feel */
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    /* Ensure full height in grid */
+}
+
+@media (max-width: 1024px) {
+    .service-card-premium {
+        flex-direction: column;
+    }
+
+    .card-image-container {
+        width: 100%;
+        height: 300px;
+        /* Fixed height for mobile */
+        flex: none !important;
+        /* Override flex */
+    }
+}
+
+.service-card-premium:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-accent);
+    /* Highlight border on hover */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.card-image-container {
+    flex: 0 0 45%;
+    /* Fix width to nearly half for square-ish look */
+    min-height: 100%;
+    /* Match text height */
+    position: relative;
+    overflow: hidden;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Ensure center subject */
+    transition: transform 0.8s ease;
+}
+
+.service-card-premium:hover .card-img {
+    transform: scale(1.1);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ensure text over image is readable if we add any */
+    background: linear-gradient(90deg, rgba(28, 28, 28, 0) 0%, rgba(28, 28, 28, 0.4) 100%);
+    z-index: 1;
+}
+
+.card-icon-badge {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 50px;
+    /* Slightly smaller balanced icon */
+    height: 50px;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    /* Dark icon on gold */
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+.card-content {
+    flex: 1;
+    padding: 2.5rem;
+    /* Reduced padding for better proportion */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-weight: 800;
+}
+
+.card-desc {
+    color: var(--color-text-muted);
+    /* New higher contrast grey */
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-accent);
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-link:hover {
+    transform: translateX(10px);
+    color: white;
+    /* Hover change */
+}

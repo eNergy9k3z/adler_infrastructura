@@ -1,0 +1,236 @@
+/* Auditoria.css */
+.auditoria-page {
+    background-color: #121212;
+    min-height: 100vh;
+    color: #e0e0e0;
+}
+
+/* Reutilizando estilos de Hero de otras páginas */
+.auditoria-hero {
+    position: relative;
+    height: 50vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.auditoria-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.auditoria-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.auditoria-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.auditoria-subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    line-height: 1.6;
+}
+
+/* Form Container */
+.auditoria-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px 20px;
+}
+
+.audit-form-card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.form-section {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 30px;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section-title {
+    color: var(--color-accent);
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-left: 5px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: #333;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+.form-input::placeholder,
+.form-select::placeholder,
+.form-textarea::placeholder {
+    color: #ccc;
+    font-style: italic;
+    font-weight: 300;
+    opacity: 0.7;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Radio Cards for Audit Type */
+.audit-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.radio-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.radio-card input {
+    position: absolute;
+    opacity: 0;
+}
+
+.card-content {
+    background: #2a2a2a;
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    height: 100%;
+}
+
+.radio-card input:checked+.card-content {
+    border-color: var(--color-accent);
+    background: rgba(255, 193, 7, 0.05);
+}
+
+.audit-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #888;
+}
+
+.radio-card input:checked+.card-content .audit-icon {
+    color: var(--color-accent);
+}
+
+.card-title {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.submit-btn {
+    background: var(--color-accent);
+    color: black;
+    font-weight: 800;
+    padding: 18px 40px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+}
+
+@media (max-width: 768px) {
+
+    .form-grid,
+    .audit-type-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+
+    .auditoria-title {
+        font-size: 2.5rem;
+    }
+}

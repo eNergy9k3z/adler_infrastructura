@@ -1,0 +1,215 @@
+:root {
+  /* Premium Dark Construction Theme - Refined */
+  --color-primary: #0a0a0a;
+  /* Deepest Black */
+  --color-secondary: #141414;
+  /* Sophisticated Dark Grey */
+
+  /* Industrial Gold - Precision & Value */
+  --color-accent: #FFC107;
+  --color-accent-subtle: rgba(255, 193, 7, 0.15);
+  --color-accent-hover: #FFD54F;
+
+  --color-text-main: #ffffff;
+  --color-text-secondary: #e0e0e0;
+  --color-text-muted: #9e9e9e;
+  /* More muted for hierarchy */
+  --color-text-dark: #121212;
+
+  --color-bg-body: #050505;
+  --color-bg-card: #141414;
+
+  --radius-sm: 2px;
+  /* German precision: Sharp corners */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 30px rgba(255, 193, 7, 0.1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  /* Inter for UI, Manrope for Headers - Best combination */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* GLOBAL RESET FOR IMAGES */
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+/* Utilities */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: 8rem 0;
+  /* More breathing room */
+}
+
+/* Typography Enhancements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Manrope', sans-serif;
+  /* Strong geometric headers */
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  /* Tighter, more modern */
+}
+
+p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  /* Better readability */
+  color: var(--color-text-muted);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 40%, #909090 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #FFC107 20%, #FFECB3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Modern Button Styles - Precise & Technical */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  /* Sharper */
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: black;
+  /* High contrast industrial look */
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: var(--color-accent-hover);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.btn-outline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(255, 193, 7, 0.05);
+}
+
+/* Grid Layouts - Fixed Alignment */
+.grid {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr;
+}
+
+.grid-3 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
