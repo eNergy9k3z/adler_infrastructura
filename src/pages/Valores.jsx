@@ -121,8 +121,8 @@ const Valores = () => {
                                 <span className="stat-label">Satisfacción del Cliente</span>
                             </div>
                             <div className="stat">
-                                <span className="stat-number">0</span>
-                                <span className="stat-label">Tolerancia a la Corrupción</span>
+                                <span className="stat-number">100%</span>
+                                <span className="stat-label">Calidad Certificada</span>
                             </div>
                         </div>
                     </div>
