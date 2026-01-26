@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Award, BookOpen, Briefcase, GraduationCap, Linkedin, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import './Profile.css';
+import profileImg from '../assets/cecil_profile.png';
 
 const Profile = () => {
     useEffect(() => {
@@ -16,28 +16,29 @@ const Profile = () => {
                         {/* Photo Section */}
                         <div className="profile-photo-wrapper">
                             <div className="photo-frame"></div>
-                            {/* Placeholder for real photo */}
-                            <div className="profile-photo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#333' }}>
-                                <span style={{ fontSize: '5rem', color: '#555' }}>IMG</span>
-                            </div>
+                            <img
+                                src={profileImg}
+                                alt="M.Eng. Cecil Sebastian Tovar"
+                                className="profile-photo"
+                            />
                         </div>
 
                         {/* Text Information */}
                         <div className="profile-info">
-                            <span className="profile-role">Director General</span>
-                            <h1 className="profile-name">Ing. Roberto Adler</h1>
+                            <span className="profile-role">Ingeniero Civil</span>
+                            <h1 className="profile-name">M.Eng. Cecil Sebastian Tovar</h1>
                             <p className="profile-intro">
-                                Liderando la transformación de la infraestructura venezolana con más de 20 años de experiencia en gestión de contratos FIDIC y auditoría técnica de alto nivel.
+                                Liderando la transformación de la infraestructura con excelencia técnica. Experto en gestión de proyectos de ingeniería civil y consultoría especializada.
                             </p>
 
                             <div className="profile-stats-row">
                                 <div className="p-stat">
-                                    <h4>20+</h4>
+                                    <h4>15+</h4>
                                     <span>Años Exp.</span>
                                 </div>
                                 <div className="p-stat">
                                     <h4>$500M+</h4>
-                                    <span>Cartera Auditada</span>
+                                    <span>Gestionados</span>
                                 </div>
                                 <div className="p-stat">
                                     <h4>50+</h4>
@@ -46,10 +47,16 @@ const Profile = () => {
                             </div>
 
                             <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-                                <a href="mailto:director@adler.com" className="btn btn-primary" style={{ gap: '0.5rem' }}>
+                                <a href="mailto:info@adlerinfraestructura.com" className="btn btn-primary" style={{ gap: '0.5rem' }}>
                                     <Mail size={18} /> Contactar
                                 </a>
-                                <a href="#" className="btn btn-outline" style={{ gap: '0.5rem' }}>
+                                <a
+                                    href="https://www.linkedin.com/in/cecil-sebastian-tovar-728724185/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline"
+                                    style={{ gap: '0.5rem' }}
+                                >
                                     <Linkedin size={18} /> LinkedIn
                                 </a>
                             </div>
@@ -65,13 +72,13 @@ const Profile = () => {
                     <div className="bio-section">
                         <h3>Trayectoria Profesional</h3>
                         <p>
-                            Como fundador de Adler Infraestructura, he dedicado mi carrera a elevar los estándares de la ingeniería civil en la región. Mi enfoque combina la precisión técnica de las normativas internacionales con un profundo entendimiento de la realidad operativa local.
+                            Como líder en Adler Infraestructura, enfoco mi práctica profesional en la integración de estándares internacionales de ingeniería con las necesidades específicas del desarrollo local. Mi formación académica avanzada (Master of Engineering) me permite abordar problemas complejos con soluciones técnicas robustas y sostenibles.
                         </p>
                         <p>
-                            Antes de establecer Adler, lideré departamentos de control de calidad en megaproyectos viales, donde identifiqué la necesidad crítica de una auditoría técnica independiente que garantizara transparencia para los inversores.
+                            Mi experiencia abarca desde la planificación estratégica y auditoría técnica hasta la gestión integral de contratos de construcción, asegurando siempre el cumplimiento normativo y la eficiencia en la inversión.
                         </p>
                         <p>
-                            Mi filosofía es simple: "La calidad no es un accidente, es el resultado de una intención inteligente".
+                            Creo firmemente que la ingeniería civil no solo construye estructuras, sino que fundamenta el desarrollo económico y social de las comunidades.
                         </p>
                     </div>
 
@@ -80,21 +87,21 @@ const Profile = () => {
                         <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'white' }}>Credenciales</h3>
 
                         <div className="cred-card" style={{ marginBottom: '1rem' }}>
-                            <div className="cred-icon"><GraduationCap size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Ingeniería Civil</h5>
-                            <p className="text-muted text-sm">Universidad Central de Venezuela (UCV)</p>
+                            <div className="cred-icon"><Award size={24} /></div>
+                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Master of Engineering (M.Eng.)</h5>
+                            <p className="text-muted text-sm">Postgrado Especializado</p>
                         </div>
 
                         <div className="cred-card" style={{ marginBottom: '1rem' }}>
-                            <div className="cred-icon"><Award size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Master en Gerencia de Proyectos</h5>
-                            <p className="text-muted text-sm">IESA / PMI Certified</p>
+                            <div className="cred-icon"><GraduationCap size={24} /></div>
+                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Ingeniero Civil</h5>
+                            <p className="text-muted text-sm">Universidad Central de Venezuela (UCV)</p>
                         </div>
 
                         <div className="cred-card">
                             <div className="cred-icon"><BookOpen size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Certificación FIDIC</h5>
-                            <p className="text-muted text-sm">Gestión de Contratos Internacionales</p>
+                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Gerencia de Proyectos</h5>
+                            <p className="text-muted text-sm">Gestión Técnica y Administrativa</p>
                         </div>
                     </div>
 
