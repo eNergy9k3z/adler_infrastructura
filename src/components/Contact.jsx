@@ -35,7 +35,7 @@ const Contact = () => {
                             <Phone className="contact-icon" size={24} />
                             <div>
                                 <h4 style={{ color: 'white', fontWeight: 'bold', marginBottom: '0.25rem' }}>Teléfono</h4>
-                                <p style={{ color: 'var(--color-text-muted)' }}>+58 212 555 0000</p>
+                                <p style={{ color: 'var(--color-text-muted)' }}>+49 172 7751060</p>
                             </div>
                         </div>
 

@@ -36,7 +36,7 @@ const Footer = () => {
                         <ul className="footer-links">
                             <li>Caracas, Venezuela</li>
                             <li>info@adlerinfraestructura.com</li>
-                            <li>+58 212 555 0000</li>
+                            <li>+49 172 7751060</li>
                         </ul>
                     </div>
 
