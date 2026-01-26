@@ -82,26 +82,26 @@ const Profile = () => {
                         </p>
                     </div>
 
-                    {/* Credentials Sidebar */}
+                    {/* Credentials Sidebar - UPDATED WITH REAL EDUCATION */}
                     <div className="creds-section">
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'white' }}>Credenciales</h3>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'white' }}>Educación</h3>
 
                         <div className="cred-card" style={{ marginBottom: '1rem' }}>
                             <div className="cred-icon"><Award size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Master of Engineering (M.Eng.)</h5>
-                            <p className="text-muted text-sm">Postgrado Especializado</p>
+                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Máster en Ingeniería de Construcción Industrial (M.Eng.)</h5>
+                            <p className="text-muted text-sm">Hochschule für angewandtes Management</p>
+                            <p className="text-sm" style={{ color: '#888', marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                                Estrategia Empresarial • Innovación Tecnológica • Liderazgo Multicultural
+                            </p>
                         </div>
 
                         <div className="cred-card" style={{ marginBottom: '1rem' }}>
                             <div className="cred-icon"><GraduationCap size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Ingeniero Civil</h5>
-                            <p className="text-muted text-sm">Universidad Central de Venezuela (UCV)</p>
-                        </div>
-
-                        <div className="cred-card">
-                            <div className="cred-icon"><BookOpen size={24} /></div>
-                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Gerencia de Proyectos</h5>
-                            <p className="text-muted text-sm">Gestión Técnica y Administrativa</p>
+                            <h5 style={{ color: 'white', fontWeight: 'bold' }}>Ingeniería Civil (B.Eng.)</h5>
+                            <p className="text-muted text-sm">University of Applied Sciences Koblenz</p>
+                            <p className="text-sm" style={{ color: '#888', marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                                Ingeniería Civil • Cálculo Estructural • Solución de Problemas Técnicos
+                            </p>
                         </div>
                     </div>
 
