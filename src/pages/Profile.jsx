@@ -25,7 +25,7 @@ const Profile = () => {
 
                         {/* Text Information */}
                         <div className="profile-info">
-                            <span className="profile-role">Ingeniero Civil</span>
+                            <span className="profile-role">Ingeniero Civil y Director General</span>
                             <h1 className="profile-name">M.Eng. Cecil Sebastian Tovar</h1>
                             <p className="profile-intro">
                                 Liderando la transformación de la infraestructura con excelencia técnica. Experto en gestión de proyectos de ingeniería civil y consultoría especializada.
