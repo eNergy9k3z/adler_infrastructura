@@ -72,13 +72,16 @@ const Profile = () => {
                     <div className="bio-section">
                         <h3>Visión Profesional</h3>
                         <p>
-                            Mi carrera se ha forjado en el exigente mercado de la construcción alemana, gestionando proyectos de infraestructura vial y contratos complejos para gigantes de la industria como STRABAG y Eurovia.
+                            Soy un ingeniero civil venezolano que ha forjado su carrera en el corazón de la ingeniería europea. Durante más de seis años, he gestionado proyectos de infraestructura vial de alta complejidad y contratos estratégicos para líderes globales de la industria como STRABAG y Eurovia en Alemania. Esta trayectoria me ha permitido dominar la técnica constructiva de vanguardia y la rigurosidad contractual que define al mercado más exigente del mundo.
                         </p>
                         <p>
-                            Esta experiencia internacional me ha permitido dominar no solo la técnica constructiva de vanguardia, sino también la gestión contractual precisa y la implementación de innovaciones tecnológicas en obra. Ahora, como Director General de Adler Infraestructura, aplico este rigor alemán a cada proyecto que lideramos.
+                            Mi experiencia internacional no es solo un credencial, es una herramienta de transformación. He liderado equipos multiculturales y supervisado obras donde la precisión milimétrica y la eficiencia de costos no son opcionales. Ahora, canalizo todo este <em>know-how</em> hacia Adler Infraestructura con un objetivo claro: elevar el estándar de la ingeniería en Venezuela.
                         </p>
                         <p>
-                            Combinamos la precisión en la ejecución con una visión estratégica orientada a resultados, garantizando que cada obra sea un activo duradero.
+                            Entendemos que nuestra geografía y nuestros retos son únicos. Por eso, mi enfoque no se basa en copiar modelos, sino en adaptar la excelencia operativa alemana a la realidad venezolana. Implementamos protocolos de auditoría técnica y soluciones de pavimentación innovadoras que garantizan durabilidad real, combatiendo la obsolescencia prematura de nuestras vías.
+                        </p>
+                        <p>
+                            Combinamos la disciplina en la ejecución con una visión estratégica profundamente comprometida con el desarrollo nacional. Cada proyecto que asumimos es una oportunidad para demostrar que en Venezuela se puede construir con calidad de exportación, transparencia absoluta y visión de largo plazo.
                         </p>
                     </div>
 
