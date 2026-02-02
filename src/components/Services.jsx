@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, BarChart3, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Zap, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Services.css';
 
@@ -41,6 +41,14 @@ const services = [
         image: imgRepair,
         icon: <Zap size={20} />,
         norma: "Superpave VZ"
+    },
+    {
+        id: "ia-construccion",
+        title: "IA en Construcción",
+        description: "Optimización predictiva de obras mediante algoritmos de Inteligencia Artificial para reducir costos y tiempos.",
+        image: "/images/ai-construction.png",
+        icon: <Bot size={20} />,
+        norma: "ISO 19650 / BIM 5D"
     }
 ];
 

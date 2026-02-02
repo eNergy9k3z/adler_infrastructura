@@ -50,6 +50,14 @@ const Especialidades = () => {
             features: ["Bacheo asfáltico", "Sellado de grietas", "Fresado y reencarpetado", "Mantenimiento rutinario"],
             icon: "🔧",
             image: "/images/conservacion-vial.png"
+        },
+        {
+            id: 7,
+            title: "Inteligencia Artificial en Construcción",
+            description: "Revolucionamos la industria integrando IA para optimizar cronogramas, predecir riesgos y maximizar la eficiencia de recursos en cada etapa del proyecto.",
+            features: ["Optimización predictiva", "Monitoreo inteligente", "Análisis de datos masivos", "Reducción de costos operativos"],
+            icon: "🤖",
+            image: "/images/ai-construction.png"
         }
     ];
 
