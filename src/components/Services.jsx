@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, BarChart3, ShieldCheck, Zap, Bot } from 'lucide-react';
+import { ArrowRight, BarChart3, ShieldCheck, Zap, Bot, Cloud } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Services.css';
 
@@ -49,6 +49,14 @@ const services = [
         image: "/images/ai-construction.png",
         icon: <Bot size={20} />,
         norma: "ISO 19650 / BIM 5D"
+    },
+    {
+        id: "digitalizacion-bim",
+        title: "Digitalización y BIM",
+        description: "Gestión documental en la nube y modelado BIM 5D para proyectos sin papeles y máxima colaboración.",
+        image: "/images/bim-digitalization.png",
+        icon: <Cloud size={20} />,
+        norma: "ISO 19650-1"
     }
 ];
 
