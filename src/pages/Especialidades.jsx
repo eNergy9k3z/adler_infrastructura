@@ -58,6 +58,14 @@ const Especialidades = () => {
             features: ["Optimización predictiva", "Monitoreo inteligente", "Análisis de datos masivos", "Reducción de costos operativos"],
             icon: "🤖",
             image: "/images/ai-construction.png"
+        },
+        {
+            id: 8,
+            title: "Digitalización de Proyectos y BIM",
+            description: "Implementación integral de metodologías BIM 5D y gestión documental en la nube para una colaboración eficiente y sin papeles (Paperless Construction).",
+            features: ["Modelado BIM 5D", "Documentación Cloud", "Gemelos Digitales", "Gestión de Activos"],
+            icon: "☁️",
+            image: "/images/bim-digitalization.png"
         }
     ];
 
