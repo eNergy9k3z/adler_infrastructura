@@ -222,6 +222,7 @@
 }
 
 /* Responsive */
+/* Responsive */
 @media (max-width: 480px) {
     .chat-window {
         width: 90vw;
@@ -229,19 +230,25 @@
         /* Better than 100% to avoid browser bar issues */
         bottom: 90px;
         /* Above the button */
-        right: 5vw;
+        left: 5vw;
+        /* Align with left button */
+        right: auto;
         border-radius: 20px;
         z-index: 9999;
-        /* Ensure it stays on top of everything including WhatsApp */
+        /* Ensure it stays on top */
+        transform-origin: bottom left;
+        /* Animate from left */
     }
 
     .chat-button {
         bottom: 20px;
-        /* Aligned with other FABs */
-        right: 20px;
-        /* Keep it right to match thumb usage */
+        left: 20px;
+        /* Move to LEFT to avoid WhatsApp overlap */
+        right: auto;
         width: 55px;
         height: 55px;
         z-index: 9999;
     }
+}
+}
 }
