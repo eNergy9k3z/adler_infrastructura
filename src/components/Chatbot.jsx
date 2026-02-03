@@ -50,9 +50,10 @@ const Chatbot = () => {
         } catch (error) {
             console.error("Chat Error:", error);
             // Fallback en caso de error de servidor
+            alert(`Error de Conexión IA: ${error.message}`);
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
-                text: "Disculpa, tengo problemas para conectarme con mi cerebro central. Por favor intenta de nuevo o escribe a info@adlerinfraestructura.com",
+                text: "Disculpa, tengo problemas para conectarme con mi cerebro central.",
                 sender: 'bot'
             }]);
         } finally {
