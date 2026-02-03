@@ -21,6 +21,7 @@ const Contact = () => {
 
         if (!supabase) {
             console.error("Supabase client not initialized - Check environment variables");
+            alert("Error de Configuración: No se detectaron las llaves de Supabase. Verifique Vercel.");
             setStatus('error');
             return;
         }
