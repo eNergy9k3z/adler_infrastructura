@@ -19,7 +19,37 @@ const Chatbot = () => {
         scrollToBottom();
     }, [messages, isOpen]);
 
-    const handleSend = async (e) => {
+    // Intelligent Response Engine (Local Brain)
+    const getResponse = (query) => {
+        const text = query.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Normalize input
+
+        let bestMatch = null;
+        let highestScore = 0;
+
+        knowledgeBase.forEach(topic => {
+            let score = 0;
+            topic.keywords.forEach(keyword => {
+                if (text.includes(keyword)) {
+                    score += 1;
+                }
+            });
+
+            if (score > highestScore) {
+                highestScore = score;
+                bestMatch = topic;
+            }
+        });
+
+        if (bestMatch && highestScore > 0) {
+            return bestMatch.response;
+        }
+
+        // Default Fallback
+        return "Entiendo tu interés. Mi base de datos actual cubre: Vialidad, Auditoría, Contratos y Tecnología. Para consultas más específicas, por favor escribe a info@adlerinfraestructura.com y un ingeniero senior atenderá tu caso. 🏗️";
+    };
+
+    const handleSend = (e) => {
         e.preventDefault();
         if (!inputValue.trim()) return;
 
@@ -32,35 +62,12 @@ const Chatbot = () => {
         // Show "Thinking..."
         setIsTyping(true);
 
-        try {
-            // Call our new Serverless Function
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: userText }),
-            });
-
-            const data = await response.json();
-
-            if (data.error) {
-                throw new Error(data.details || data.error);
-            }
-
-            setMessages(prev => [...prev, { id: Date.now() + 1, text: data.text, sender: 'bot' }]);
-        } catch (error) {
-            console.error("Chat Error:", error);
-            // Fallback en caso de error de servidor
-            alert(`Error de Conexión IA: ${error.message}`);
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                text: "Disculpa, tengo problemas para conectarme con mi cerebro central.",
-                sender: 'bot'
-            }]);
-        } finally {
+        // Simulate AI Delay
+        setTimeout(() => {
+            const botResponse = getResponse(userText);
+            setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
             setIsTyping(false);
-        }
+        }, 600);
     };
 
     const clearChat = () => {
