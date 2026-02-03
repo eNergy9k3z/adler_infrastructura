@@ -46,6 +46,7 @@ const Contact = () => {
             setTimeout(() => setStatus('idle'), 5000);
         } catch (error) {
             console.error('Error sending message:', error);
+            alert(`Error detallado: ${error.message}`); // Show specific error to user
             setStatus('error');
             setTimeout(() => setStatus('idle'), 5000);
         }
