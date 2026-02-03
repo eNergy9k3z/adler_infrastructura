@@ -225,30 +225,24 @@
 /* Responsive */
 @media (max-width: 480px) {
     .chat-window {
-        width: 90vw;
-        height: 70vh;
-        /* Better than 100% to avoid browser bar issues */
+        left: 20px;
+        right: 20px;
+        width: auto;
+        /* Auto width based on margins */
+        height: 65vh;
+        /* Safe height */
         bottom: 90px;
-        /* Above the button */
-        left: 5vw;
-        /* Align with left button */
-        right: auto;
         border-radius: 20px;
         z-index: 9999;
-        /* Ensure it stays on top */
         transform-origin: bottom left;
-        /* Animate from left */
     }
 
     .chat-button {
         bottom: 20px;
         left: 20px;
-        /* Move to LEFT to avoid WhatsApp overlap */
         right: auto;
         width: 55px;
         height: 55px;
         z-index: 9999;
     }
-}
-}
 }
