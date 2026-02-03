@@ -44,7 +44,9 @@ const Chatbot = () => {
 
             const data = await response.json();
 
-            if (data.error) throw new Error(data.error);
+            if (data.error) {
+                throw new Error(data.details || data.error);
+            }
 
             setMessages(prev => [...prev, { id: Date.now() + 1, text: data.text, sender: 'bot' }]);
         } catch (error) {

@@ -54,8 +54,8 @@ export default async function handler(req, res) {
     try {
         const { message, history } = req.body;
 
-        // Configurar modelo (Gemini 1.5 Flash es rápido y barato/gratis)
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        // Configurar modelo (Gemini Pro es más compatible)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
         // Construir el historial de chat para mantener el contexto
         const chat = model.startChat({
