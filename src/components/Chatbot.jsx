@@ -19,37 +19,7 @@ const Chatbot = () => {
         scrollToBottom();
     }, [messages, isOpen]);
 
-    // Intelligent Response Engine
-    const getResponse = (query) => {
-        const text = query.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Normalize input
-
-        let bestMatch = null;
-        let highestScore = 0;
-
-        knowledgeBase.forEach(topic => {
-            let score = 0;
-            topic.keywords.forEach(keyword => {
-                if (text.includes(keyword)) {
-                    score += 1;
-                }
-            });
-
-            if (score > highestScore) {
-                highestScore = score;
-                bestMatch = topic;
-            }
-        });
-
-        if (bestMatch && highestScore > 0) {
-            return bestMatch.response;
-        }
-
-        // Default Fallback
-        return "Entiendo tu consulta, pero necesito ser más específico. Intenta preguntarme sobre: 'pavimentación', 'drenajes', 'puentes', 'contratos' o 'contacto'.";
-    };
-
-    const handleSend = (e) => {
+    const handleSend = async (e) => {
         e.preventDefault();
         if (!inputValue.trim()) return;
 
@@ -59,14 +29,35 @@ const Chatbot = () => {
         // Add User Message
         setMessages(prev => [...prev, { id: Date.now(), text: userText, sender: 'user' }]);
 
-        // Simulate "Thinking"
+        // Show "Thinking..."
         setIsTyping(true);
 
-        setTimeout(() => {
-            const botResponse = getResponse(userText);
-            setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
+        try {
+            // Call our new Serverless Function
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userText }),
+            });
+
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
+            setMessages(prev => [...prev, { id: Date.now() + 1, text: data.text, sender: 'bot' }]);
+        } catch (error) {
+            console.error("Chat Error:", error);
+            // Fallback en caso de error de servidor
+            setMessages(prev => [...prev, {
+                id: Date.now() + 1,
+                text: "Disculpa, tengo problemas para conectarme con mi cerebro central. Por favor intenta de nuevo o escribe a info@adlerinfraestructura.com",
+                sender: 'bot'
+            }]);
+        } finally {
             setIsTyping(false);
-        }, 800); // Slight delay for realism
+        }
     };
 
     const clearChat = () => {
