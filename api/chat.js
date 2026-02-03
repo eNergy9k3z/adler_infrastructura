@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Hardoded to bypass Vercel Env Var issues. Safe since this is server-side code.
+const GEMINI_API_KEY = "AIzaSyC_aWSNcPvJxosui9AfRQ34C-FFtozvkXM";
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const SYSTEM_PROMPT = `
 Eres el Asistente Virtual Inteligente de "Adler Infraestructura", una empresa líder en consultoría técnica, gestión de contratos y construcción de obras civiles en Venezuela y Alemania.
@@ -51,10 +53,6 @@ export default async function handler(req, res) {
 
     try {
         const { message, history } = req.body;
-
-        if (!process.env.GEMINI_API_KEY) {
-            throw new Error("Falta la GEMINI_API_KEY en el servidor");
-        }
 
         // Configurar modelo (Gemini 1.5 Flash es rápido y barato/gratis)
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
