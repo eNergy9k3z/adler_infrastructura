@@ -19,16 +19,6 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!supabase) {
-            const urlStatus = import.meta.env.VITE_SUPABASE_URL ? "URL_OK" : "URL_MISSING";
-            const keyStatus = import.meta.env.VITE_SUPABASE_ANON_KEY ? "KEY_OK" : "KEY_MISSING";
-
-            console.error(`Supabase Init Failed: ${urlStatus}, ${keyStatus}`);
-            alert(`Error de Configuración Vercel: \nURL: ${urlStatus} \nKEY: ${keyStatus}\n\nPor favor haga REDEPLOY en Vercel.`);
-            setStatus('error');
-            return;
-        }
-
         setStatus('uploading');
 
         try {
