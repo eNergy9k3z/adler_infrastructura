@@ -224,18 +224,24 @@
 /* Responsive */
 @media (max-width: 480px) {
     .chat-window {
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
+        width: 90vw;
+        height: 70vh;
+        /* Better than 100% to avoid browser bar issues */
+        bottom: 90px;
+        /* Above the button */
+        right: 5vw;
+        border-radius: 20px;
+        z-index: 9999;
+        /* Ensure it stays on top of everything including WhatsApp */
     }
 
     .chat-button {
-        bottom: 24px;
-        left: 24px;
-        right: auto;
-        width: 56px;
-        height: 56px;
+        bottom: 20px;
+        /* Aligned with other FABs */
+        right: 20px;
+        /* Keep it right to match thumb usage */
+        width: 55px;
+        height: 55px;
+        z-index: 9999;
     }
 }
