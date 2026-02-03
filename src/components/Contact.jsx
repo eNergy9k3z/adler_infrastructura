@@ -18,6 +18,13 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!supabase) {
+            console.error("Supabase client not initialized - Check environment variables");
+            setStatus('error');
+            return;
+        }
+
         setStatus('uploading');
 
         try {
