@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;700;800&display=swap');
+
 :root {
   /* Premium Dark Construction Theme - Refined */
   --color-primary: #0a0a0a;
@@ -19,7 +21,6 @@
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;700;800&display=swap');
 
 * {
   box-sizing: border-box;
