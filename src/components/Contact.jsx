@@ -7,6 +7,7 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
         subject: '',
         message: '' // Using 'subject' as 'company' or similar if needed, adjusting payload
     });
@@ -28,6 +29,7 @@ const Contact = () => {
                     {
                         name: formData.name,
                         email: formData.email,
+                        phone: formData.phone,
                         message: formData.message,
                         company: formData.subject // Mapping subject input to company or just storing as extra field if schema allows
                     }
@@ -36,7 +38,7 @@ const Contact = () => {
             if (error) throw error;
 
             setStatus('success');
-            setFormData({ name: '', email: '', subject: '', message: '' });
+            setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
             setTimeout(() => setStatus('idle'), 5000);
         } catch (error) {
             console.error('Error sending message:', error);
@@ -117,16 +119,29 @@ const Contact = () => {
                             </div>
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="subject">Asunto / Empresa</label>
-                            <input
-                                type="text"
-                                id="subject"
-                                className="form-input"
-                                placeholder="Interés en servicios..."
-                                value={formData.subject}
-                                onChange={handleChange}
-                            />
+                        <div className="grid grid-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+                            <div className="form-group">
+                                <label className="form-label" htmlFor="phone">Teléfono</label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    className="form-input"
+                                    placeholder="+58 412 1234567"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label" htmlFor="subject">Asunto / Empresa</label>
+                                <input
+                                    type="text"
+                                    id="subject"
+                                    className="form-input"
+                                    placeholder="Interés en servicios..."
+                                    value={formData.subject}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
 
                         <div className="form-group">
