@@ -1,16 +1,35 @@
-# React + Vite
+# Adler Infrastructura
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio de consultoría en infraestructura, gestión contractual, materiales e inteligencia artificial aplicada a empresas en Venezuela.
 
-Currently, two official plugins are available:
+## Desarrollo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Requiere Node.js compatible con Vite 7 y npm.
 
-## React Compiler
+```sh
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Comprobación y publicación
 
-## Expanding the ESLint configuration
+```sh
+npm run build
+npm run lint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+La integración existente de GitHub con Vercel publica los cambios de la rama principal. Se conserva `vercel.json` para las rutas de la aplicación y las funciones de API.
+
+## Servicios e integraciones
+
+- Los servicios y sus fichas imprimibles comparten la información de `src/data/services.js`.
+- El formulario de contacto conserva la integración con Supabase.
+- La página de clientes permite coordinar documentación por contacto directo. El antiguo inicio de sesión era una simulación; no se ofrece autenticación hasta implementar un portal real.
+- El asistente informativo usa respuestas locales sobre los servicios. No se presenta como un análisis técnico o jurídico de un caso.
+- La función `api/chat.js` es independiente de ese asistente y requiere su configuración de servidor.
+
+## Contenido
+
+El nombre de marca es Adler Infrastructura. Las imágenes de infraestructura se presentan como ilustrativas. Las cifras comerciales, testimonios y acreditaciones solo deben incorporarse con respaldo documental.
+
+La actualización de septiembre de 2026 renueva la portada, navegación, servicios, fichas y páginas de presentación; incluye IA aplicada a empresas y conserva las rutas del proyecto, corrige las solicitudes de auditoría y sustituye la simulación del portal por información de contacto.

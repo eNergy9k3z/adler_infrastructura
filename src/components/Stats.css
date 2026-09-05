@@ -1,92 +1,51 @@
-.stats-section {
-    padding: 4rem 0;
-    background: var(--color-bg-body);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.practice-strip {
+  background: #f0f3f4;
+  border-bottom: 1px solid #dce3e5;
 }
-
-.stats-grid {
-    display: grid;
+.practice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.practice-item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 28px 20px;
+  border-right: 1px solid #dce3e5;
+}
+.practice-item:first-child {
+  padding-left: 0;
+}
+.practice-item:last-child {
+  border-right: 0;
+}
+.practice-item > span {
+  color: #9a793e;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+}
+.practice-item > p {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #233e4b;
+  margin: 0;
+}
+@media (max-width: 850px) {
+  .practice-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-}
-
-@media (min-width: 1024px) {
-    .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.stat-item:hover {
-    transform: translateY(-5px);
-}
-
-.stat-icon-wrapper {
-    color: var(--color-accent);
-    padding: 1rem;
-    background: rgba(255, 159, 28, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.stat-value {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: white;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-    font-family: 'Manrope', sans-serif;
-}
-
-.stat-label {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-/* === MOBILE OPTIMIZATION === */
-@media (max-width: 768px) {
-    .stats-grid {
-        /* Keep 2 columns as seen in screenshot, but cleaner */
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem 1rem;
-        /* Vertical gap 2rem, Horizontal 1rem */
-    }
-
-    .stat-item {
-        /* CRITICAL FIX: Stack content vertically on mobile */
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-        padding: 0;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
-    .stat-value {
-        font-size: 2rem;
-        /* Slightly smaller to fit 2 cols */
-    }
-
-    .stat-label {
-        font-size: 0.75rem;
-        line-height: 1.4;
-    }
-
-    /* Hide icon background to save space if needed, or adjust */
-    .stat-icon-wrapper {
-        margin-bottom: 0.5rem;
-        padding: 0.8rem;
-    }
+  }
+  .practice-item {
+    padding: 18px 12px;
+  }
+  .practice-item:nth-child(2) {
+    border-right: 0;
+  }
+  .practice-item:nth-child(3) {
+    padding-left: 0;
+    border-top: 1px solid #dce3e5;
+  }
+  .practice-item:nth-child(4) {
+    border-top: 1px solid #dce3e5;
+  }
 }

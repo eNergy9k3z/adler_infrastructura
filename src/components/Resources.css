@@ -1,0 +1,44 @@
+.resources-section {
+  background: #f2f5f6;
+}
+.resources-heading {
+  margin-bottom: 40px;
+}
+.resources-heading h2 {
+  font-weight: 500;
+}
+.resource-list {
+  border-top: 1px solid #c9d5db;
+}
+.resource-list > a {
+  display: grid;
+  grid-template-columns: 45px 1fr 24px;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #c9d5db;
+  padding: 25px 0;
+}
+.resource-list h3 {
+  font-size: 1.1rem;
+  margin: 0 0 5px;
+  letter-spacing: -0.015em;
+}
+.resource-list p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+.resource-list > a > svg {
+  color: #826431;
+}
+.resource-list > a:hover h3 {
+  color: #856328;
+}
+@media (max-width: 640px) {
+  .resource-list > a {
+    grid-template-columns: 26px 1fr 20px;
+    gap: 14px;
+  }
+  .resource-list p {
+    font-size: 0.8125rem;
+  }
+}

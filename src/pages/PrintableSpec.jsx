@@ -1,158 +1,51 @@
-import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Download } from 'lucide-react';
-import './PrintableSpec.css';
-
-// Reusing data (ideally should be in a shared context/file, but duplicating for safety in this demo)
-const servicesData = {
-    "vialidad": {
-        title: "Vías de Alta Velocidad",
-        code: "SPEC-001-VAV",
-        image: "/images/service-detail-vialidad.png",
-        description: "Diseño y construcción de corredores viales de alto desempeño...",
-        full_desc: "Diseñamos y construimos corredores viales de alto desempeño, optimizados para soportar cargas pesadas y tráfico intenso. Nuestra metodología integra mezclas asfálticas modificadas (SMA) y sistemas de contención vehicular certificados bajo norma AASHTO MASH.",
-        specs: [
-            { label: "Diseño Geométrico", value: "AASHTO Green Book 2018" },
-            { label: "Pavimento", value: "Mezclas SMA con polímeros SBS" },
-            { label: "Señalización", value: "Retrorreflectividad Tipo IV o superior" },
-            { label: "Drenaje", value: "Sistemas de cunetas revestidas" },
-            { label: "IRI Objetivo", value: "< 1.5 m/km" },
-            { label: "Vida Útil Diseño", value: "20 Años" }
-        ],
-    },
-    "hidraulica": {
-        title: "Infraestructura Hidráulica",
-        code: "SPEC-002-HID",
-        image: "/images/service-detail-hidraulica.png",
-        full_desc: "Mitigación de riesgos en zonas urbanas mediante la canalización de cursos de agua con hormigón armado de alta resistencia. Diseñamos estructuras capaces de soportar crecidas milenarias, protegiendo a las comunidades aledañas.",
-        specs: [
-            { label: "Concreto", value: "f'c = 350 kg/cm² sulfato-resistente" },
-            { label: "Acero de Refuerzo", value: "A-615 Grado 60" },
-            { label: "Juntas", value: "Waterstop PVC + Sello Elastomérico" },
-            { label: "Acabado Sup.", value: "Liso hidráulico (n=0.013)" },
-            { label: "Periodo Retorno", value: "500 - 1000 Años" }
-        ],
-    },
-    "paisajismo": {
-        title: "Paisajismo Urbano",
-        code: "SPEC-003-URB",
-        image: "/images/service-detail-paisajismo.png",
-        full_desc: "Transformación de espacios residuales en parques lineales modernos. Integración de infraestructura gris y verde con especies tropicales de bajo mantenimiento.",
-        specs: [
-            { label: "Pavimentos", value: "Adoquines permeables / Concreto estampado" },
-            { label: "Iluminación", value: "LED Solar 60W IP66" },
-            { label: "Mobiliario", value: "Concreto Arquitectónico Reforzado" },
-            { label: "Riego", value: "Automatizado por goteo subterráneo" },
-            { label: "Sostenibilidad", value: "Criterios LEED SITES" }
-        ],
-    },
-    "rehabilitacion": {
-        title: "Rehabilitación Vial",
-        code: "SPEC-004-REH",
-        image: "/images/service-detail-rehabilitacion.png",
-        full_desc: "Ejecución de trabajos de fresado profundo y sustitución de carpeta asfáltica en horario nocturno con maquinaria Wirtgen de alta precisión.",
-        specs: [
-            { label: "Prof. Fresado", value: "Variable 5cm - 20cm" },
-            { label: "Microfresado", value: "Textura fina para adherencia (3mm)" },
-            { label: "Riego de Liga", value: "Emulsión termoadherente modificada" },
-            { label: "Compactación", value: "Rodillos oscilatorios inteligentes" },
-            { label: "Horario", value: "Nocturno (10pm - 5am)" }
-        ],
-    }
-};
-
+import { useParams, Link } from "react-router-dom";
+import { Printer } from "lucide-react";
+import { servicesData } from "../data/services";
+import "./PrintableSpec.css";
 const PrintableSpec = () => {
-    const { id } = useParams();
-    const service = servicesData[id];
-
-    const handlePrint = () => {
-        window.print();
-    };
-
-    if (!service) return <div style={{ color: 'white', padding: '100px', textAlign: 'center' }}>Servicio no encontrado</div>;
-
+  const { id } = useParams();
+  const service = servicesData[id];
+  if (!service)
     return (
-        <>
-            {/* Force hide global UI elements for this view */}
-            <style>{`
-                .navbar, .footer, .whatsapp-button { display: none !important; }
-                body { background-color: #525659; overflow-y: hidden; }
-                .doc-viewer-container { height: 100vh; overflow-y: auto; }
-            `}</style>
-
-            <div className="doc-viewer-container">
-                {/* Control Bar */}
-                <div className="doc-controls">
-                    <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '1280px', margin: '0 auto', padding: '0 2rem' }}>
-                        <Link to={`/servicios/${id}`} className="btn-back">
-                            &larr; Volver al Servicio
-                        </Link>
-                        <button onClick={handlePrint} className="btn-print">
-                            <Download size={18} /> Descargar / Imprimir PDF
-                        </button>
-                    </div>
-                </div>
-
-                <div className="print-page">
-                    <div className="print-header">
-                        <div className="brand">
-                            <h1 style={{ color: 'black', margin: 0 }}>ADLER<span style={{ color: '#aaa' }}>INFRAESTRUCTURA</span></h1>
-                            <p style={{ fontSize: '0.8rem', color: '#666' }}>Ingeniería de Precisión</p>
-                        </div>
-                        <div className="doc-info">
-                            <h3>FICHA TÉCNICA</h3>
-                            <p><strong>Código:</strong> {service.code}</p>
-                            <p><strong>Fecha:</strong> {new Date().toLocaleDateString()}</p>
-                        </div>
-                    </div>
-
-                    <div className="print-content">
-                        <div className="hero-section">
-                            <img src={service.image} alt={service.title} className="print-img" />
-                            <h2 className="print-title">{service.title}</h2>
-                        </div>
-
-                        <div className="desc-section">
-                            <h4>Descripción del Servicio</h4>
-                            <p>{service.full_desc}</p>
-                        </div>
-
-                        <div className="specs-section">
-                            <h4>Especificaciones Técnicas</h4>
-                            <table className="specs-table">
-                                <thead>
-                                    <tr>
-                                        <th>Parámetro</th>
-                                        <th>Especificación / Estándar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {service.specs.map((spec, i) => (
-                                        <tr key={i}>
-                                            <td>{spec.label}</td>
-                                            <td>{spec.value}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div className="footer-section">
-                            <div className="footer-col">
-                                <h5>Aprobado Por:</h5>
-                                <div className="signature-line">Ing. Director Técnico</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="print-footer">
-                        <p>Adler Infraestructura C.A. | RIF: J-12345678-9 | Caracas, Venezuela</p>
-                        <p>www.adler-infraestructura.com | contacto@adler.com</p>
-                    </div>
-                </div>
-            </div>
-        </>
+      <div className="container section">
+        <h1>Servicio no encontrado</h1>
+        <Link to="/#servicios">Volver a servicios</Link>
+      </div>
     );
+  return (
+    <div className="service-sheet">
+      <style>{`.service-sheet{background:#eaf0f3;color:#182f3b;min-height:100vh;padding:30px 20px 60px}.sheet-controls{max-width:820px;margin:0 auto 25px;display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:.875rem}.sheet-controls button{display:flex;align-items:center;gap:10px;border:1px solid #385461;background:white;padding:12px 18px;cursor:pointer}.sheet-paper{max-width:820px;margin:auto;padding:60px;background:white}.sheet-paper>header{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #adbdc5;padding-bottom:25px;margin-bottom:40px}.sheet-paper h1{font-size:2rem}.sheet-paper h2{font-size:1.2rem;margin-top:30px}.sheet-paper p,.sheet-paper li{color:#4b6470;font-size:1rem}.sheet-paper ol{padding-left:22px}.sheet-paper li{padding:8px 0}.sheet-footer{border-top:1px solid #adbdc5;margin-top:40px;padding-top:20px;font-size:.875rem;color:#526c78}@media(max-width:600px){.sheet-paper{padding:28px 22px}.sheet-paper>header{flex-direction:column}.sheet-controls{flex-wrap:wrap}}@media print{.navbar,.footer,.whatsapp-float,.chat-button,.chat-window,.sheet-controls{display:none!important}.service-sheet{background:white;padding:0}.sheet-paper{max-width:none;padding:0;box-shadow:none}@page{size:A4;margin:20mm}body{background:white!important}.sheet-paper h1,.sheet-paper h2{break-after:avoid}.sheet-paper li{break-inside:avoid}}`}</style>
+      <div className="sheet-controls">
+        <Link to={`/servicios/${id}`}>← Volver al servicio</Link>
+        <button onClick={() => window.print()}>
+          <Printer size={18} />
+          Imprimir o guardar PDF
+        </button>
+      </div>
+      <article className="sheet-paper">
+        <header>
+          <strong>ADLER INFRASTRUCTURA</strong>
+          <span>{service.code} · Ficha de servicio</span>
+        </header>
+        <h1>{service.title}</h1>
+        <p>{service.subtitle}</p>
+        <h2>Descripción</h2>
+        <p>{service.description}</p>
+        <h2>Alcance del trabajo</h2>
+        <p>{service.scope}</p>
+        <h2>Entregables posibles</h2>
+        <ol>
+          {service.deliverables.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ol>
+        <footer className="sheet-footer">
+          Adler Infrastructura · Alemania / Venezuela
+          <br />
+          info@adlerinfraestructura.com · +49 172 7751060
+        </footer>
+      </article>
+    </div>
+  );
 };
-
 export default PrintableSpec;

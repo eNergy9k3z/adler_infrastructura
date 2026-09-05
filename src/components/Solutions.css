@@ -1,50 +1,69 @@
-.bg-card {
-    background-color: #121212;
-    /* Slightly lighter than body bg */
+.solutions-section {
+  background: #fff;
 }
-
-.solutions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+.adler-services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid #cbd5d9;
 }
-
-.solution-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-md);
-    padding: 2.5rem;
-    transition: all 0.3s ease;
-    height: 100%;
+.adler-service {
+  padding: 32px 36px 34px 0;
+  border-bottom: 1px solid #cbd5d9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-
-.solution-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-accent);
-    transform: translateY(-5px);
+.adler-service:nth-child(even) {
+  border-left: 1px solid #cbd5d9;
+  padding-left: 36px;
+  padding-right: 0;
 }
-
-.solution-icon-wrapper {
-    color: var(--color-accent);
-    margin-bottom: 1.5rem;
-    background: rgba(255, 159, 28, 0.1);
-    width: 64px;
-    height: 64px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.service-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 31px;
 }
-
-.solution-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 1rem;
+.service-number {
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  color: #98743b;
 }
-
-.solution-desc {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-    line-height: 1.6;
+.adler-service h3 {
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.adler-service p {
+  max-width: 480px;
+  margin-bottom: 25px;
+}
+.service-deliverables {
+  font-size: 0.75rem;
+  color: #52656e;
+  margin-top: auto;
+  line-height: 1.9;
+}
+.adler-service:hover h3 {
+  color: #8a672a;
+}
+.adler-service:hover .service-row-top svg {
+  transform: translate(2px, -2px);
+}
+@media (max-width: 640px) {
+  .adler-services {
+    grid-template-columns: 1fr;
+  }
+  .adler-service,
+  .adler-service:nth-child(even) {
+    padding: 26px 0;
+    border-left: 0;
+  }
+  .service-row-top {
+    margin-bottom: 21px;
+  }
+  .adler-service h3 {
+    font-size: 1.5rem;
+  }
 }

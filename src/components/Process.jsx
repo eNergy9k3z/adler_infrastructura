@@ -1,64 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FileSearch, CheckSquare, ClipboardList, PenTool } from 'lucide-react';
-import './Process.css';
-
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import "./Process.css";
 const steps = [
-    {
-        icon: <FileSearch size={28} />,
-        title: "1. Análisis Contractual",
-        desc: "Revisión profunda de alcances, precios unitarios y cronogramas base."
-    },
-    {
-        icon: <ClipboardList size={28} />,
-        title: "2. Inspección en Sitio",
-        desc: "Verificación física de avances. No confiamos en papel; validamos en campo."
-    },
-    {
-        icon: <PenTool size={28} />,
-        title: "3. Seguimiento y Control",
-        desc: "Monitoreo continuo de curvas de inversión y control de calidad de materiales."
-    },
-    {
-        icon: <CheckSquare size={28} />,
-        title: "4. Cierre Administrativo",
-        desc: "Auditoría final, finiquitos y entrega de memoria técnica de la obra."
-    }
+  [
+    "Definir la necesidad",
+    "Revisamos la situación, los documentos disponibles y la decisión que necesita tomar. Acordamos un alcance de trabajo.",
+  ],
+  [
+    "Preparar la solución",
+    "Desarrollamos el análisis, las comparativas o el piloto. Incorporamos verificaciones de campo cuando el proyecto las requiere.",
+  ],
+  [
+    "Entregar y acompañar",
+    "Presentamos los resultados y definimos los siguientes pasos, con responsables y criterios para evaluar los avances.",
+  ],
 ];
-
-const Process = () => {
-    return (
-        <section className="section process-section">
-            <div className="container">
-                <div className="process-header">
-                    <span className="process-eyebrow">Nuestro Método</span>
-                    <h2 className="process-heading">Gerencia Activa de <span className="text-accent">Contratos</span></h2>
-                    <p className="process-sub">
-                        Un marco de trabajo riguroso para asegurar que los proyectos se entreguen a tiempo y dentro del presupuesto.
-                    </p>
-                </div>
-
-                <div className="process-grid">
-                    {steps.map((step, index) => (
-                        <div key={index} className="process-card">
-                            <div className="process-icon">{step.icon}</div>
-                            <h4 className="process-title">{step.title}</h4>
-                            <p className="process-desc">{step.desc}</p>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Resource download buttons as requested */}
-                <div style={{ marginTop: '4rem', textAlign: 'center' }}>
-                    <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Recursos para Clientes</h3>
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Link to="/#contacto" className="btn btn-primary" style={{ textDecoration: 'none', width: '350px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Solicitar Presupuesto</Link>
-                        <Link to="/login" className="btn btn-primary" style={{ textDecoration: 'none', width: '350px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Acceso al Sistema de Gestión</Link>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-};
-
+const Process = () => (
+  <section id="metodo" className="section process-section">
+    <div className="container">
+      <div className="section-intro">
+        <div>
+          <span className="eyebrow">04 / Cómo trabajamos</span>
+          <h2>
+            Un alcance claro.
+            <br />
+            Un trabajo que puede revisar.
+          </h2>
+        </div>
+        <div>
+          <p>
+            La relación empieza por entender qué necesita resolver. A partir de
+            ahí, acordamos los entregables y la forma de trabajo.
+          </p>
+          <Link to="/#contacto" className="text-link">
+            Plantear una consulta <ArrowRight size={17} />
+          </Link>
+        </div>
+      </div>
+      <div className="process-grid">
+        {steps.map(([title, desc], i) => (
+          <article className="process-step" key={title}>
+            <span className="process-number">0{i + 1}</span>
+            <h3>{title}</h3>
+            <p>{desc}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 export default Process;

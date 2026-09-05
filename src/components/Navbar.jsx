@@ -1,70 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import './Navbar.css';
-import logo from '../assets/logo.png';
-
+import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import logo from "../assets/logo.png";
+import "./Navbar.css";
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    return (
-        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-            <div className="container navbar-container">
-                {/* Updated Logo Link for Redirection */}
-                <Link
-                    to="/"
-                    className="logo-wrapper"
-                    onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        setIsOpen(false);
-                    }}
-                >
-                    <img src={logo} alt="Adler Logo" className="logo-img" />
-                    {/* Text is usually part of logo, but if not, keep it or remove it if logo image has text */}
-                    <div className="logo-text">
-                        ADLER <span className="logo-accent">INFRAESTRUCTURA</span>
-                    </div>
-                </Link>
-
-                <div className="menu-icon" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <X size={28} color="white" /> : <Menu size={28} color="white" />}
-                </div>
-
-                <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-                    {/* Use absolute paths for home sections to work from other pages */}
-                    <Link to="/#servicios" onClick={() => setIsOpen(false)}>Soluciones</Link>
-                    <Link to="/proyectos" onClick={() => setIsOpen(false)}>Proyectos</Link>
-                    <Link to="/#nosotros" onClick={() => setIsOpen(false)}>Nosotros</Link>
-
-                    {/* New Page Links */}
-                    <Link to="/valores" onClick={() => setIsOpen(false)}>Valores</Link>
-                    <Link to="/especialidades" onClick={() => setIsOpen(false)}>Especialidades</Link>
-                    <Link to="/normativa" onClick={() => setIsOpen(false)}>Normativa</Link>
-
-                    {/* New Buttons */}
-                    <Link to="/empleos" className="nav-btn nav-btn-outline" onClick={() => setIsOpen(false)}>
-                        Empleos
-                    </Link>
-
-                    <Link to="/login" className="nav-btn nav-btn-primary" onClick={() => setIsOpen(false)}>
-                        Acceso Clientes
-                    </Link>
-                    <Link to="/#contacto" onClick={() => setIsOpen(false)} className="nav-btn nav-btn-outline">
-                        Contactar
-                    </Link>
-                </div>
-            </div>
+  const [isOpen, setIsOpen] = useState(false);
+  const menuButton = useRef(null);
+  const close = () => setIsOpen(false);
+  return (
+    <>
+      <a className="skip-link" href="#contenido">
+        Ir al contenido
+      </a>
+      <header className="navbar">
+        <div className="navbar-top">
+          <div className="container">
+            <span>Consultoría para Venezuela</span>
+            <span>Infraestructura · Contratos · Inteligencia artificial</span>
+          </div>
+        </div>
+        <nav
+          className="container navbar-container"
+          aria-label="Navegación principal"
+        >
+          <Link
+            to="/"
+            className="adler-brand"
+            onClick={close}
+            aria-label="Adler Infrastructura — Inicio"
+          >
+            <span className="brand-symbol">
+              <img src={logo} alt="" width="72" height="72" />
+            </span>
+            <span className="brand-wordmark">
+              ADLER<small>INFRASTRUCTURA</small>
+            </span>
+          </Link>
+          <button
+            type="button"
+            ref={menuButton}
+            className="menu-toggle"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="primary-links"
+            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <div
+            id="primary-links"
+            className={`nav-links ${isOpen ? "active" : ""}`}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                close();
+                menuButton.current?.focus();
+              }
+            }}
+          >
+            <Link to="/#servicios" onClick={close}>
+              Servicios
+            </Link>
+            <Link to="/#inteligencia-artificial" onClick={close}>
+              IA para empresas
+            </Link>
+            <Link to="/#nosotros" onClick={close}>
+              Adler
+            </Link>
+            <Link to="/#recursos" onClick={close}>
+              Recursos
+            </Link>
+            <Link to="/login" className="nav-client" onClick={close}>
+              Área de clientes
+            </Link>
+            <Link to="/#contacto" className="nav-contact" onClick={close}>
+              Hablemos <ArrowUpRight size={16} />
+            </Link>
+          </div>
         </nav>
-    );
+      </header>
+    </>
+  );
 };
-
 export default Navbar;

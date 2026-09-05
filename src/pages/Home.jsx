@@ -1,40 +1,50 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import Hero from '../components/Hero';
-import Services from '../components/Services';
-import Contact from '../components/Contact';
-import About from '../components/About';
-import Stats from '../components/Stats';
-import Solutions from '../components/Solutions';
-import Process from '../components/Process';
-import Resources from '../components/Resources';
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Hero from "../components/Hero";
+import Services from "../components/Services";
+import Contact from "../components/Contact";
+import About from "../components/About";
+import Stats from "../components/Stats";
+import Solutions from "../components/Solutions";
+import Process from "../components/Process";
+import Resources from "../components/Resources";
 
 const Home = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-    useEffect(() => {
-        if (location.hash) {
-            const element = document.querySelector(location.hash);
-            if (element) {
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }, 100); // Small delay to ensure rendering
-            }
-        }
-    }, [location]);
-
-    return (
-        <>
-            <Hero />
-            <Stats />
-            <About />
-            <Solutions />
-            <Services />
-            <Process />
-            <Resources />
-            <Contact />
-        </>
+  useEffect(() => {
+    if (!location.hash) return;
+    let id = location.hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      /* Keep an invalid escape as a literal identifier. */
+    }
+    const element = document.getElementById(id);
+    if (!element) return;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const timer = window.setTimeout(
+      () =>
+        element.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }),
+      0,
     );
+    return () => window.clearTimeout(timer);
+  }, [location]);
+
+  return (
+    <div className="home-page">
+      <Hero />
+      <Stats />
+      <Solutions />
+      <Services />
+      <About />
+      <Process />
+      <Resources />
+      <Contact />
+    </div>
+  );
 };
 
 export default Home;
