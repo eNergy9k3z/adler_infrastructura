@@ -1,35 +1,123 @@
-import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
-import "./ServiceDetail.css";
+import { useRef, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
+import { supabase } from "../supabaseClient";
+import { useAuth } from "../auth/AuthContext";
+import "./Login.css";
 export default function Login() {
+  const { state, signOut, refreshAccess, signOutError } = useAuth();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+  const pending = useRef(false);
+  if (state === "authorized") return <Navigate to="/dashboard" replace />;
+  async function submit(event) {
+    event.preventDefault();
+    if (pending.current) return;
+    pending.current = true;
+    setStatus("sending");
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${window.location.origin}/login`,
+        },
+      });
+      setStatus(error ? "error" : "sent");
+    } catch {
+      setStatus("error");
+    } finally {
+      pending.current = false;
+    }
+  }
   return (
-    <div className="adler-page">
-      <header className="adler-page-intro">
-        <div className="container">
-          <span className="eyebrow">ADLER / CLIENTES</span>
-          <h1>Coordinación de proyectos.</h1>
+    <section className="private-login">
+      <div className="container login-layout">
+        <div className="login-intro">
+          <span className="eyebrow">ADLER / ACCESO PRIVADO</span>
+          <h1>Un espacio para dar seguimiento.</h1>
           <p>
-            Para consultar un trabajo o coordinar la entrega de documentación,
-            contacte directamente con Adler.
+            Las consultas de Adler, su estado y los próximos pasos, en un solo
+            lugar.
           </p>
-        </div>
-      </header>
-      <section className="container section profile-body-copy">
-        <h2>Un canal acordado para cada trabajo.</h2>
-        <p>
-          Al iniciar una colaboración definimos el contacto responsable, los
-          entregables y el medio para compartir información. El acceso a un
-          portal privado todavía no está habilitado.
-        </p>
-        <div className="adler-documents">
-          <Link to="/#contacto" className="btn btn-primary">
-            Contactar con Adler <ArrowUpRight size={18} />
+          <Link to="/">
+            Volver a la página de Adler <ArrowRight size={17} />
           </Link>
-          <a href="mailto:info@adlerinfraestructura.com" className="text-link">
-            Escribir por correo <ArrowUpRight size={18} />
-          </a>
         </div>
-      </section>
-    </div>
+        <div className="login-card">
+          <LockKeyhole size={27} aria-hidden="true" />
+          <h2>Administración de consultas</h2>
+          {state === "loading" ? (
+            <p role="status">Comprobando acceso…</p>
+          ) : state === "denied" || state === "error" ? (
+            <>
+              <p role="alert">
+                {signOutError
+                  ? "No se pudo cerrar la sesión. Comprueba la conexión y vuelve a intentarlo antes de dejar este equipo."
+                  : state === "denied"
+                    ? "Esta cuenta no tiene acceso al panel de Adler."
+                    : "No se pudo comprobar tu acceso. Inténtalo de nuevo."}
+              </p>
+              {state === "error" && !signOutError && (
+                <button className="btn btn-primary" onClick={refreshAccess}>
+                  Reintentar
+                </button>
+              )}
+              <button className="private-link-button" onClick={signOut}>
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <p>
+                Introduce tu correo autorizado. Recibirás un enlace para entrar
+                sin contraseña.
+              </p>
+              <form onSubmit={submit}>
+                <label htmlFor="access-email">Correo de acceso</label>
+                <input
+                  id="access-email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setStatus("idle");
+                  }}
+                  required
+                  maxLength={200}
+                  disabled={status === "sending"}
+                />
+                <button
+                  className="btn btn-primary"
+                  disabled={status === "sending" || status === "sent"}
+                >
+                  <Mail size={18} />
+                  {status === "sending"
+                    ? "Solicitando enlace…"
+                    : "Recibir enlace de acceso"}
+                </button>
+              </form>
+              {status === "sent" && (
+                <p className="private-notice" role="status">
+                  Si el correo tiene acceso, recibirás un enlace. Revisa también
+                  la carpeta de correo no deseado y ábrelo en este navegador.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="private-error" role="alert">
+                  No se pudo solicitar el enlace. Comprueba el correo o espera
+                  unos minutos antes de intentarlo de nuevo.
+                </p>
+              )}
+              <p className="login-small">
+                Acceso exclusivo para la administración de Adler. Para consultar
+                un proyecto, <Link to="/#contacto">escríbenos aquí</Link>.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

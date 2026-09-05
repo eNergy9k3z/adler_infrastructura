@@ -25,6 +25,7 @@ import Certificaciones from "./pages/Certificaciones";
 import PrintableSpec from "./pages/PrintableSpec";
 import PrintableDoc from "./pages/PrintableDoc";
 import Profile from "./pages/Profile";
+import AuthProvider from "./auth/AuthProvider";
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -35,6 +36,17 @@ function ScrollToTop() {
   }, [pathname]);
 
   return null;
+}
+
+function SiteWidgets() {
+  const { pathname } = useLocation();
+  if (["/login", "/dashboard"].includes(pathname)) return null;
+  return (
+    <>
+      <WhatsAppButton />
+      <Chatbot />
+    </>
+  );
 }
 
 function App() {
@@ -51,9 +63,23 @@ function App() {
             <Route path="/valores" element={<Valores />} />
             <Route path="/especialidades" element={<Especialidades />} />
             <Route path="/auditoria" element={<Auditoria />} />
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/login"
+              element={
+                <AuthProvider>
+                  <Login />
+                </AuthProvider>
+              }
+            />
             <Route path="/normativa" element={<Normativa />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={
+                <AuthProvider>
+                  <Dashboard />
+                </AuthProvider>
+              }
+            />
             <Route path="/servicios/:id" element={<ServiceDetail />} />
             <Route
               path="/servicios/:id/ficha-tecnica"
@@ -86,8 +112,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
-        <WhatsAppButton />
-        <Chatbot />
+        <SiteWidgets />
       </div>
     </Router>
   );
