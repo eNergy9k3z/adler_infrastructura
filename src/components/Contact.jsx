@@ -1,18 +1,45 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight, ArrowRight, Loader2 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { servicesData } from "../data/services";
 import { supabase } from "../supabaseClient";
 import "./Contact.css";
 const emptyForm = { name: "", email: "", phone: "", subject: "", message: "" };
 const Contact = () => {
+  const [searchParams] = useSearchParams();
+  const requestedService = searchParams.get("servicio") || "";
+  const serviceValue = Object.hasOwn(servicesData, requestedService)
+    ? requestedService
+    : "";
+  const [selectedService, setSelectedService] = useState(serviceValue);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const requestRef = useRef(null);
+  useEffect(() => {
+    setSelectedService(serviceValue);
+  }, [serviceValue]);
+  useEffect(() => () => requestRef.current?.abort(), []);
   const [formData, setFormData] = useState(emptyForm);
   const [status, setStatus] = useState("idle");
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFieldErrors((previous) => ({ ...previous, [e.target.id]: null }));
     if (status !== "uploading") setStatus("idle");
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (status === "uploading") return;
+    if (requestRef.current) return;
+    const errors = {};
+    if (!formData.name.trim()) errors.name = "Indique su nombre.";
+    if (!formData.message.trim())
+      errors.message = "Describa brevemente su consulta.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length) {
+      document.getElementById(Object.keys(errors)[0])?.focus();
+      return;
+    }
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
     setStatus("uploading");
     try {
       const { error } = await supabase
@@ -22,15 +49,23 @@ const Contact = () => {
             name: formData.name.trim(),
             email: formData.email.trim(),
             phone: formData.phone.trim(),
-            message: formData.message.trim(),
+            message:
+              (selectedService
+                ? `Servicio de interés: ${servicesData[selectedService].title}\n\n`
+                : "") + formData.message.trim(),
             company: formData.subject.trim(),
           },
-        ]);
+        ])
+        .abortSignal(controller.signal);
       if (error) throw error;
       setStatus("success");
       setFormData(emptyForm);
+      setSelectedService("");
     } catch {
       setStatus("error");
+    } finally {
+      window.clearTimeout(timeout);
+      requestRef.current = null;
     }
   };
   return (
@@ -66,10 +101,37 @@ const Contact = () => {
             disabled={status === "uploading"}
             className="contact-fields"
           >
+            <div className="form-group">
+              <label htmlFor="service">Servicio de interés</label>
+              <select
+                id="service"
+                value={selectedService}
+                onChange={(e) => setSelectedService(e.target.value)}
+              >
+                <option value="">Quiero orientación general</option>
+                {Object.entries(servicesData)
+                  .filter(([id]) =>
+                    [
+                      "vialidad",
+                      "contratos",
+                      "materiales",
+                      "ia-construccion",
+                      serviceValue,
+                    ].includes(id),
+                  )
+                  .map(([id, service]) => (
+                    <option key={id} value={id}>
+                      {service.title}
+                    </option>
+                  ))}
+              </select>
+            </div>
             <div className="contact-form-grid">
               <div className="form-group">
                 <label htmlFor="name">Nombre *</label>
                 <input
+                  aria-invalid={!!fieldErrors.name}
+                  aria-describedby={fieldErrors.name ? "name-error" : undefined}
                   id="name"
                   name="name"
                   autoComplete="name"
@@ -79,6 +141,11 @@ const Contact = () => {
                   required
                   maxLength={120}
                 />
+                {fieldErrors.name && (
+                  <p className="field-error" id="name-error">
+                    {fieldErrors.name}
+                  </p>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="email">Correo electrónico *</label>
@@ -123,6 +190,10 @@ const Contact = () => {
             <div className="form-group">
               <label htmlFor="message">¿En qué podemos ayudarle? *</label>
               <textarea
+                aria-invalid={!!fieldErrors.message}
+                aria-describedby={
+                  fieldErrors.message ? "message-error" : undefined
+                }
                 id="message"
                 name="message"
                 value={formData.message}
@@ -132,6 +203,11 @@ const Contact = () => {
                 maxLength={5000}
                 rows={4}
               />
+              {fieldErrors.message && (
+                <p className="field-error" id="message-error">
+                  {fieldErrors.message}
+                </p>
+              )}
             </div>
             <div className="contact-submit">
               <p>Los campos con * son obligatorios.</p>

@@ -4,7 +4,7 @@ import { servicesData } from "../data/services";
 import "./ServiceDetail.css";
 const ServiceDetail = () => {
   const { id } = useParams();
-  const service = servicesData[id];
+  const service = Object.hasOwn(servicesData, id) ? servicesData[id] : null;
   if (!service)
     return (
       <div className="adler-page">
@@ -53,7 +53,10 @@ const ServiceDetail = () => {
             Cuéntenos la situación y qué necesita resolver. Acordaremos los
             documentos y la información para una primera revisión.
           </p>
-          <Link to="/#contacto" className="btn btn-primary">
+          <Link
+            to={`/?servicio=${encodeURIComponent(id)}#contacto`}
+            className="btn btn-primary"
+          >
             Plantear una consulta <ArrowUpRight size={18} />
           </Link>
           <Link to={`/servicios/${id}/ficha-tecnica`} className="service-print">

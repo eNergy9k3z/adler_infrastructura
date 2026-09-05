@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import "./Services.css";
 const steps = [
   [
@@ -42,7 +42,6 @@ const Services = () => (
               <h3>{title}</h3>
               <p>{description}</p>
             </div>
-            <ArrowRight size={20} strokeWidth={1.2} />
           </div>
         ))}
         <p className="ai-note">

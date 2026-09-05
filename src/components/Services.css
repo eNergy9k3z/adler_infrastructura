@@ -78,3 +78,7 @@
     gap: 38px;
   }
 }
+
+.ai-step {
+  grid-template-columns: 22px 1fr;
+}

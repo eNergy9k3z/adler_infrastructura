@@ -4,7 +4,7 @@ import { servicesData } from "../data/services";
 import "./PrintableSpec.css";
 const PrintableSpec = () => {
   const { id } = useParams();
-  const service = servicesData[id];
+  const service = Object.hasOwn(servicesData, id) ? servicesData[id] : null;
   if (!service)
     return (
       <div className="container section">

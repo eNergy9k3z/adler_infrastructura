@@ -21,11 +21,11 @@
 }
 .practice-item > span {
   color: #9a793e;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
 }
 .practice-item > p {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   font-weight: 500;
   color: #233e4b;

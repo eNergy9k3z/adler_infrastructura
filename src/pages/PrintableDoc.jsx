@@ -47,7 +47,7 @@ const docs = {
 };
 export default function PrintableDoc() {
   const { docId } = useParams();
-  const doc = docs[docId];
+  const doc = Object.hasOwn(docs, docId) ? docs[docId] : null;
   return (
     <div className="adler-page">
       <style>{`@media print{.navbar,.footer,.whatsapp-float,.chat-button,.chat-window,.document-actions{display:none!important}.adler-page{background:white}.adler-page-intro{padding:0 0 20px;background:white}.adler-page .section{padding:25px 0}.adler-page .container{width:100%;max-width:none}@page{size:A4;margin:20mm}}`}</style>

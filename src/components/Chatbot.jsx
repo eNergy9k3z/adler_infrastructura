@@ -1,231 +1,182 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./Chatbot.css";
+import { useState, useRef, useEffect } from "react";
+import { MessageSquare, X, Trash2, Send, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { knowledgeBase } from "./knowledgeBase";
-
-const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hola. Soy el asistente informativo de Adler Infrastructura. Puedo orientarle sobre infraestructura, contratos, materiales e IA para empresas. ¿Qué necesita consultar?",
-      sender: "bot",
-    },
-  ]);
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isOpen]);
-
-  // Intelligent Response Engine (Local Brain)
-  const getResponse = (query) => {
-    const text = query
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, ""); // Normalize input
-
-    let bestMatch = null;
-    let highestScore = 0;
-
-    knowledgeBase.forEach((topic) => {
-      let score = 0;
-      topic.keywords.forEach((keyword) => {
-        if (
-          keyword.trim().length <= 3
-            ? text.split(/[^a-z0-9]+/).includes(keyword.trim())
-            : text.includes(keyword)
-        ) {
-          score += 1;
-        }
-      });
-
-      if (score > highestScore) {
-        highestScore = score;
-        bestMatch = topic;
-      }
-    });
-
-    if (bestMatch && highestScore > 0) {
-      return bestMatch.response;
+import "./Chatbot.css";
+const welcome = {
+  id: 0,
+  sender: "bot",
+  text: "Hola. Puedo orientarle sobre los servicios de Adler: infraestructura, contratos, materiales e IA para empresas. ¿Qué necesita consultar?",
+};
+function getResponse(query) {
+  const text = query
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  let bestMatch = null,
+    highestScore = 0;
+  for (const topic of knowledgeBase) {
+    const score = topic.keywords.filter((keyword) =>
+      keyword.trim().length <= 3
+        ? text.split(/[^a-z0-9]+/).includes(keyword.trim())
+        : text.includes(keyword),
+    ).length;
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatch = topic;
     }
-
-    // Default Fallback
-    return "Entiendo tu interés. Mi base de datos actual cubre: Vialidad, Auditoría, Contratos y Tecnología. Para consultas más específicas, por favor escribe a info@adlerinfraestructura.com y podremos revisar su consulta.";
+  }
+  return (
+    bestMatch?.response ||
+    "Puedo orientarle sobre infraestructura vial, contratos, materiales e inteligencia artificial. Para revisar su caso con Adler, utilice el enlace de contacto de abajo."
+  );
+}
+export default function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([welcome]);
+  const [input, setInput] = useState("");
+  const toggleRef = useRef(null),
+    inputRef = useRef(null),
+    logRef = useRef(null),
+    nextId = useRef(1);
+  useEffect(() => {
+    if (isOpen) inputRef.current?.focus({ preventScroll: true });
+  }, [isOpen]);
+  useEffect(() => {
+    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
+  }, [messages, isOpen]);
+  const close = () => {
+    setIsOpen(false);
+    toggleRef.current?.focus({ preventScroll: true });
   };
-
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
-
-    const userText = inputValue;
-    setInputValue("");
-
-    // Add User Message
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), text: userText, sender: "user" },
+  const send = (value) => {
+    const text = value.trim();
+    if (!text) return;
+    setMessages((previous) => [
+      ...previous,
+      { id: nextId.current++, sender: "user", text },
+      { id: nextId.current++, sender: "bot", text: getResponse(text) },
     ]);
-
-    // Show "Thinking..."
-    setIsTyping(true);
-
-    // Simulate AI Delay
-    setTimeout(() => {
-      const botResponse = getResponse(userText);
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, text: botResponse, sender: "bot" },
-      ]);
-      setIsTyping(false);
-    }, 600);
+    setInput("");
+    inputRef.current?.focus({ preventScroll: true });
   };
-
-  const clearChat = () => {
-    setMessages([
-      {
-        id: 1,
-        text: "Hola. Soy el asistente informativo de Adler Infrastructura. Puedo orientarle sobre infraestructura, contratos, materiales e IA para empresas. ¿Qué necesita consultar?",
-        sender: "bot",
-      },
-    ]);
+  const clear = () => {
+    setMessages([welcome]);
+    setInput("");
+    inputRef.current?.focus({ preventScroll: true });
   };
-
   return (
     <>
-      {/* Toggle Button */}
       <button
-        className={`chat-button ${isOpen ? "open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
+        ref={toggleRef}
+        type="button"
+        className="chat-button"
+        onClick={() => (isOpen ? close() : setIsOpen(true))}
         aria-label={isOpen ? "Cerrar asistente" : "Abrir asistente"}
         aria-expanded={isOpen}
+        aria-controls="adler-assistant"
       >
-        {isOpen ? (
-          <svg
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        ) : (
-          <svg
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-        )}
+        {isOpen ? <X size={22} /> : <MessageSquare size={22} />}
       </button>
-
-      {/* Chat Window */}
       {isOpen && (
-        <div className="chat-window">
-          <div className="chat-header">
-            <div className="chat-title">
-              <h3>Adler Asistente</h3>
-              <span className="chat-status">Orientación sobre servicios</span>
+        <section
+          id="adler-assistant"
+          className="chat-window"
+          role="dialog"
+          aria-label="Asistente informativo de Adler"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              e.preventDefault();
+              close();
+            }
+          }}
+        >
+          <header className="chat-header">
+            <div>
+              <h2>Asistente Adler</h2>
+              <p>Orientación sobre nuestros servicios</p>
             </div>
             <div className="chat-header-actions">
               <button
                 className="chat-action-btn"
-                onClick={clearChat}
+                type="button"
+                onClick={clear}
+                aria-label="Borrar conversación"
                 title="Borrar conversación"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
+                <Trash2 size={18} />
               </button>
               <button
-                aria-label="Cerrar asistente"
-                className="chat-close"
-                onClick={() => setIsOpen(false)}
+                className="chat-action-btn"
+                type="button"
+                onClick={close}
+                aria-label="Cerrar ventana del asistente"
               >
-                ×
+                <X size={20} />
               </button>
             </div>
-          </div>
-
-          <div className="chat-messages">
+          </header>
+          <div
+            className="chat-messages"
+            ref={logRef}
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+            aria-label="Conversación"
+          >
             {messages.map((msg) => (
               <div key={msg.id} className={`message ${msg.sender}`}>
-                {msg.text.split("\n").map((line, i) => (
-                  <React.Fragment key={i}>
-                    {line}
-                    {i < msg.text.split("\n").length - 1 && <br />}
-                  </React.Fragment>
-                ))}
+                <span className="sr-only">
+                  {msg.sender === "bot" ? "Adler: " : "Usted: "}
+                </span>
+                {msg.text}
               </div>
             ))}
-            {isTyping && (
-              <div className="message bot typing">
-                <span>...</span>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
           </div>
-
-          <form className="chat-input-area" onSubmit={handleSend}>
+          {messages.length === 1 && (
+            <div className="chat-suggestions" aria-label="Consultas frecuentes">
+              {[
+                "Vialidad",
+                "Contratos",
+                "Materiales",
+                "Inteligencia artificial",
+              ].map((text) => (
+                <button type="button" key={text} onClick={() => send(text)}>
+                  {text}
+                </button>
+              ))}
+            </div>
+          )}
+          <form
+            className="chat-input-area"
+            onSubmit={(e) => {
+              e.preventDefault();
+              send(input);
+            }}
+          >
             <input
-              type="text"
+              ref={inputRef}
               className="chat-input"
               aria-label="Su consulta al asistente"
-              placeholder="Escriba su consulta..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Escriba su consulta…"
+              maxLength={1000}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
             />
             <button
-              type="submit"
               className="chat-send"
+              type="submit"
+              disabled={!input.trim()}
               aria-label="Enviar consulta al asistente"
-              disabled={!inputValue.trim()}
             >
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
+              <Send size={19} />
             </button>
           </form>
-        </div>
+          <Link className="chat-contact" to="/#contacto" onClick={close}>
+            Consultar mi caso con Adler <ArrowUpRight size={15} />
+          </Link>
+        </section>
       )}
     </>
   );
-};
-
-export default Chatbot;
+}

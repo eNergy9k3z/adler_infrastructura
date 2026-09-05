@@ -69,7 +69,7 @@
   gap: 17px;
   width: 100%;
   margin-top: 52px;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: #a6bac4;
@@ -98,7 +98,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 14px 0 0;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   color: #abbfc9;
@@ -134,7 +134,7 @@
     font-size: clamp(2.5rem, 8vw, 3.5rem);
   }
   .hero-copy .eyebrow {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     margin-bottom: 24px;
   }
   .hero-copy > p {
@@ -148,10 +148,24 @@
     min-height: 0;
   }
   .hero-primary {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     gap: 12px;
   }
   .hero-figure figcaption {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
+  }
+}
+
+.hero-footnote > span:not(.hero-rule) {
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .hero-footnote {
+    gap: 12px;
+    letter-spacing: 0.06em;
+  }
+  .hero-rule {
+    width: 32px;
+    flex-shrink: 1;
   }
 }

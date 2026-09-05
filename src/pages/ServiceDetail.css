@@ -13,13 +13,13 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   margin-bottom: 44px;
   color: #5b707b;
 }
 .adler-page-intro .eyebrow {
   color: #8a6b32;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 .adler-page-intro h1 {
   max-width: 860px;
@@ -89,7 +89,7 @@
   background: #d8b77a;
   color: #132d38;
   width: 100%;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   margin-top: 12px;
 }
 .service-print {
@@ -98,7 +98,7 @@
   align-items: center;
   margin-top: 24px;
   color: #c3d3da;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
 }
 .adler-reference-grid {
   display: grid;

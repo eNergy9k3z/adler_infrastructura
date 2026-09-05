@@ -16,7 +16,7 @@
   object-fit: cover;
 }
 .about-figure figcaption {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: #667b85;
   padding-top: 12px;
 }
@@ -36,13 +36,13 @@
   padding-top: 25px;
 }
 .about-principles span {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: #836432;
 }
 .about-principles p {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   margin: 10px 0 0;
   color: #3e5662;
   line-height: 1.7;

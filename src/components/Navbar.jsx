@@ -22,6 +22,13 @@ const Navbar = () => {
         <nav
           className="container navbar-container"
           aria-label="Navegación principal"
+          onKeyDown={(e) => {
+            if (e.key === "Escape" && isOpen) {
+              e.preventDefault();
+              close();
+              menuButton.current?.focus();
+            }
+          }}
         >
           <Link
             to="/"
@@ -70,7 +77,7 @@ const Navbar = () => {
               Recursos
             </Link>
             <Link to="/login" className="nav-client" onClick={close}>
-              Área de clientes
+              Clientes
             </Link>
             <Link to="/#contacto" className="nav-contact" onClick={close}>
               Hablemos <ArrowUpRight size={16} />

@@ -43,7 +43,7 @@ function App() {
       <ScrollToTop />
       <div className="app">
         <Navbar />
-        <main id="contenido">
+        <main id="contenido" tabIndex={-1}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/proyectos" element={<Proyectos />} />
