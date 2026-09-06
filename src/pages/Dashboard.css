@@ -93,6 +93,19 @@
   gap: 24px;
   align-items: start;
 }
+.inbox-export {
+  padding: 18px 0 24px;
+  border-top: 1px solid #d5dfdf;
+}
+.inbox-export > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.inbox-export p {
+  margin: 10px 0 0;
+  font-size: 0.875rem;
+}
 .inbox-workspace.has-detail {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }

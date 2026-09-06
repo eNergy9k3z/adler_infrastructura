@@ -10,9 +10,15 @@ import {
   Save,
   X,
   Mail,
+  Download,
 } from "lucide-react";
 import { supabase } from "../supabaseClient";
 import { useAuth } from "../auth/AuthContext";
+import {
+  collectContacts,
+  createContactWorkbook,
+  downloadContactWorkbook,
+} from "../data/contactExport";
 import "./Dashboard.css";
 const labels = {
   pendiente: "Pendiente",
@@ -53,6 +59,85 @@ function ConsultationInbox() {
   const error = !loading && loadState.error;
   const [selected, setSelected] = useState(null);
   const dirty = useRef(false);
+  const exportRequest = useRef(null);
+  const [exportState, setExportState] = useState({
+    busy: false,
+    message: "",
+    error: false,
+  });
+  useEffect(() => () => exportRequest.current?.abort(), []);
+  async function exportContacts() {
+    if (exportRequest.current) return;
+    const controller = new AbortController();
+    exportRequest.current = controller;
+    setExportState({
+      busy: true,
+      message: "Preparando contactos…",
+      error: false,
+    });
+    try {
+      const rows = await collectContacts(supabase, {
+        query,
+        status: filter,
+        signal: controller.signal,
+        onProgress: (count, total) =>
+          setExportState({
+            busy: true,
+            message: `Preparando ${count} de ${total} consultas…`,
+            error: false,
+          }),
+      });
+      if (!rows.length) {
+        setExportState({
+          busy: false,
+          message: "No hay contactos para descargar con estos filtros.",
+          error: false,
+        });
+        return;
+      }
+      const blob = await createContactWorkbook(rows);
+      controller.signal.throwIfAborted();
+      const accessTimer = setTimeout(() => controller.abort(), 20000);
+      let access;
+      try {
+        access = await supabase
+          .from("adler_admins")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle()
+          .abortSignal(controller.signal);
+      } finally {
+        clearTimeout(accessTimer);
+      }
+      controller.signal.throwIfAborted();
+      if (access.error || !access.data) throw new Error("access_changed");
+      downloadContactWorkbook(blob);
+      setExportState({
+        busy: false,
+        message: `Archivo preparado con ${rows.length} ${rows.length === 1 ? "consulta" : "consultas"}. Revisa las descargas de tu navegador.`,
+        error: false,
+      });
+    } catch (failure) {
+      if (controller.signal.aborted) {
+        setExportState({
+          busy: false,
+          message:
+            "Descarga cancelada o tiempo de espera agotado. Puedes volver a intentarlo.",
+          error: false,
+        });
+        return;
+      }
+      const message =
+        failure.message === "too_many_contacts"
+          ? "La lista supera las 20.000 consultas por archivo. Usa la búsqueda o el estado para reducirla."
+          : failure.message === "contacts_changed"
+            ? "La lista cambió durante la preparación. Vuelve a descargarla."
+            : "No se pudo preparar el archivo completo. Comprueba tu conexión y tu acceso e inténtalo de nuevo.";
+      setExportState({ busy: false, message, error: true });
+    } finally {
+      exportRequest.current = null;
+    }
+  }
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
@@ -165,12 +250,17 @@ function ConsultationInbox() {
             <input
               id="inbox-search"
               type="search"
+              disabled={exportState.busy}
               maxLength={200}
               placeholder="Nombre, empresa, correo o mensaje"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button type="submit" aria-label="Buscar">
+            <button
+              type="submit"
+              aria-label="Buscar"
+              disabled={exportState.busy}
+            >
               <Search size={20} />
             </button>
           </form>
@@ -178,6 +268,7 @@ function ConsultationInbox() {
             <label htmlFor="inbox-filter">Estado</label>
             <select
               id="inbox-filter"
+              disabled={exportState.busy}
               value={filter}
               onChange={(e) => {
                 if (leaveDetail()) {
@@ -203,6 +294,45 @@ function ConsultationInbox() {
           >
             <RefreshCw size={17} /> Actualizar
           </button>
+        </div>
+        <div className="inbox-export">
+          <div>
+            <button
+              className="btn btn-primary"
+              disabled={exportState.busy || loading || error || !result.total}
+              onClick={exportContacts}
+            >
+              <Download size={17} />{" "}
+              {exportState.busy ? "Preparando Excel…" : "Descargar Excel"}
+            </button>
+            {exportState.busy && (
+              <button
+                className="inbox-refresh"
+                onClick={() => {
+                  exportRequest.current?.abort();
+                  setExportState({
+                    busy: true,
+                    message: "Cancelando la descarga…",
+                    error: false,
+                  });
+                }}
+              >
+                Cancelar
+              </button>
+            )}
+          </div>
+          <p>
+            Incluye todas las consultas de la búsqueda y el estado aplicados,
+            con una fila por consulta.
+          </p>
+          {exportState.message && (
+            <p
+              role={exportState.error ? "alert" : "status"}
+              className={exportState.error ? "private-error" : "inbox-saved"}
+            >
+              {exportState.message}
+            </p>
+          )}
         </div>
         <div className={`inbox-workspace ${selected ? "has-detail" : ""}`}>
           <div className="inbox-list" aria-busy={loading}>
@@ -383,6 +513,19 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
       <p className="inbox-company">{item.company}</p>
       <p className="inbox-date">Recibida el {date(item.created_at)}</p>
       <dl>
+        {item.first_name || item.last_name ? (
+          <>
+            <dt>Nombre</dt>
+            <dd>{item.first_name}</dd>
+            <dt>Apellidos</dt>
+            <dd>{item.last_name}</dd>
+          </>
+        ) : (
+          <>
+            <dt>Nombre completo recibido</dt>
+            <dd>{item.name}</dd>
+          </>
+        )}
         <dt>Correo</dt>
         <dd>
           {safeEmail ? (

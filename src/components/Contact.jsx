@@ -4,7 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import { servicesData } from "../data/services";
 import { supabase } from "../supabaseClient";
 import "./Contact.css";
-const emptyForm = { name: "", email: "", phone: "", subject: "", message: "" };
+const emptyForm = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+};
 const Contact = () => {
   const [searchParams] = useSearchParams();
   const requestedService = searchParams.get("servicio") || "";
@@ -29,7 +36,8 @@ const Contact = () => {
     e.preventDefault();
     if (requestRef.current) return;
     const errors = {};
-    if (!formData.name.trim()) errors.name = "Indique su nombre.";
+    if (!formData.first_name.trim()) errors.first_name = "Indique su nombre.";
+    if (!formData.last_name.trim()) errors.last_name = "Indique sus apellidos.";
     if (!formData.message.trim())
       errors.message = "Describa brevemente su consulta.";
     setFieldErrors(errors);
@@ -46,7 +54,8 @@ const Contact = () => {
         .from("contacts")
         .insert([
           {
-            name: formData.name.trim(),
+            first_name: formData.first_name.trim(),
+            last_name: formData.last_name.trim(),
             email: formData.email.trim(),
             phone: formData.phone.trim(),
             message:
@@ -128,22 +137,46 @@ const Contact = () => {
             </div>
             <div className="contact-form-grid">
               <div className="form-group">
-                <label htmlFor="name">Nombre *</label>
+                <label htmlFor="first_name">Nombre *</label>
                 <input
-                  aria-invalid={!!fieldErrors.name}
-                  aria-describedby={fieldErrors.name ? "name-error" : undefined}
-                  id="name"
-                  name="name"
-                  autoComplete="name"
-                  value={formData.name}
+                  aria-invalid={!!fieldErrors.first_name}
+                  aria-describedby={
+                    fieldErrors.first_name ? "first-name-error" : undefined
+                  }
+                  id="first_name"
+                  name="first_name"
+                  autoComplete="given-name"
+                  value={formData.first_name}
                   onChange={handleChange}
                   placeholder="Su nombre"
                   required
                   maxLength={120}
                 />
-                {fieldErrors.name && (
-                  <p className="field-error" id="name-error">
-                    {fieldErrors.name}
+                {fieldErrors.first_name && (
+                  <p className="field-error" id="first-name-error">
+                    {fieldErrors.first_name}
+                  </p>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="last_name">Apellidos *</label>
+                <input
+                  aria-invalid={!!fieldErrors.last_name}
+                  aria-describedby={
+                    fieldErrors.last_name ? "last-name-error" : undefined
+                  }
+                  id="last_name"
+                  name="last_name"
+                  autoComplete="family-name"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  placeholder="Sus apellidos"
+                  required
+                  maxLength={120}
+                />
+                {fieldErrors.last_name && (
+                  <p className="field-error" id="last-name-error">
+                    {fieldErrors.last_name}
                   </p>
                 )}
               </div>
