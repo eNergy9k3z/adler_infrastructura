@@ -97,10 +97,33 @@
   padding: 14px;
   font-size: 0.9rem;
 }
-.private-warning strong {
+.private-warning strong,
+.private-notice strong,
+.private-error strong {
   display: block;
   margin-bottom: 6px;
 }
+.login-options {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+.login-options a,
+.login-options button {
+  color: #203d4a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.login-options button {
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.login-options button:disabled { opacity: 0.6; cursor: wait; }
 @media (max-width: 900px) {
   .login-layout {
     gap: 36px;

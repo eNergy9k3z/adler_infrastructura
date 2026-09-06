@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   Inbox,
   LogOut,
@@ -122,6 +122,7 @@ function ConsultationInbox() {
           </div>
           <div className="inbox-account">
             <span>{session.user.email}</span>
+            <Link to="/cuenta/contrasena" onClick={(event) => { if (!leaveDetail()) event.preventDefault(); }}>Crear o cambiar contraseña</Link>
             <button
               onClick={() => {
                 if (leaveDetail()) signOut();

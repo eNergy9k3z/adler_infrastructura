@@ -26,6 +26,7 @@ import PrintableSpec from "./pages/PrintableSpec";
 import PrintableDoc from "./pages/PrintableDoc";
 import Profile from "./pages/Profile";
 import AuthProvider from "./auth/AuthProvider";
+import AccountPassword from "./pages/AccountPassword";
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -40,7 +41,7 @@ function ScrollToTop() {
 
 function SiteWidgets() {
   const { pathname } = useLocation();
-  if (["/login", "/dashboard"].includes(pathname)) return null;
+  if (["/login", "/dashboard", "/cuenta/contrasena"].includes(pathname)) return null;
   return (
     <>
       <WhatsAppButton />
@@ -72,6 +73,7 @@ function App() {
               }
             />
             <Route path="/normativa" element={<Normativa />} />
+            <Route path="/cuenta/contrasena" element={<AuthProvider><AccountPassword /></AuthProvider>} />
             <Route
               path="/dashboard"
               element={
