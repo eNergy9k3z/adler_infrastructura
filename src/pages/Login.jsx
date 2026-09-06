@@ -23,7 +23,13 @@ export default function Login() {
           emailRedirectTo: `${window.location.origin}/login`,
         },
       });
-      setStatus(error ? "error" : "sent");
+      setStatus(
+        !error
+          ? "sent"
+          : ["signup_disabled", "user_not_found"].includes(error.code)
+            ? "invitation"
+            : "error",
+      );
     } catch {
       setStatus("error");
     } finally {
@@ -108,6 +114,13 @@ export default function Login() {
                 <p className="private-error" role="alert">
                   No se pudo solicitar el enlace. Comprueba el correo o espera
                   unos minutos antes de intentarlo de nuevo.
+                </p>
+              )}
+              {status === "invitation" && (
+                <p className="private-notice" role="alert">
+                  El acceso requiere una invitación de Adler. Para tu primera
+                  entrada, abre el enlace de invitación más reciente que recibiste
+                  por correo.
                 </p>
               )}
               <p className="login-small">
