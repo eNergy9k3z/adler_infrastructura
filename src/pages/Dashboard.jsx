@@ -11,6 +11,13 @@ import {
   X,
   Mail,
   Download,
+  MessagesSquare,
+  ExternalLink,
+  ShieldCheck,
+  UserRound,
+  ChevronRight,
+  Building2,
+  KeyRound,
 } from "lucide-react";
 import { supabase } from "../supabaseClient";
 import { useAuth } from "../auth/AuthContext";
@@ -19,6 +26,7 @@ import {
   createContactWorkbook,
   downloadContactWorkbook,
 } from "../data/contactExport";
+import { useUnsavedForm } from "../portal/useUnsavedForm";
 import "./Dashboard.css";
 const labels = {
   pendiente: "Pendiente",
@@ -36,7 +44,7 @@ export default function Dashboard() {
   const { state } = useAuth();
   if (state === "loading")
     return (
-      <section className="inbox-page">
+      <section className="private-page">
         <div className="container" role="status">
           Comprobando acceso…
         </div>
@@ -59,6 +67,8 @@ function ConsultationInbox() {
   const error = !loading && loadState.error;
   const [selected, setSelected] = useState(null);
   const dirty = useRef(false);
+  const saving = useRef(false);
+  const selectedTrigger = useRef(null);
   const exportRequest = useRef(null);
   const [exportState, setExportState] = useState({
     busy: false,
@@ -177,6 +187,7 @@ function ConsultationInbox() {
     };
   }, [query, filter, page, revision, requestKey]);
   function leaveDetail() {
+    if (saving.current) return false;
     if (
       dirty.current &&
       !window.confirm("Tienes notas sin guardar. ¿Quieres descartarlas?")
@@ -188,6 +199,7 @@ function ConsultationInbox() {
   }
   function saved(item) {
     dirty.current = false;
+    saving.current = false;
     setSelected(filter && filter !== item.status ? null : item);
     setRevision((value) => value + 1);
     setResult((previous) => ({
@@ -196,265 +208,129 @@ function ConsultationInbox() {
     }));
   }
   const pages = Math.max(1, Math.ceil(result.total / 50));
+  function openContact(item) {
+    if (selected?.id === item.id || !leaveDetail()) return;
+    selectedTrigger.current = item.id;
+    setSelected(item);
+  }
+  function closeDetail() {
+    if (leaveDetail()) requestAnimationFrame(() => {
+      const trigger = document.getElementById(`inbox-contact-${selectedTrigger.current}`) || document.getElementById("inbox-search");
+      trigger?.focus({ preventScroll: true });
+    });
+  }
+  function changeFilter(value) {
+    if (!exportState.busy && leaveDetail()) { setFilter(value); setPage(0); }
+  }
   return (
     <section className="inbox-page">
-      <div className="container">
-        <header className="inbox-header">
-          <div>
-            <span className="eyebrow">ADLER / ADMINISTRACIÓN</span>
-            <h1>Consultas recibidas.</h1>
-            <p>Organiza cada conversación y define el siguiente paso.</p>
-          </div>
-          <div className="inbox-account">
-            <Link
-              className="private-link-button"
-              to="/dashboard/clientes"
-              onClick={(event) => {
-                if (!leaveDetail()) event.preventDefault();
-              }}
-            >
-              Atender solicitudes de clientes
-            </Link>
-            <span>{session.user.email}</span>
-            <Link
-              to="/cuenta/contrasena"
-              onClick={(event) => {
-                if (!leaveDetail()) event.preventDefault();
-              }}
-            >
-              Crear o cambiar contraseña
-            </Link>
-            <button
-              onClick={() => {
-                if (leaveDetail()) signOut();
-              }}
-            >
-              <LogOut size={16} /> Cerrar sesión
-            </button>
-          </div>
-        </header>
-        <div className="inbox-toolbar">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (leaveDetail()) {
-                setQuery(search.trim());
-                setPage(0);
-                setRevision((value) => value + 1);
-              }
-            }}
-          >
-            <label className="sr-only" htmlFor="inbox-search">
-              Buscar consultas
-            </label>
-            <input
-              id="inbox-search"
-              type="search"
-              disabled={exportState.busy}
-              maxLength={200}
-              placeholder="Nombre, empresa, correo o mensaje"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button
-              type="submit"
-              aria-label="Buscar"
-              disabled={exportState.busy}
-            >
-              <Search size={20} />
-            </button>
-          </form>
-          <div>
-            <label htmlFor="inbox-filter">Estado</label>
-            <select
-              id="inbox-filter"
-              disabled={exportState.busy}
-              value={filter}
-              onChange={(e) => {
-                if (leaveDetail()) {
-                  setFilter(e.target.value);
-                  setPage(0);
-                }
-              }}
-            >
-              <option value="">Todas las consultas</option>
-              {Object.entries(labels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button
-            className="inbox-refresh"
-            disabled={loading}
-            onClick={() => {
-              if (leaveDetail()) setRevision((value) => value + 1);
-            }}
-          >
-            <RefreshCw size={17} /> Actualizar
-          </button>
+      <aside className="inbox-sidebar" aria-label="Administración de Adler">
+        <Link className="inbox-brand" to="/">ADLER<span>INFRASTRUCTURA</span></Link>
+        <span className="inbox-nav-caption">ESPACIO DE TRABAJO</span>
+        <nav aria-label="Navegación de administración">
+          <Link to="/dashboard" aria-current="page"><Inbox size={19} />Consultas de la web</Link>
+          <Link to="/dashboard/clientes"><MessagesSquare size={19} />Atención a clientes</Link>
+        </nav>
+        <div className="inbox-sidebar-bottom">
+          <Link to="/cuenta/contrasena"><KeyRound size={17} />Cambiar contraseña</Link>
+          <Link to="/"><ExternalLink size={17} />Ver página web</Link>
+          <button onClick={() => { if (leaveDetail()) signOut(); }}><LogOut size={17} />Cerrar sesión</button>
+          <div className="inbox-admin-caption"><ShieldCheck size={15} />Acceso de administración</div>
         </div>
-        <div className="inbox-export">
-          <div>
-            <button
-              className="btn btn-primary"
-              disabled={exportState.busy || loading || error || !result.total}
-              onClick={exportContacts}
-            >
-              <Download size={17} />{" "}
-              {exportState.busy ? "Preparando Excel…" : "Descargar Excel"}
-            </button>
-            {exportState.busy && (
-              <button
-                className="inbox-refresh"
-                onClick={() => {
-                  exportRequest.current?.abort();
-                  setExportState({
-                    busy: true,
-                    message: "Cancelando la descarga…",
-                    error: false,
-                  });
-                }}
-              >
-                Cancelar
+      </aside>
+      <div className="inbox-main">
+        <div className="inbox-topbar">
+          <span>Administración <ChevronRight size={14} /> Consultas de la web</span>
+          <span className="inbox-account"><UserRound size={17} /><span>{session.user.email}</span></span>
+        </div>
+        <div className="inbox-content">
+          <header className="inbox-header">
+            <div><h1>Bandeja de entrada</h1><p>Consultas recibidas desde el formulario de Adler.</p></div>
+            <div className="inbox-header-actions">
+              <button className="inbox-secondary-button" disabled={loading} onClick={() => { if (leaveDetail()) setRevision((value) => value + 1); }}>
+                <RefreshCw size={17} className={loading ? "sending-spinner" : ""} />Actualizar
               </button>
-            )}
-          </div>
-          <p>
-            Incluye todas las consultas de la búsqueda y el estado aplicados,
-            con una fila por consulta.
-          </p>
-          {exportState.message && (
-            <p
-              role={exportState.error ? "alert" : "status"}
-              className={exportState.error ? "private-error" : "inbox-saved"}
-            >
-              {exportState.message}
-            </p>
-          )}
-        </div>
-        <div className={`inbox-workspace ${selected ? "has-detail" : ""}`}>
-          <div className="inbox-list" aria-busy={loading}>
-            <div className="inbox-list-heading">
-              <h2>{filter ? labels[filter] : "Bandeja de entrada"}</h2>
-              <span>
-                {loading
-                  ? "Cargando…"
-                  : `${result.total} ${result.total === 1 ? "consulta" : "consultas"}`}
-              </span>
+              <button className="inbox-primary-button" disabled={exportState.busy || loading || error || !result.total} onClick={exportContacts} aria-describedby="inbox-export-hint">
+                <Download size={17} />{exportState.busy ? "Preparando…" : "Descargar Excel"}
+              </button>
             </div>
-            {loading ? (
-              <div className="inbox-empty" role="status">
-                Cargando consultas…
-              </div>
-            ) : error ? (
-              <div className="inbox-empty" role="alert">
-                <h3>No se pudo cargar la bandeja.</h3>
-                <p>Comprueba tu conexión e inténtalo de nuevo.</p>
-                <button
-                  onClick={() => {
-                    refreshAccess();
-                    setRevision((value) => value + 1);
-                  }}
-                >
-                  Reintentar
-                </button>
-              </div>
-            ) : !result.items.length ? (
-              <div className="inbox-empty">
-                <Inbox size={32} />
-                <h3>
-                  {query || filter
-                    ? "No hay consultas con estos filtros."
-                    : "Tu bandeja está al día."}
-                </h3>
-                <p>
-                  {query || filter
-                    ? "Prueba otro término o muestra todos los estados."
-                    : "Las solicitudes enviadas desde la web aparecerán aquí."}
-                </p>
-              </div>
-            ) : (
-              result.items.map((item) => (
-                <button
-                  className={`inbox-row ${selected?.id === item.id ? "is-selected" : ""}`}
-                  key={item.id}
-                  aria-pressed={selected?.id === item.id}
-                  onClick={() => {
-                    if (selected?.id === item.id) return;
-                    if (leaveDetail()) setSelected(item);
-                  }}
-                >
-                  <span className="inbox-row-top">
-                    <strong>{item.name}</strong>
-                    <span className={`status-pill status-${item.status}`}>
-                      {labels[item.status]}
-                    </span>
-                  </span>
-                  <span className="inbox-company">
-                    {item.company || item.email}
-                  </span>
-                  <span className="inbox-preview">{item.message}</span>
-                  <span className="inbox-date">{date(item.created_at)}</span>
-                </button>
-              ))
-            )}
-            {!loading && !error && pages > 1 && (
-              <nav
-                className="inbox-pagination"
-                aria-label="Páginas de consultas"
-              >
-                <button
-                  disabled={page === 0}
-                  onClick={() => {
-                    if (leaveDetail()) setPage((value) => value - 1);
-                  }}
-                >
-                  <ArrowLeft size={16} /> Anterior
-                </button>
-                <span>
-                  {page + 1} / {pages}
-                </span>
-                <button
-                  disabled={page + 1 >= pages}
-                  onClick={() => {
-                    if (leaveDetail()) setPage((value) => value + 1);
-                  }}
-                >
-                  Siguiente <ArrowRight size={16} />
-                </button>
-              </nav>
-            )}
+          </header>
+          <div className="inbox-tools">
+            <nav className="inbox-status-filters" aria-label="Filtrar consultas por estado">
+              {[["", "Todas"], ...Object.entries(labels)].map(([value, label]) => <button key={value} aria-pressed={filter === value} disabled={exportState.busy} onClick={() => changeFilter(value)}>{label}</button>)}
+            </nav>
+            <form className="inbox-search" onSubmit={(event) => {
+              event.preventDefault();
+              if (leaveDetail()) { setQuery(search.trim()); setPage(0); setRevision((value) => value + 1); }
+            }}>
+              <label className="sr-only" htmlFor="inbox-search">Buscar consultas</label>
+              <input id="inbox-search" type="search" disabled={exportState.busy} maxLength={200} placeholder="Buscar contacto, empresa o consulta" value={search} onChange={(event) => setSearch(event.target.value)} />
+              <button type="submit" aria-label="Buscar" disabled={exportState.busy}><Search size={19} /></button>
+            </form>
           </div>
-          {selected && (
-            <ContactEditor
-              key={`${selected.id}:${selected.revision}`}
-              item={selected}
-              onClose={leaveDetail}
-              onSaved={saved}
-              onDirty={(value) => {
-                dirty.current = value;
-              }}
-            />
-          )}
+          <div className="inbox-result-bar">
+            <p role="status">{loading ? "Cargando consultas…" : error ? "Bandeja no disponible" : `${result.total} ${result.total === 1 ? "consulta" : "consultas"}${query ? ` para «${query}»` : ""}`}</p>
+            <p id="inbox-export-hint">Excel incluye todos los resultados filtrados.</p>
+          </div>
+          {exportState.message && <div className={`inbox-export-feedback ${exportState.error ? "is-error" : ""}`} role={exportState.error ? "alert" : "status"}>
+            <span>{exportState.message}</span>
+            {exportState.busy && <button onClick={() => { exportRequest.current?.abort(); setExportState({ busy: true, message: "Cancelando la descarga…", error: false }); }}>Cancelar</button>}
+          </div>}
+          <div className={`inbox-workspace ${selected ? "has-detail" : ""}`}>
+            <div className="inbox-list" aria-busy={loading}>
+              {loading ? <div className="inbox-empty" role="status"><RefreshCw size={23} className="sending-spinner" />Cargando consultas…</div>
+                : error ? <div className="inbox-empty" role="alert"><Inbox size={30} /><h2>No se pudo cargar la bandeja</h2><p>Comprueba tu conexión e inténtalo de nuevo.</p><button className="inbox-secondary-button" onClick={() => { refreshAccess(); setRevision((value) => value + 1); }}>Reintentar</button></div>
+                : !result.items.length ? <div className="inbox-empty"><Inbox size={32} /><h2>{query || filter ? "No hay consultas con estos filtros" : "Aún no hay consultas"}</h2><p>{query || filter ? "Prueba otro término o muestra todos los estados." : "Los mensajes del formulario aparecerán aquí."}</p></div>
+                : <div className="inbox-table-scroll"><table className="inbox-table">
+                  <caption className="sr-only">Consultas recibidas desde la web. Selecciona un contacto para ver el detalle.</caption>
+                  <colgroup><col className="inbox-col-contact" /><col className="inbox-col-message" /><col className="inbox-col-status" /><col className="inbox-col-date" /></colgroup>
+                  <thead><tr><th scope="col">Contacto</th><th scope="col">Consulta</th><th scope="col">Estado</th><th scope="col">Recibida</th></tr></thead>
+                  <tbody>{result.items.map((item) => {
+                    const summary = consultationSummary(item.message);
+                    return <tr key={item.id} className={selected?.id === item.id ? "is-selected" : ""} onClick={() => openContact(item)}>
+                      <td><div className="inbox-contact-cell"><span className="inbox-contact-avatar" aria-hidden="true">{initials(item.name)}</span><div>
+                        <button id={`inbox-contact-${item.id}`} className="inbox-contact-name" aria-label={`Abrir consulta de ${item.name || "Contacto sin nombre"}`} aria-expanded={selected?.id === item.id} aria-controls={selected?.id === item.id ? "inbox-contact-detail" : undefined} title={item.name || "Contacto sin nombre"}>{item.name || "Contacto sin nombre"}</button>
+                        <span className="inbox-cell-secondary" title={item.company || item.email}>{item.company || item.email}</span>
+                      </div></div></td>
+                      <td><span className="inbox-topic" title={summary.service}>{summary.service}</span><span className="inbox-cell-preview" title={summary.message}>{summary.message}</span></td>
+                      <td><span className={`status-pill status-${item.status}`}>{labels[item.status]}</span></td>
+                      <td><time className="inbox-cell-date" dateTime={item.created_at} title={date(item.created_at)}>{shortDate(item.created_at)}<span>{shortTime(item.created_at)}</span></time></td>
+                    </tr>;
+                  })}</tbody>
+                </table></div>}
+              {!loading && !error && result.total > 0 && <nav className="inbox-pagination" aria-label="Páginas de consultas">
+                <span>{page * 50 + 1}–{Math.min((page + 1) * 50, result.total)} de {result.total}</span>
+                <div><button aria-label="Página anterior" disabled={page === 0} onClick={() => { if (leaveDetail()) setPage((value) => value - 1); }}><ArrowLeft size={17} /></button><span>{page + 1} / {pages}</span><button aria-label="Página siguiente" disabled={page + 1 >= pages} onClick={() => { if (leaveDetail()) setPage((value) => value + 1); }}><ArrowRight size={17} /></button></div>
+              </nav>}
+            </div>
+            {selected && <ContactEditor key={`${selected.id}:${selected.revision}`} item={selected} onClose={closeDetail} onSaved={saved} onDirty={(value) => { dirty.current = value; }} onSaving={(value) => { saving.current = value; }} />}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-function ContactEditor({ item, onClose, onSaved, onDirty }) {
+function consultationSummary(message = "") {
+  const match = message?.match(/^Servicio de interés: ([^\r\n]+)\r?\n\s*/);
+  return { service: match ? match[1] : "Consulta general", message: match ? message.slice(match[0].length) : message };
+}
+function initials(name) { return String(name ?? "").trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "A"; }
+function shortDate(value) { return value ? new Intl.DateTimeFormat("es", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)) : "Sin fecha"; }
+function shortTime(value) { return value ? new Intl.DateTimeFormat("es", { hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : ""; }
+
+function ContactEditor({ item, onClose, onSaved, onDirty, onSaving }) {
   const [status, setStatus] = useState(item.status);
   const [notes, setNotes] = useState(item.internal_notes || "");
   const [saveState, setSaveState] = useState("idle");
   const pending = useRef(null);
   const detail = useRef(null);
   useEffect(() => {
-    detail.current?.focus();
+    detail.current?.focus({ preventScroll: true });
   }, []);
   useEffect(() => () => pending.current?.abort(), []);
   const changed =
     status !== item.status || notes !== (item.internal_notes || "");
+  useUnsavedForm(changed);
   function change(nextStatus, nextNotes) {
     setStatus(nextStatus);
     setNotes(nextNotes);
@@ -470,6 +346,7 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
     pending.current = controller;
     const timer = setTimeout(() => controller.abort(), 15000);
     setSaveState("saving");
+    onSaving(true);
     try {
       const { data, error } = await supabase
         .from("contacts")
@@ -489,6 +366,7 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
     } finally {
       clearTimeout(timer);
       pending.current = null;
+      onSaving(false);
     }
   }
   const safeEmail = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(item.email);
@@ -497,10 +375,11 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
       ref={detail}
       tabIndex={-1}
       className="inbox-detail"
+      id="inbox-contact-detail"
       aria-label="Detalle de la consulta"
     >
-      <header>
-        <span className="eyebrow">DETALLE DE LA CONSULTA</span>
+      <header className="inbox-detail-header">
+        <span>Consulta #{item.id}</span>
         <button
           aria-label="Cerrar detalle"
           onClick={onClose}
@@ -509,9 +388,9 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
           <X size={21} />
         </button>
       </header>
-      <h2>{item.name}</h2>
-      <p className="inbox-company">{item.company}</p>
-      <p className="inbox-date">Recibida el {date(item.created_at)}</p>
+      <div className="inbox-detail-scroll">
+      <div className="inbox-detail-identity"><span className="inbox-detail-avatar" aria-hidden="true">{initials(item.name)}</span><div><h2>{item.name || "Contacto sin nombre"}</h2>{item.company && <p><Building2 size={15} />{item.company}</p>}</div></div>
+      <p className="inbox-detail-date">Recibida el {date(item.created_at)}</p>
       <dl>
         {item.first_name || item.last_name ? (
           <>
@@ -522,7 +401,7 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
           </>
         ) : (
           <>
-            <dt>Nombre completo recibido</dt>
+            <dt>Nombre completo</dt>
             <dd>{item.name}</dd>
           </>
         )}
@@ -544,9 +423,10 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
           </>
         )}
       </dl>
-      <h3>Mensaje original</h3>
+      <div className="inbox-detail-divider" />
+      <h3>Mensaje de la consulta</h3>
       <p className="inbox-message">{item.message}</p>
-      <form onSubmit={save}>
+      <form id="inbox-edit-form" onSubmit={save}>
         <fieldset disabled={saveState === "saving"}>
           <label htmlFor="detail-status">Estado de la consulta</label>
           <select
@@ -565,27 +445,17 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
             id="detail-notes"
             value={notes}
             onChange={(e) => change(status, e.target.value)}
-            rows={6}
+            rows={4}
             maxLength={10000}
             placeholder="Acuerdos, documentación pendiente y próximos pasos."
           />
           <p className="inbox-private-hint">
             Solo la administración de Adler puede ver estas notas.
           </p>
-          <button
-            className="btn btn-primary"
-            disabled={!changed || saveState === "saving"}
-          >
-            <Save size={17} />
-            {saveState === "saving" ? "Guardando…" : "Guardar cambios"}
-          </button>
+
         </fieldset>
       </form>
-      {!changed && (
-        <p className="inbox-saved" role="status">
-          Cambios al día.
-        </p>
-      )}
+
       {saveState === "error" && (
         <p role="alert" className="private-error">
           No se pudo guardar. Tus notas siguen aquí; vuelve a intentarlo.
@@ -597,6 +467,11 @@ function ContactEditor({ item, onClose, onSaved, onDirty }) {
           y actualiza la bandeja antes de guardar.
         </p>
       )}
+      </div>
+      <footer className="inbox-detail-footer">
+        <span role="status" className={changed ? "inbox-unsaved" : "inbox-saved"}>{saveState === "saving" ? "Guardando cambios…" : changed ? "Cambios sin guardar" : "Cambios al día"}</span>
+        <button form="inbox-edit-form" className="inbox-primary-button" disabled={!changed || saveState === "saving"}><Save size={17} />Guardar cambios</button>
+      </footer>
     </aside>
   );
 }

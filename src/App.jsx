@@ -66,7 +66,7 @@ function SiteHeader() {
       "/clientes/registro",
       "/clientes/contrasena",
     ].includes(pathname)) ||
-    pathname.startsWith("/dashboard/clientes") ? null : (
+    pathname.startsWith("/dashboard") ? null : (
     <Navbar />
   );
 }
@@ -78,7 +78,7 @@ function SiteFooter() {
       "/clientes/registro",
       "/clientes/contrasena",
     ].includes(pathname)) ||
-    pathname.startsWith("/dashboard/clientes") ? null : (
+    pathname.startsWith("/dashboard") ? null : (
     <Footer />
   );
 }
