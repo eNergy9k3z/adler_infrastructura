@@ -15,8 +15,13 @@ import {
   ExternalLink,
   ShieldCheck,
   UserRound,
-  ChevronRight,
-  Building2,
+  ChevronDown,
+  Menu,
+  Clock3,
+  Flag,
+  CircleCheck,
+  MailOpen,
+  Reply,
   KeyRound,
 } from "lucide-react";
 import { supabase } from "../supabaseClient";
@@ -66,6 +71,7 @@ function ConsultationInbox() {
   const loading = loadState.key !== requestKey;
   const error = !loading && loadState.error;
   const [selected, setSelected] = useState(null);
+  const [foldersOpen, setFoldersOpen] = useState(false);
   const dirty = useRef(false);
   const saving = useRef(false);
   const selectedTrigger = useRef(null);
@@ -220,103 +226,100 @@ function ConsultationInbox() {
     });
   }
   function changeFilter(value) {
-    if (!exportState.busy && leaveDetail()) { setFilter(value); setPage(0); }
+    if (!exportState.busy && leaveDetail()) {
+      setFilter(value);
+      setPage(0);
+      setFoldersOpen(false);
+      if (foldersOpen) requestAnimationFrame(() => document.getElementById("inbox-list-title")?.focus({ preventScroll: true }));
+    }
   }
+  const folderName = filter ? labels[filter] : "Bandeja de entrada";
   return (
-    <section className="inbox-page">
-      <aside className="inbox-sidebar" aria-label="Administración de Adler">
+    <section className={`inbox-page ${foldersOpen ? "folders-open" : ""}`}>
+      <header className="inbox-appbar">
         <Link className="inbox-brand" to="/">ADLER<span>INFRASTRUCTURA</span></Link>
-        <span className="inbox-nav-caption">ESPACIO DE TRABAJO</span>
-        <nav aria-label="Navegación de administración">
-          <Link to="/dashboard" aria-current="page"><Inbox size={19} />Consultas de la web</Link>
-          <Link to="/dashboard/clientes"><MessagesSquare size={19} />Atención a clientes</Link>
+        <span className="inbox-app-name">Consultas</span>
+        <form className="inbox-search" onSubmit={(event) => {
+          event.preventDefault();
+          if (leaveDetail()) { setQuery(search.trim()); setPage(0); setRevision((value) => value + 1); }
+        }}>
+          <button type="submit" aria-label="Buscar" disabled={exportState.busy}><Search size={19} /></button>
+          <label className="sr-only" htmlFor="inbox-search">Buscar consultas</label>
+          <input id="inbox-search" type="search" disabled={exportState.busy} maxLength={200} placeholder="Buscar en las consultas" value={search} onChange={(event) => setSearch(event.target.value)} />
+        </form>
+        <span className="inbox-account" title={session.user.email}><span>{session.user.email}</span><span className="inbox-account-avatar" aria-hidden="true"><UserRound size={18} /></span></span>
+      </header>
+      <nav className="inbox-app-rail" aria-label="Aplicaciones de Adler">
+        <Link to="/dashboard" aria-current="page" aria-label="Consultas de la web" title="Consultas de la web"><Mail size={22} /></Link>
+        <Link to="/dashboard/clientes" aria-label="Atención a clientes" title="Atención a clientes"><MessagesSquare size={22} /></Link>
+        <Link to="/" aria-label="Ver página web" title="Ver página web"><ExternalLink size={21} /></Link>
+      </nav>
+      <div className="inbox-commandbar">
+        <button className="inbox-folder-toggle" aria-label={foldersOpen ? "Ocultar carpetas" : "Mostrar carpetas"} aria-expanded={foldersOpen} aria-controls="inbox-folders" onClick={() => setFoldersOpen((value) => !value)}><Menu size={20} /></button>
+        <button className="inbox-primary-button" disabled={exportState.busy || loading || error || !result.total} onClick={exportContacts} title="Descargar todos los resultados filtrados" aria-describedby="inbox-export-hint"><Download size={17} />{exportState.busy ? "Preparando…" : "Descargar Excel"}</button>
+        <span className="inbox-command-divider" />
+        <button className="inbox-toolbar-button" disabled={loading} onClick={() => { if (leaveDetail()) setRevision((value) => value + 1); }}><RefreshCw size={17} className={loading ? "sending-spinner" : ""} />Actualizar</button>
+        <Link className="inbox-toolbar-button inbox-client-link" to="/dashboard/clientes"><MessagesSquare size={17} />Atención a clientes</Link>
+        <span className="inbox-toolbar-caption"><ShieldCheck size={14} />Espacio privado</span>
+      </div>
+      <aside className="inbox-folders" id="inbox-folders" aria-label="Carpetas de consultas">
+        <div className="inbox-mailbox"><ChevronDown size={14} /><span>Adler Infrastructura</span></div>
+        <nav aria-label="Filtrar consultas por estado">
+          {[["", "Bandeja de entrada", <Inbox size={18} />], ["pendiente", "Pendientes", <Clock3 size={18} />], ["seguimiento", "En seguimiento", <Flag size={18} />], ["resuelta", "Resueltas", <CircleCheck size={18} />]].map(([value, label, icon]) => <button key={value} aria-pressed={filter === value} disabled={exportState.busy} onClick={() => changeFilter(value)}>{icon}<span>{label}</span></button>)}
         </nav>
+        <p className="inbox-folder-caption">Consultas del formulario web</p>
+        <div className="inbox-folder-links">
+          <Link to="/dashboard/clientes"><MessagesSquare size={18} />Conversaciones de clientes</Link>
+        </div>
         <div className="inbox-sidebar-bottom">
           <Link to="/cuenta/contrasena"><KeyRound size={17} />Cambiar contraseña</Link>
-          <Link to="/"><ExternalLink size={17} />Ver página web</Link>
           <button onClick={() => { if (leaveDetail()) signOut(); }}><LogOut size={17} />Cerrar sesión</button>
-          <div className="inbox-admin-caption"><ShieldCheck size={15} />Acceso de administración</div>
         </div>
       </aside>
       <div className="inbox-main">
-        <div className="inbox-topbar">
-          <span>Administración <ChevronRight size={14} /> Consultas de la web</span>
-          <span className="inbox-account"><UserRound size={17} /><span>{session.user.email}</span></span>
-        </div>
-        <div className="inbox-content">
-          <header className="inbox-header">
-            <div><h1>Bandeja de entrada</h1><p>Consultas recibidas desde el formulario de Adler.</p></div>
-            <div className="inbox-header-actions">
-              <button className="inbox-secondary-button" disabled={loading} onClick={() => { if (leaveDetail()) setRevision((value) => value + 1); }}>
-                <RefreshCw size={17} className={loading ? "sending-spinner" : ""} />Actualizar
-              </button>
-              <button className="inbox-primary-button" disabled={exportState.busy || loading || error || !result.total} onClick={exportContacts} aria-describedby="inbox-export-hint">
-                <Download size={17} />{exportState.busy ? "Preparando…" : "Descargar Excel"}
-              </button>
-            </div>
-          </header>
-          <div className="inbox-tools">
-            <nav className="inbox-status-filters" aria-label="Filtrar consultas por estado">
-              {[["", "Todas"], ...Object.entries(labels)].map(([value, label]) => <button key={value} aria-pressed={filter === value} disabled={exportState.busy} onClick={() => changeFilter(value)}>{label}</button>)}
-            </nav>
-            <form className="inbox-search" onSubmit={(event) => {
-              event.preventDefault();
-              if (leaveDetail()) { setQuery(search.trim()); setPage(0); setRevision((value) => value + 1); }
-            }}>
-              <label className="sr-only" htmlFor="inbox-search">Buscar consultas</label>
-              <input id="inbox-search" type="search" disabled={exportState.busy} maxLength={200} placeholder="Buscar contacto, empresa o consulta" value={search} onChange={(event) => setSearch(event.target.value)} />
-              <button type="submit" aria-label="Buscar" disabled={exportState.busy}><Search size={19} /></button>
-            </form>
-          </div>
-          <div className="inbox-result-bar">
-            <p role="status">{loading ? "Cargando consultas…" : error ? "Bandeja no disponible" : `${result.total} ${result.total === 1 ? "consulta" : "consultas"}${query ? ` para «${query}»` : ""}`}</p>
-            <p id="inbox-export-hint">Excel incluye todos los resultados filtrados.</p>
-          </div>
-          {exportState.message && <div className={`inbox-export-feedback ${exportState.error ? "is-error" : ""}`} role={exportState.error ? "alert" : "status"}>
-            <span>{exportState.message}</span>
-            {exportState.busy && <button onClick={() => { exportRequest.current?.abort(); setExportState({ busy: true, message: "Cancelando la descarga…", error: false }); }}>Cancelar</button>}
-          </div>}
-          <div className={`inbox-workspace ${selected ? "has-detail" : ""}`}>
-            <div className="inbox-list" aria-busy={loading}>
+        {exportState.message && <div className={`inbox-export-feedback ${exportState.error ? "is-error" : ""}`} role={exportState.error ? "alert" : "status"}>
+          <span>{exportState.message}</span>
+          {exportState.busy && <button onClick={() => { exportRequest.current?.abort(); setExportState({ busy: true, message: "Cancelando la descarga…", error: false }); }}>Cancelar</button>}
+        </div>}
+        <div className={`inbox-workspace ${selected ? "has-detail" : ""}`}>
+          <section className="inbox-list" aria-label="Lista de consultas" aria-busy={loading}>
+            <header className="inbox-list-header"><h1 id="inbox-list-title" tabIndex={-1}>{folderName}</h1><p role="status">{loading ? "Cargando…" : error ? "No disponible" : `${result.total} ${result.total === 1 ? "consulta" : "consultas"}`}</p></header>
+            <div className="inbox-list-context"><span>{query ? `Resultados para «${query}»` : "Más recientes primero"}</span><span id="inbox-export-hint" className="sr-only">Excel incluye todos los resultados filtrados.</span></div>
+            <div className="inbox-messages-scroll">
               {loading ? <div className="inbox-empty" role="status"><RefreshCw size={23} className="sending-spinner" />Cargando consultas…</div>
                 : error ? <div className="inbox-empty" role="alert"><Inbox size={30} /><h2>No se pudo cargar la bandeja</h2><p>Comprueba tu conexión e inténtalo de nuevo.</p><button className="inbox-secondary-button" onClick={() => { refreshAccess(); setRevision((value) => value + 1); }}>Reintentar</button></div>
-                : !result.items.length ? <div className="inbox-empty"><Inbox size={32} /><h2>{query || filter ? "No hay consultas con estos filtros" : "Aún no hay consultas"}</h2><p>{query || filter ? "Prueba otro término o muestra todos los estados." : "Los mensajes del formulario aparecerán aquí."}</p></div>
-                : <div className="inbox-table-scroll"><table className="inbox-table">
-                  <caption className="sr-only">Consultas recibidas desde la web. Selecciona un contacto para ver el detalle.</caption>
-                  <colgroup><col className="inbox-col-contact" /><col className="inbox-col-message" /><col className="inbox-col-status" /><col className="inbox-col-date" /></colgroup>
-                  <thead><tr><th scope="col">Contacto</th><th scope="col">Consulta</th><th scope="col">Estado</th><th scope="col">Recibida</th></tr></thead>
-                  <tbody>{result.items.map((item) => {
-                    const summary = consultationSummary(item.message);
-                    return <tr key={item.id} className={selected?.id === item.id ? "is-selected" : ""} onClick={() => openContact(item)}>
-                      <td><div className="inbox-contact-cell"><span className="inbox-contact-avatar" aria-hidden="true">{initials(item.name)}</span><div>
-                        <button id={`inbox-contact-${item.id}`} className="inbox-contact-name" aria-label={`Abrir consulta de ${item.name || "Contacto sin nombre"}`} aria-expanded={selected?.id === item.id} aria-controls={selected?.id === item.id ? "inbox-contact-detail" : undefined} title={item.name || "Contacto sin nombre"}>{item.name || "Contacto sin nombre"}</button>
-                        <span className="inbox-cell-secondary" title={item.company || item.email}>{item.company || item.email}</span>
-                      </div></div></td>
-                      <td><span className="inbox-topic" title={summary.service}>{summary.service}</span><span className="inbox-cell-preview" title={summary.message}>{summary.message}</span></td>
-                      <td><span className={`status-pill status-${item.status}`}>{labels[item.status]}</span></td>
-                      <td><time className="inbox-cell-date" dateTime={item.created_at} title={date(item.created_at)}>{shortDate(item.created_at)}<span>{shortTime(item.created_at)}</span></time></td>
-                    </tr>;
-                  })}</tbody>
-                </table></div>}
-              {!loading && !error && result.total > 0 && <nav className="inbox-pagination" aria-label="Páginas de consultas">
-                <span>{page * 50 + 1}–{Math.min((page + 1) * 50, result.total)} de {result.total}</span>
-                <div><button aria-label="Página anterior" disabled={page === 0} onClick={() => { if (leaveDetail()) setPage((value) => value - 1); }}><ArrowLeft size={17} /></button><span>{page + 1} / {pages}</span><button aria-label="Página siguiente" disabled={page + 1 >= pages} onClick={() => { if (leaveDetail()) setPage((value) => value + 1); }}><ArrowRight size={17} /></button></div>
-              </nav>}
+                : !result.items.length ? <div className="inbox-empty"><Inbox size={32} /><h2>{query || filter ? "No hay consultas con estos filtros" : "Aún no hay consultas"}</h2><p>{query || filter ? "Prueba otro término o abre la bandeja de entrada." : "Los mensajes del formulario aparecerán aquí."}</p></div>
+                : <ul className="inbox-message-list">{result.items.map((item) => {
+                  const summary = consultationSummary(item.message);
+                  return <li key={item.id}><button id={`inbox-contact-${item.id}`} className={`inbox-message-row ${selected?.id === item.id ? "is-selected" : ""}`} onClick={() => openContact(item)} aria-label={`Abrir consulta de ${item.name || "Contacto sin nombre"}`} aria-expanded={selected?.id === item.id} aria-controls={selected?.id === item.id ? "inbox-contact-detail" : undefined}>
+                    <span className="inbox-contact-avatar" aria-hidden="true">{initials(item.name)}</span>
+                    <span className="inbox-message-summary">
+                      <span className="inbox-message-top"><span className="inbox-contact-name" title={item.name || "Contacto sin nombre"}>{item.name || "Contacto sin nombre"}</span><time dateTime={item.created_at} title={date(item.created_at)}>{shortDate(item.created_at)}</time></span>
+                      <span className="inbox-topic">{summary.service}</span>
+                      <span className="inbox-cell-preview">{summary.message || "Sin texto adicional"}</span>
+                      <span className="inbox-message-meta"><span className={`inbox-state-label status-${item.status}`}>{labels[item.status]}</span><span className="inbox-message-company">{item.company || item.email}</span></span>
+                    </span>
+                  </button></li>;
+                })}</ul>}
             </div>
-            {selected && <ContactEditor key={`${selected.id}:${selected.revision}`} item={selected} onClose={closeDetail} onSaved={saved} onDirty={(value) => { dirty.current = value; }} onSaving={(value) => { saving.current = value; }} />}
-          </div>
+            {!loading && !error && result.total > 0 && <nav className="inbox-pagination" aria-label="Páginas de consultas">
+              <span>{page * 50 + 1}–{Math.min((page + 1) * 50, result.total)} de {result.total}</span>
+              <div><button aria-label="Página anterior" disabled={page === 0} onClick={() => { if (leaveDetail()) setPage((value) => value - 1); }}><ArrowLeft size={16} /></button><span>{page + 1} / {pages}</span><button aria-label="Página siguiente" disabled={page + 1 >= pages} onClick={() => { if (leaveDetail()) setPage((value) => value + 1); }}><ArrowRight size={16} /></button></div>
+            </nav>}
+          </section>
+          {selected ? <ContactEditor key={`${selected.id}:${selected.revision}`} item={selected} onClose={closeDetail} onSaved={saved} onDirty={(value) => { dirty.current = value; }} onSaving={(value) => { saving.current = value; }} /> : <div className="inbox-reading-placeholder"><span><MailOpen size={46} strokeWidth={1.1} /></span><h2>Selecciona una consulta</h2><p>Lee el mensaje y gestiona su seguimiento aquí.</p></div>}
         </div>
       </div>
     </section>
   );
 }
+
 function consultationSummary(message = "") {
   const match = message?.match(/^Servicio de interés: ([^\r\n]+)\r?\n\s*/);
   return { service: match ? match[1] : "Consulta general", message: match ? message.slice(match[0].length) : message };
 }
 function initials(name) { return String(name ?? "").trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "A"; }
-function shortDate(value) { return value ? new Intl.DateTimeFormat("es", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)) : "Sin fecha"; }
-function shortTime(value) { return value ? new Intl.DateTimeFormat("es", { hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : ""; }
+function shortDate(value) { return value ? new Intl.DateTimeFormat("es", { day: "2-digit", month: "short" }).format(new Date(value)) : "Sin fecha"; }
 
 function ContactEditor({ item, onClose, onSaved, onDirty, onSaving }) {
   const [status, setStatus] = useState(item.status);
@@ -380,52 +383,25 @@ function ContactEditor({ item, onClose, onSaved, onDirty, onSaving }) {
     >
       <header className="inbox-detail-header">
         <span>Consulta #{item.id}</span>
-        <button
-          aria-label="Cerrar detalle"
-          onClick={onClose}
-          disabled={saveState === "saving"}
-        >
-          <X size={21} />
-        </button>
+        <button aria-label="Cerrar detalle" onClick={onClose} disabled={saveState === "saving"}><ArrowLeft size={18} className="inbox-mobile-back" /><span className="inbox-mobile-back">Bandeja</span><X size={19} className="inbox-desktop-close" /></button>
       </header>
       <div className="inbox-detail-scroll">
-      <div className="inbox-detail-identity"><span className="inbox-detail-avatar" aria-hidden="true">{initials(item.name)}</span><div><h2>{item.name || "Contacto sin nombre"}</h2>{item.company && <p><Building2 size={15} />{item.company}</p>}</div></div>
-      <p className="inbox-detail-date">Recibida el {date(item.created_at)}</p>
-      <dl>
-        {item.first_name || item.last_name ? (
-          <>
-            <dt>Nombre</dt>
-            <dd>{item.first_name}</dd>
-            <dt>Apellidos</dt>
-            <dd>{item.last_name}</dd>
-          </>
-        ) : (
-          <>
-            <dt>Nombre completo</dt>
-            <dd>{item.name}</dd>
-          </>
-        )}
-        <dt>Correo</dt>
-        <dd>
-          {safeEmail ? (
-            <a href={`mailto:${encodeURIComponent(item.email)}`}>
-              <Mail size={15} />
-              {item.email}
-            </a>
-          ) : (
-            item.email
-          )}
-        </dd>
-        {item.phone && (
-          <>
-            <dt>Teléfono</dt>
-            <dd>{item.phone}</dd>
-          </>
-        )}
-      </dl>
-      <div className="inbox-detail-divider" />
-      <h3>Mensaje de la consulta</h3>
-      <p className="inbox-message">{item.message}</p>
+        <h2 className="inbox-reading-subject">{consultationSummary(item.message).service}</h2>
+        <div className="inbox-detail-identity">
+          <span className="inbox-detail-avatar" aria-hidden="true">{initials(item.name)}</span>
+          <div><h3>{item.name || "Contacto sin nombre"}</h3><p>{item.email || "Correo no registrado"}</p><p>Para: Adler Infrastructura</p></div>
+          <time className="inbox-detail-date" dateTime={item.created_at}>{date(item.created_at)}</time>
+        </div>
+        <details className="inbox-contact-data"><summary>Datos del contacto<ChevronDown size={14} /></summary><dl>
+          {item.first_name || item.last_name ? <><dt>Nombre</dt><dd>{item.first_name}</dd><dt>Apellidos</dt><dd>{item.last_name}</dd></> : <><dt>Nombre completo</dt><dd>{item.name || "No registrado"}</dd></>}
+          <dt>Correo</dt><dd>{safeEmail ? <a href={`mailto:${encodeURIComponent(item.email)}`}>{item.email}</a> : item.email || "No registrado"}</dd>
+          {item.company && <><dt>Empresa</dt><dd>{item.company}</dd></>}
+          {item.phone && <><dt>Teléfono</dt><dd>{item.phone}</dd></>}
+        </dl></details>
+        <div className="inbox-reading-body"><p className="inbox-message">{consultationSummary(item.message).message || "Sin texto adicional."}</p>
+          {safeEmail && <a className="inbox-reply-button" href={`mailto:${encodeURIComponent(item.email)}`} title="Abre tu aplicación de correo"><Reply size={17} />Responder por correo</a>}
+        </div>
+        <div className="inbox-followup-heading"><h3>Seguimiento de la consulta</h3><span><ShieldCheck size={14} />Solo Adler</span></div>
       <form id="inbox-edit-form" onSubmit={save}>
         <fieldset disabled={saveState === "saving"}>
           <label htmlFor="detail-status">Estado de la consulta</label>
