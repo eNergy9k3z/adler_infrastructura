@@ -23,13 +23,22 @@ export default function Login() {
           emailRedirectTo: `${window.location.origin}/login`,
         },
       });
-      setStatus(
-        !error
-          ? "sent"
-          : ["signup_disabled", "user_not_found"].includes(error.code)
-            ? "invitation"
-            : "error",
-      );
+      let nextStatus = "sent";
+      if (error) {
+        if (["signup_disabled", "user_not_found"].includes(error.code)) {
+          nextStatus = "invitation";
+        } else if (error.code === "over_email_send_rate_limit") {
+          nextStatus = "email-limit";
+        } else if (
+          error.code === "over_request_rate_limit" ||
+          error.status === 429
+        ) {
+          nextStatus = "request-limit";
+        } else {
+          nextStatus = "error";
+        }
+      }
+      setStatus(nextStatus);
     } catch {
       setStatus("error");
     } finally {
@@ -121,6 +130,19 @@ export default function Login() {
                   El acceso requiere una invitación de Adler. Para tu primera
                   entrada, abre el enlace de invitación más reciente que recibiste
                   por correo.
+                </p>
+              )}
+              {status === "email-limit" && (
+                <p className="private-notice" role="alert">
+                  Se alcanzó temporalmente el límite de envío de enlaces. Revisa
+                  tu correo: si tienes un enlace reciente sin usar, puedes
+                  abrirlo. Si necesitas otro, vuelve a intentarlo más tarde.
+                </p>
+              )}
+              {status === "request-limit" && (
+                <p className="private-notice" role="alert">
+                  Se han realizado demasiados intentos seguidos. Espera unos
+                  minutos antes de volver a solicitar el enlace.
                 </p>
               )}
               <p className="login-small">
