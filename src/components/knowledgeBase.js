@@ -61,12 +61,12 @@ export const knowledgeBase = [
   {
     keywords: ["precio", "costo", "presupuesto", "cotizar"],
     response:
-      "El precio se define según el alcance y los entregables. Puede describir su necesidad en el formulario de contacto o escribir a info@adlerinfraestructura.com.",
+      "El precio se define según el alcance y los entregables. Puede describir su necesidad en el formulario de contacto para que Adler valore el caso.",
   },
   {
     keywords: ["contacto", "ubicacion", "donde", "telefono", "correo"],
     response:
-      "Adler se dirige a empresas en Venezuela con asesoría desde Alemania. Contacto: info@adlerinfraestructura.com o +49 172 7751060.",
+      "Adler se dirige a empresas en Venezuela con asesoría desde Alemania. Puede plantear su caso mediante el formulario de contacto de esta página.",
   },
   {
     keywords: ["empleo", "vacantes", "colaborar"],

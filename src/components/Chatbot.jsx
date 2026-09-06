@@ -1,40 +1,31 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Trash2, Send, ArrowUpRight } from "lucide-react";
+import {
+  MessageSquare,
+  X,
+  Trash2,
+  Send,
+  ArrowUpRight,
+  Loader2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import { knowledgeBase } from "./knowledgeBase";
+import {
+  basicChatResponse,
+  chatHistory,
+  requestAIReply,
+} from "../data/chatAssistant";
 import "./Chatbot.css";
 const welcome = {
   id: 0,
   sender: "bot",
   text: "Hola. Puedo orientarle sobre los servicios de Adler: infraestructura, contratos, materiales e IA para empresas. ¿Qué necesita consultar?",
 };
-function getResponse(query) {
-  const text = query
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-  let bestMatch = null,
-    highestScore = 0;
-  for (const topic of knowledgeBase) {
-    const score = topic.keywords.filter((keyword) =>
-      keyword.trim().length <= 3
-        ? text.split(/[^a-z0-9]+/).includes(keyword.trim())
-        : text.includes(keyword),
-    ).length;
-    if (score > highestScore) {
-      highestScore = score;
-      bestMatch = topic;
-    }
-  }
-  return (
-    bestMatch?.response ||
-    "Puedo orientarle sobre infraestructura vial, contratos, materiales e inteligencia artificial. Para revisar su caso con Adler, utilice el enlace de contacto de abajo."
-  );
-}
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([welcome]);
   const [input, setInput] = useState("");
+  const [mode, setMode] = useState("checking");
+  const [loading, setLoading] = useState(false);
+  const pending = useRef(null);
   const toggleRef = useRef(null),
     inputRef = useRef(null),
     logRef = useRef(null),
@@ -43,24 +34,104 @@ export default function Chatbot() {
     if (isOpen) inputRef.current?.focus({ preventScroll: true });
   }, [isOpen]);
   useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
+    fetch("/api/chat", { signal: controller.signal, cache: "no-store" })
+      .then(
+        async (response) =>
+          response.ok && (await response.json()).available === true,
+      )
+      .then((available) => {
+        if (active) setMode(available ? "ai" : "basic");
+      })
+      .catch(() => {
+        if (active) setMode("basic");
+      })
+      .finally(() => clearTimeout(timer));
+    return () => {
+      active = false;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [isOpen]);
+  useEffect(
+    () => () => {
+      pending.current?.abort();
+      pending.current = null;
+    },
+    [],
+  );
+  useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-  }, [messages, isOpen]);
+  }, [messages, isOpen, loading]);
   const close = () => {
     setIsOpen(false);
     toggleRef.current?.focus({ preventScroll: true });
   };
-  const send = (value) => {
+  const send = async (value) => {
     const text = value.trim();
-    if (!text) return;
+    if (!text || pending.current || mode === "checking") return;
+    const history = chatHistory(messages, text);
     setMessages((previous) => [
       ...previous,
       { id: nextId.current++, sender: "user", text },
-      { id: nextId.current++, sender: "bot", text: getResponse(text) },
     ]);
     setInput("");
     inputRef.current?.focus({ preventScroll: true });
+    if (mode !== "ai") {
+      setMessages((previous) => [
+        ...previous,
+        {
+          id: nextId.current++,
+          sender: "bot",
+          text: basicChatResponse(text),
+          source: "basic",
+        },
+      ]);
+      return;
+    }
+    const controller = new AbortController();
+    pending.current = controller;
+    const timer = setTimeout(() => controller.abort(), 22000);
+    setLoading(true);
+    try {
+      const reply = await requestAIReply(history, {
+        signal: controller.signal,
+      });
+      if (pending.current !== controller) return;
+      setMessages((previous) => [
+        ...previous,
+        { id: nextId.current++, sender: "bot", text: reply, source: "ai" },
+      ]);
+    } catch (error) {
+      if (pending.current !== controller) return;
+      setMessages((previous) => [
+        ...previous,
+        {
+          id: nextId.current++,
+          sender: "bot",
+          text: basicChatResponse(text),
+          source: "fallback",
+          notice:
+            error.message === "rate_limited"
+              ? "La IA alcanzó su límite temporal. Esta es una respuesta básica."
+              : "La IA no está disponible ahora. Esta es una respuesta básica.",
+        },
+      ]);
+    } finally {
+      clearTimeout(timer);
+      if (pending.current === controller) {
+        pending.current = null;
+        setLoading(false);
+      }
+    }
   };
   const clear = () => {
+    pending.current?.abort();
+    pending.current = null;
+    setLoading(false);
     setMessages([welcome]);
     setInput("");
     inputRef.current?.focus({ preventScroll: true });
@@ -94,7 +165,13 @@ export default function Chatbot() {
           <header className="chat-header">
             <div>
               <h2>Asistente Adler</h2>
-              <p>Orientación sobre nuestros servicios</p>
+              <p>
+                {mode === "checking"
+                  ? "Preparando asistente…"
+                  : mode === "ai"
+                    ? "Respuestas con inteligencia artificial"
+                    : "Información sobre nuestros servicios"}
+              </p>
             </div>
             <div className="chat-header-actions">
               <button
@@ -116,6 +193,20 @@ export default function Chatbot() {
               </button>
             </div>
           </header>
+          {mode === "ai" && (
+            <p className="chat-privacy">
+              Su pregunta y los últimos mensajes se envían a OpenRouter y al
+              proveedor del modelo. Evite datos confidenciales. La IA puede
+              equivocarse.{" "}
+              <a
+                href="https://openrouter.ai/privacy"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Uso de datos
+              </a>
+            </p>
+          )}
           <div
             className="chat-messages"
             ref={logRef}
@@ -129,9 +220,25 @@ export default function Chatbot() {
                 <span className="sr-only">
                   {msg.sender === "bot" ? "Adler: " : "Usted: "}
                 </span>
+                {msg.source && (
+                  <span className="chat-message-source">
+                    {msg.source === "ai"
+                      ? "Respuesta de IA"
+                      : "Información de Adler"}
+                  </span>
+                )}
+                {msg.notice && (
+                  <span className="chat-fallback-notice">{msg.notice}</span>
+                )}
                 {msg.text}
               </div>
             ))}
+            {loading && (
+              <div className="message bot chat-loading" role="status">
+                <Loader2 size={17} className="sending-spinner" /> Preparando
+                respuesta…
+              </div>
+            )}
           </div>
           {messages.length === 1 && (
             <div className="chat-suggestions" aria-label="Consultas frecuentes">
@@ -141,7 +248,12 @@ export default function Chatbot() {
                 "Materiales",
                 "Inteligencia artificial",
               ].map((text) => (
-                <button type="button" key={text} onClick={() => send(text)}>
+                <button
+                  type="button"
+                  key={text}
+                  disabled={loading || mode === "checking"}
+                  onClick={() => send(text)}
+                >
                   {text}
                 </button>
               ))}
@@ -166,7 +278,7 @@ export default function Chatbot() {
             <button
               className="chat-send"
               type="submit"
-              disabled={!input.trim()}
+              disabled={!input.trim() || loading || mode === "checking"}
               aria-label="Enviar consulta al asistente"
             >
               <Send size={19} />
