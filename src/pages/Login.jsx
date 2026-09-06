@@ -126,21 +126,23 @@ export default function Login() {
                 </p>
               )}
               {status === "invitation" && (
-                <p className="private-notice" role="alert">
+                <p className="private-warning" role="alert">
                   El acceso requiere una invitación de Adler. Para tu primera
                   entrada, abre el enlace de invitación más reciente que recibiste
                   por correo.
                 </p>
               )}
               {status === "email-limit" && (
-                <p className="private-notice" role="alert">
+                <p className="private-warning" role="alert">
+                  <strong>Enlace no enviado</strong>
                   Se alcanzó temporalmente el límite de envío de enlaces. Revisa
                   tu correo: si tienes un enlace reciente sin usar, puedes
                   abrirlo. Si necesitas otro, vuelve a intentarlo más tarde.
                 </p>
               )}
               {status === "request-limit" && (
-                <p className="private-notice" role="alert">
+                <p className="private-warning" role="alert">
+                  <strong>Enlace no enviado</strong>
                   Se han realizado demasiados intentos seguidos. Espera unos
                   minutos antes de volver a solicitar el enlace.
                 </p>

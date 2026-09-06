@@ -90,6 +90,17 @@
   padding: 14px;
   font-size: 0.9rem;
 }
+.private-warning {
+  background: #fff7e6;
+  color: #704b12 !important;
+  border-left: 3px solid #ba8736;
+  padding: 14px;
+  font-size: 0.9rem;
+}
+.private-warning strong {
+  display: block;
+  margin-bottom: 6px;
+}
 @media (max-width: 900px) {
   .login-layout {
     gap: 36px;
