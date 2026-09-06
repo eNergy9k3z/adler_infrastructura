@@ -212,3 +212,80 @@
 .adler-page .btn-primary:hover {
   background: #2d5364;
 }
+.service-example {
+  border-left: 3px solid #b79551;
+  background: #f2f5f6;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.service-example .eyebrow {
+  font-size: 0.75rem;
+  margin-bottom: 12px;
+}
+.service-example p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #193745;
+  margin-bottom: 12px;
+}
+.service-example small {
+  color: #566b76;
+  font-size: 0.8125rem;
+}
+.service-start {
+  margin-top: 42px;
+}
+.service-start ul {
+  padding-left: 20px;
+  list-style: disc;
+  margin: 20px 0;
+}
+.service-start li {
+  padding: 6px 0;
+  font-size: 1rem;
+}
+.service-start > p {
+  font-size: 0.875rem;
+}
+.service-related {
+  padding-bottom: 75px;
+}
+.service-related > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #cbd7dd;
+  margin-top: 22px;
+  gap: 30px;
+}
+.service-related a {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 24px;
+  font-size: 1rem;
+}
+.service-related a svg {
+  flex-shrink: 0;
+  color: #886a32;
+}
+.service-sidebar p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.deliverable-list li {
+  font-size: 1rem;
+}
+@media (max-width: 760px) {
+  .service-related > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .service-related a {
+    padding: 20px 0;
+    border-bottom: 1px solid #cbd7dd;
+  }
+  .service-example {
+    padding: 22px;
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Navigate, Route, Routes } from "react-router-dom";
 import {
   FolderOpen,
@@ -7,6 +7,9 @@ import {
   LogOut,
   ArrowUpRight,
   LayoutDashboard,
+  Users,
+  Menu,
+  X,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import { supabase } from "../supabaseClient";
@@ -14,6 +17,7 @@ import { useAvatar } from "./useAvatar";
 import { portalError } from "./portalData";
 import ClientProfile from "./ClientProfile";
 import { RequestList, NewRequest, RequestConversation } from "./Requests";
+import { ClientDirectory, ClientDirectoryProfile } from "./ClientDirectory";
 import "./Portal.css";
 
 export default function ClientPortal({ administration = false }) {
@@ -22,6 +26,8 @@ export default function ClientPortal({ administration = false }) {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef(null);
   const base = administration ? "/dashboard/clientes" : "/clientes";
   const avatar = useAvatar(profile?.avatar_path, profile?.revision);
   function leaveSession() {
@@ -76,10 +82,37 @@ export default function ClientPortal({ administration = false }) {
     );
   return (
     <section className="client-portal">
-      <aside className="portal-sidebar">
+      <aside
+        className={`portal-sidebar ${menuOpen ? "portal-menu-open" : ""}`}
+        onClick={(event) => {
+          if (event.target.closest("a")) setMenuOpen(false);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape" && menuOpen) {
+            setMenuOpen(false);
+            menuButton.current?.focus();
+          }
+        }}
+      >
         <Link className="portal-brand" to="/">
           ADLER<span>INFRASTRUCTURA</span>
         </Link>
+        <button
+          className="portal-menu-toggle"
+          ref={menuButton}
+          aria-expanded={menuOpen}
+          aria-controls={
+            isAdmin
+              ? "portal-extra-navigation portal-session-actions"
+              : "portal-session-actions"
+          }
+          aria-label={
+            menuOpen ? "Cerrar opciones del portal" : "Más opciones del portal"
+          }
+          onClick={() => setMenuOpen((value) => !value)}
+        >
+          {menuOpen ? <X size={21} /> : <Menu size={21} />}
+        </button>
         <span className="portal-kicker">
           {administration ? "ATENCIÓN AL CLIENTE" : "MI ESPACIO"}
         </span>
@@ -88,6 +121,12 @@ export default function ClientPortal({ administration = false }) {
             <FolderOpen size={19} />
             {administration ? "Solicitudes de clientes" : "Mis solicitudes"}
           </NavLink>
+          {administration && (
+            <NavLink to={`${base}/directorio`}>
+              <Users size={19} />
+              Directorio de clientes
+            </NavLink>
+          )}
           {!administration && (
             <>
               <NavLink to="/clientes/nueva">
@@ -102,7 +141,7 @@ export default function ClientPortal({ administration = false }) {
           )}
         </nav>
         {isAdmin && (
-          <div className="portal-admin-nav">
+          <div className="portal-admin-nav" id="portal-extra-navigation">
             <span className="portal-kicker">ADMINISTRACIÓN</span>
             <Link to="/dashboard">
               <LayoutDashboard size={17} />
@@ -114,7 +153,7 @@ export default function ClientPortal({ administration = false }) {
             </Link>
           </div>
         )}
-        <div className="portal-sidebar-bottom">
+        <div className="portal-sidebar-bottom" id="portal-session-actions">
           <Link to="/">
             Volver a la web <ArrowUpRight size={16} />
           </Link>
@@ -162,6 +201,15 @@ export default function ClientPortal({ administration = false }) {
             </div>
           ) : (
             <Routes>
+              {administration && (
+                <Route path="directorio" element={<ClientDirectory />} />
+              )}
+              {administration && (
+                <Route
+                  path="directorio/:clientId"
+                  element={<ClientDirectoryProfile />}
+                />
+              )}
               <Route
                 index
                 element={

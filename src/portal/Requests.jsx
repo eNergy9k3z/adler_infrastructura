@@ -152,7 +152,9 @@ export function RequestList({ administration, base }) {
             <option value="">Todos los estados</option>
             {Object.entries(portalStatuses).map(([key, label]) => (
               <option key={key} value={key}>
-                {label}
+                {administration && key === "espera"
+                  ? "Esperando al cliente"
+                  : label}
               </option>
             ))}
           </select>
@@ -232,7 +234,9 @@ export function RequestList({ administration, base }) {
                 </small>
               </span>
               <span className={`portal-status status-${item.status}`}>
-                {portalStatuses[item.status]}
+                {administration && item.status === "espera"
+                  ? "Esperando al cliente"
+                  : portalStatuses[item.status]}
               </span>
               <time dateTime={item.updated_at}>
                 {portalDate(item.updated_at)}
@@ -642,7 +646,9 @@ function Conversation({ administration, base, requestId }) {
           <p>Creada el {portalDate(request.created_at)}</p>
         </div>
         <span className={`portal-status status-${request.status}`}>
-          {portalStatuses[request.status]}
+          {administration && request.status === "espera"
+            ? "Esperando al cliente"
+            : portalStatuses[request.status]}
         </span>
       </div>
       <div className="portal-conversation-layout">
@@ -762,7 +768,11 @@ function Conversation({ administration, base, requestId }) {
         <aside className="portal-detail-sidebar">
           <div className="portal-card">
             <span className="portal-kicker">SEGUIMIENTO</span>
-            <h2>{portalStatuses[request.status]}</h2>
+            <h2>
+              {administration && request.status === "espera"
+                ? "Esperando al cliente"
+                : portalStatuses[request.status]}
+            </h2>
             <p className="portal-hint">
               Última actividad: {portalDate(request.updated_at)}
             </p>
@@ -777,7 +787,7 @@ function Conversation({ administration, base, requestId }) {
                 >
                   {Object.entries(portalStatuses).map(([value, label]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {value === "espera" ? "Esperando al cliente" : label}
                     </option>
                   ))}
                 </select>
@@ -815,6 +825,12 @@ function Conversation({ administration, base, requestId }) {
               </p>
               {profile.phone && <p>{profile.phone}</p>}
               {profile.bio && <p className="portal-hint">{profile.bio}</p>}
+              <Link
+                className="portal-text-button"
+                to={`/dashboard/clientes/directorio/${profile.user_id}`}
+              >
+                Ver ficha y todas sus solicitudes
+              </Link>
             </div>
           )}
         </aside>

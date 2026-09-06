@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight, ArrowRight, Loader2 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { servicesData } from "../data/services";
-import { supabase } from "../supabaseClient";
 import "./Contact.css";
 const emptyForm = {
   first_name: "",
@@ -50,6 +49,7 @@ const Contact = () => {
     const timeout = window.setTimeout(() => controller.abort(), 15000);
     setStatus("uploading");
     try {
+      const { supabase } = await import("../supabaseClient");
       const { error } = await supabase
         .from("contacts")
         .insert([
@@ -93,12 +93,27 @@ const Contact = () => {
           </p>
           <div className="contact-details">
             <span>ALEMANIA / VENEZUELA</span>
-            <a href="mailto:info@adlerinfraestructura.com">
-              info@adlerinfraestructura.com <ArrowUpRight size={17} />
+            <a
+              href="https://wa.me/491727751060"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Conversar por WhatsApp <ArrowUpRight size={17} />
             </a>
             <a href="tel:+491727751060">
               +49 172 7751060 <ArrowUpRight size={17} />
             </a>
+          </div>
+          <div className="contact-next-step">
+            <span>DESPUÉS DE SU CONSULTA</span>
+            <p>
+              Revisamos el contexto, aclaramos la información necesaria y
+              definimos un posible alcance de trabajo.
+            </p>
+            <Link to="/clientes/acceso">
+              ¿Ya tiene cuenta? Ir al área de clientes{" "}
+              <ArrowUpRight size={16} />
+            </Link>
           </div>
         </div>
         <form
@@ -231,7 +246,7 @@ const Contact = () => {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Describa brevemente su proyecto o necesidad."
+                placeholder="Indique dónde se desarrolla el proyecto, en qué fase está y qué decisión necesita tomar."
                 required
                 maxLength={5000}
                 rows={4}
@@ -261,6 +276,9 @@ const Contact = () => {
                 )}
               </button>
             </div>
+            <p className="contact-data-note">
+              Usaremos estos datos para atender su consulta.
+            </p>
           </fieldset>
           <div
             aria-live="polite"
@@ -268,13 +286,17 @@ const Contact = () => {
             className={`form-status ${status}`}
           >
             {status === "success" &&
-              "Su consulta se ha enviado correctamente. Gracias por escribirnos."}
+              "Consulta recibida. Adler revisará la información para definir los siguientes pasos."}
             {status === "error" && (
               <>
                 No se pudo enviar la consulta. Sus datos siguen en el
-                formulario. Puede reintentarlo o escribir a{" "}
-                <a href="mailto:info@adlerinfraestructura.com">
-                  nuestro correo
+                formulario. Puede reintentarlo o contactarnos por{" "}
+                <a
+                  href="https://wa.me/491727751060"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp
                 </a>
                 .
               </>

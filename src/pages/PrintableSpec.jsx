@@ -42,7 +42,7 @@ const PrintableSpec = () => {
         <footer className="sheet-footer">
           Adler Infrastructura · Alemania / Venezuela
           <br />
-          info@adlerinfraestructura.com · +49 172 7751060
+          adler-infrastructura.vercel.app · +49 172 7751060
         </footer>
       </article>
     </div>

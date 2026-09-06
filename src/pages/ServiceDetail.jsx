@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, ArrowRight, FileText } from "lucide-react";
 import { servicesData } from "../data/services";
+import { serviceExamples } from "../data/serviceExamples";
 import "./ServiceDetail.css";
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -32,8 +33,18 @@ const ServiceDetail = () => {
       <div className="container section service-content">
         <div>
           <span className="eyebrow">El servicio</span>
-          <h2>Una respuesta a su necesidad.</h2>
+          <h2>Del problema al alcance de trabajo.</h2>
           <p className="service-description">{service.description}</p>
+          {serviceExamples[id] && (
+            <div className="service-example">
+              <span className="eyebrow">EJEMPLO DE APLICACIÓN</span>
+              <p>{serviceExamples[id].example}</p>
+              <small>
+                El alcance se adapta a la información y a las necesidades de
+                cada encargo.
+              </small>
+            </div>
+          )}
           <h3>Cómo delimitamos el trabajo</h3>
           <p>{service.scope}</p>
           <h3 className="deliverables-heading">Entregables posibles</h3>
@@ -45,6 +56,20 @@ const ServiceDetail = () => {
               </li>
             ))}
           </ol>
+          {serviceExamples[id] && (
+            <section className="service-start">
+              <h3>Qué preparar para la primera conversación</h3>
+              <ul>
+                {serviceExamples[id].documents.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p>
+                No necesita tenerlo todo preparado para consultarnos.
+                Comenzaremos por la información disponible.
+              </p>
+            </section>
+          )}
         </div>
         <aside className="service-sidebar">
           <span className="eyebrow">SU PRÓXIMO PASO</span>
@@ -65,6 +90,19 @@ const ServiceDetail = () => {
           </Link>
         </aside>
       </div>
+      <section className="service-related container">
+        <span className="eyebrow">OTRAS ÁREAS DE ADLER</span>
+        <div>
+          {["vialidad", "contratos", "materiales", "ia-construccion"]
+            .filter((key) => key !== id)
+            .map((key) => (
+              <Link key={key} to={`/servicios/${key}`}>
+                {servicesData[key].title}
+                <ArrowUpRight size={18} />
+              </Link>
+            ))}
+        </div>
+      </section>
     </div>
   );
 };

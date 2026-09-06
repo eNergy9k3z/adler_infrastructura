@@ -1,0 +1,309 @@
+.directory-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.directory-heading h1 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 12px 0;
+}
+.directory-heading p {
+  margin: 0;
+  color: var(--portal-muted);
+}
+.directory-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 22px 24px;
+  background: #e9eff2;
+  border-left: 3px solid #b79653;
+  margin-bottom: 30px;
+}
+.directory-notice strong {
+  font-size: 1rem;
+}
+.directory-notice p {
+  font-size: 0.9rem;
+  max-width: 690px;
+  margin: 5px 0 0;
+}
+.directory-notice > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.directory-search {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.directory-search label {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+}
+.directory-count {
+  font-size: 0.875rem;
+  color: var(--portal-muted);
+  margin-bottom: 12px;
+}
+.directory-list {
+  border: 1px solid var(--portal-line);
+  border-radius: 7px;
+  overflow: hidden;
+  background: white;
+}
+.directory-columns,
+.directory-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) minmax(160px, 1fr) minmax(
+      130px,
+      0.8fr
+    ) 20px;
+  align-items: center;
+  gap: 22px;
+  padding: 20px 24px;
+}
+.directory-columns {
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  background: #f8fafb;
+  color: var(--portal-muted);
+  padding-block: 14px;
+}
+.directory-row {
+  border-top: 1px solid var(--portal-line);
+  font-size: 0.9rem;
+}
+.directory-row:hover,
+.directory-request:hover {
+  background: #f1f6f8;
+}
+.directory-row:focus-visible,
+.directory-request:focus-visible {
+  outline-offset: -3px;
+}
+.directory-row > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.directory-row strong {
+  font-size: 1rem;
+}
+.directory-row small,
+.directory-request small {
+  display: block;
+  color: var(--portal-muted);
+  font-size: 0.8125rem;
+  margin-top: 4px;
+}
+.directory-person {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.directory-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  background: #edf1f3;
+  color: #526e7c;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.directory-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.directory-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+.directory-profile-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.directory-profile-title .directory-avatar {
+  width: 74px;
+  height: 74px;
+  flex-basis: 74px;
+}
+.directory-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.5fr);
+  gap: 28px;
+  align-items: start;
+}
+.directory-profile-data h2,
+.directory-history h2 {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+.directory-profile-data dl {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+.directory-profile-data dt {
+  font-size: 0.8125rem;
+  color: var(--portal-muted);
+}
+.directory-profile-data dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.9375rem;
+}
+.directory-profile-data a {
+  overflow-wrap: anywhere;
+}
+.directory-profile-data a svg {
+  display: inline-block;
+  margin-left: 6px;
+}
+.directory-profile-data h3 {
+  font-size: 1rem;
+}
+.directory-bio {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.directory-history h2 span {
+  color: var(--portal-muted);
+  font-weight: 400;
+}
+.directory-request {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--portal-line);
+}
+.directory-request:last-child {
+  border-bottom: 0;
+}
+.directory-request > div {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.directory-request > svg {
+  flex-shrink: 0;
+}
+.directory-request strong {
+  font-size: 1rem;
+}
+.directory-detail-layout .portal-pagination {
+  flex-wrap: wrap;
+}
+@media (max-width: 1150px) {
+  .directory-columns,
+  .directory-row {
+    grid-template-columns: minmax(190px, 1.2fr) minmax(120px, 1fr) 20px;
+    gap: 16px;
+  }
+  .directory-columns > span:nth-child(3),
+  .directory-row > span:nth-child(3) {
+    display: none;
+  }
+  .directory-notice {
+    align-items: start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .directory-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .directory-profile-data dl {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 620px) {
+  .directory-heading > svg {
+    display: none;
+  }
+  .directory-columns {
+    display: none;
+  }
+  .directory-row {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    padding: 18px 16px;
+    gap: 10px;
+  }
+  .directory-row > span:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
+    padding-left: 63px;
+  }
+  .directory-row > svg {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .directory-row:first-child {
+    border-top: 0;
+  }
+  .directory-search {
+    flex-wrap: wrap;
+  }
+  .directory-search label {
+    flex-basis: 100%;
+    max-width: none;
+  }
+  .directory-search .portal-button {
+    flex: 1;
+  }
+  .directory-notice {
+    padding: 18px;
+  }
+  .directory-profile-title {
+    align-items: start;
+  }
+  .directory-profile-title .directory-avatar {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+  .directory-profile-title h1 {
+    font-size: 1.75rem;
+  }
+  .directory-profile-data dl {
+    grid-template-columns: 1fr;
+  }
+  .directory-request {
+    flex-wrap: wrap;
+  }
+  .directory-request > div {
+    flex-basis: 85%;
+  }
+  .directory-request > .portal-status {
+    order: 3;
+  }
+  .directory-request > svg {
+    margin-left: auto;
+  }
+  .directory-heading {
+    margin-top: 8px;
+  }
+}

@@ -12,6 +12,8 @@ import { supabase } from "../supabaseClient";
 import AccessFeedback from "../components/AccessFeedback";
 import { accessFeedback } from "../auth/accessFeedback";
 import "./Portal.css";
+const registrationEnabled =
+  import.meta.env.VITE_CLIENT_REGISTRATION_ENABLED === "true";
 
 export default function ClientAccess({ register = false }) {
   const { state, signOut, refreshAccess, signOutError } = useAuth();
@@ -27,7 +29,7 @@ export default function ClientAccess({ register = false }) {
   if (state === "authorized") return <Navigate to="/clientes" replace />;
   async function submit(event) {
     event.preventDefault();
-    if (pending.current) return;
+    if (pending.current || (register && !registrationEnabled)) return;
     if (register && (!name.trim() || password !== confirmation)) {
       setFeedback({
         tone: "error",
@@ -194,6 +196,25 @@ export default function ClientAccess({ register = false }) {
               Cerrar sesión
             </button>
           </>
+        ) : register && !registrationEnabled ? (
+          <div className="client-registration-pending">
+            <FolderOpen size={30} strokeWidth={1.5} />
+            <h3>Registro de nuevas cuentas en preparación</h3>
+            <p>
+              Estamos terminando la activación del correo de verificación.
+              Mientras tanto, puede plantear su consulta mediante el formulario
+              de contacto, sin crear una cuenta.
+            </p>
+            <Link className="portal-button" to="/#contacto">
+              Plantear una consulta <ArrowRight size={17} />
+            </Link>
+            <p>
+              ¿Ya tiene una cuenta?{" "}
+              <Link className="portal-text-button" to="/clientes/acceso">
+                Iniciar sesión
+              </Link>
+            </p>
+          </div>
         ) : (
           <>
             <form onSubmit={submit}>
@@ -288,7 +309,11 @@ export default function ClientAccess({ register = false }) {
               <p>
                 {register ? "¿Ya tienes cuenta?" : "¿Es tu primera visita?"}{" "}
                 <Link to={register ? "/clientes/acceso" : "/clientes/registro"}>
-                  {register ? "Iniciar sesión" : "Crear una cuenta"}
+                  {register
+                    ? "Iniciar sesión"
+                    : registrationEnabled
+                      ? "Crear una cuenta"
+                      : "Información sobre nuevas cuentas"}
                 </Link>
               </p>
               {sent && (

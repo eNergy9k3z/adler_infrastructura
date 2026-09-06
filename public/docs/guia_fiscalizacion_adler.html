@@ -63,6 +63,10 @@
         font-size: 1rem;
         cursor: pointer;
       }
+      .table-scroll {
+        max-width: 100%;
+        overflow-x: auto;
+      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -107,11 +111,14 @@
           flex-wrap: wrap;
         }
         table {
-          display: block;
-          overflow-x: auto;
+          width: 100%;
         }
+        p { overflow-wrap: anywhere; }
       }
       @media print {
+        .table-scroll {
+          overflow: visible;
+        }
         body {
           background: white;
         }
@@ -129,6 +136,7 @@
         }
         table {
           display: table;
+          table-layout: auto;
         }
         footer {
           font-size: 0.8rem;
@@ -235,8 +243,8 @@
       </section>
       <footer>
         Adler Infrastructura · Alemania / Venezuela<br /><a
-          href="mailto:info@adlerinfraestructura.com"
-          >info@adlerinfraestructura.com</a
+          href="https://adler-infrastructura.vercel.app/#contacto"
+          >Contactar con Adler</a
         >
       </footer>
     </main>

@@ -7,18 +7,18 @@ const Hero = () => (
       <div className="hero-copy">
         <span className="eyebrow">Criterio técnico. Visión empresarial.</span>
         <h1 id="hero-heading">
-          Decisiones claras.
+          Infraestructura.
           <br />
-          <span>Proyectos con dirección.</span>
+          <span>Contratos. Inteligencia artificial.</span>
         </h1>
         <p>
-          Consultoría en infraestructura, gestión contractual e inteligencia
-          artificial para empresas en Venezuela. Con experiencia desarrollada en
-          Alemania y atención a la realidad local.
+          Asesoría para proyectos y empresas en Venezuela, desde Alemania.
+          Carreteras, materiales, gestión de contratos y aplicaciones de IA:
+          conocimiento técnico para definir el siguiente paso.
         </p>
         <div className="hero-actions">
           <Link to="/#contacto" className="hero-primary">
-            Conversemos sobre su proyecto <ArrowRight size={18} />
+            Plantear una consulta <ArrowRight size={18} />
           </Link>
           <Link to="/#servicios" className="hero-secondary">
             Explorar servicios <ArrowDown size={16} />

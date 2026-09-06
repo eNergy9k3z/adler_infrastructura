@@ -7,6 +7,26 @@
   background: #f2f5f7;
   --color-text-muted: #566c75;
 }
+.client-registration-pending {
+  display: grid;
+  gap: 20px;
+  padding: 26px;
+  background: #eef3f5;
+  border-top: 3px solid #bd9a52;
+}
+.client-registration-pending h3 {
+  font-size: 1.35rem;
+  line-height: 1.4;
+  margin: 0;
+}
+.client-registration-pending p {
+  font-size: 1rem;
+  line-height: 1.75;
+  margin: 0;
+}
+.client-registration-pending .portal-button {
+  justify-self: start;
+}
 .client-access {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1161,5 +1181,36 @@
     top: 0;
     height: 100vh;
     overflow-y: auto;
+  }
+}
+
+.portal-menu-toggle {
+  display: none;
+}
+@media (max-width: 900px) {
+  .portal-sidebar {
+    position: relative;
+  }
+  .portal-sidebar .portal-menu-toggle {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #68808b;
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+  }
+  .portal-sidebar .portal-brand {
+    margin-right: 58px;
+  }
+  .portal-sidebar:not(.portal-menu-open) .portal-admin-nav,
+  .portal-sidebar:not(.portal-menu-open) .portal-sidebar-bottom {
+    display: none;
   }
 }

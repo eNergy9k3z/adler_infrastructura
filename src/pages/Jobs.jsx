@@ -19,19 +19,16 @@ export default function Jobs() {
         <p>
           Si trabaja en construcción, materiales, gestión de proyectos o
           aplicación de inteligencia artificial y quiere proponer una
-          colaboración, puede presentarse por correo.
+          colaboración, puede presentarse mediante el formulario de contacto.
         </p>
         <p>
           Indique su especialidad, ubicación y el tipo de trabajo en el que
           podría participar.
         </p>
         <div className="adler-documents">
-          <a
-            className="btn btn-primary"
-            href="mailto:info@adlerinfraestructura.com?subject=Propuesta%20de%20colaboraci%C3%B3n%20con%20Adler"
-          >
+          <Link className="btn btn-primary" to="/#contacto">
             Proponer una colaboración <ArrowUpRight size={18} />
-          </a>
+          </Link>
           <Link to="/#servicios" className="text-link">
             Conocer nuestros servicios <ArrowUpRight size={18} />
           </Link>

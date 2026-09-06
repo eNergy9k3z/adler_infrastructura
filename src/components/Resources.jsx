@@ -36,15 +36,19 @@ const Resources = () => (
           <FolderOpen size={22} strokeWidth={1.3} />
           <div>
             <h3>Formatos de trabajo</h3>
-            <p>Modelos de valuaciones, actas y documentación de cierre.</p>
+            <p>
+              Formatos imprimibles para visitas, cantidades, cambios y entregas.
+            </p>
           </div>
           <ArrowUpRight size={21} />
         </a>
-        <Link to="/login">
+        <Link to="/clientes/acceso">
           <MessagesSquare size={22} strokeWidth={1.3} />
           <div>
-            <h3>Coordinación con clientes</h3>
-            <p>Contacto y entrega de documentación de proyectos.</p>
+            <h3>Área de clientes</h3>
+            <p>
+              Consulte sus solicitudes y continúe sus conversaciones con Adler.
+            </p>
           </div>
           <ArrowUpRight size={21} />
         </Link>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adler-infrastructura.vercel.app/sitemap.xml

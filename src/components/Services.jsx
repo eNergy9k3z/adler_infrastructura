@@ -26,9 +26,9 @@ const Services = () => (
           un problema concreto.
         </h2>
         <p>
-          Documentos dispersos, informes recurrentes, tareas administrativas.
-          Ayudamos a empresas de distintos sectores a incorporar IA en su
-          trabajo diario.
+          Consultar documentación, extraer datos y preparar primeros borradores
+          de informes. Empezamos por una tarea y comparamos el piloto con el
+          proceso actual, también en empresas fuera de la construcción.
         </p>
         <Link to="/servicios/ia-construccion" className="ai-link">
           Conocer el servicio <ArrowUpRight size={20} />

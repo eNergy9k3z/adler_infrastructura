@@ -9,26 +9,27 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import PageMetadata from "./components/PageMetadata";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Home from "./pages/Home";
-import Jobs from "./pages/Jobs";
-import Valores from "./pages/Valores";
-import Especialidades from "./pages/Especialidades";
+const Jobs = lazy(() => import("./pages/Jobs"));
+const Valores = lazy(() => import("./pages/Valores"));
+const Especialidades = lazy(() => import("./pages/Especialidades"));
 
 import Chatbot from "./components/Chatbot";
-import Proyectos from "./pages/Proyectos";
-import Auditoria from "./pages/Auditoria";
-import Login from "./pages/Login";
-import Normativa from "./pages/Normativa";
-import Dashboard from "./pages/Dashboard";
+const Proyectos = lazy(() => import("./pages/Proyectos"));
+const Auditoria = lazy(() => import("./pages/Auditoria"));
+const Login = lazy(() => import("./pages/Login"));
+const Normativa = lazy(() => import("./pages/Normativa"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 import ServiceDetail from "./pages/ServiceDetail";
-import Certificaciones from "./pages/Certificaciones";
-import PrintableSpec from "./pages/PrintableSpec";
-import PrintableDoc from "./pages/PrintableDoc";
-import Profile from "./pages/Profile";
-import AuthProvider from "./auth/AuthProvider";
-import AccountPassword from "./pages/AccountPassword";
-import ClientAccess from "./portal/ClientAccess";
+const Certificaciones = lazy(() => import("./pages/Certificaciones"));
+const PrintableSpec = lazy(() => import("./pages/PrintableSpec"));
+const PrintableDoc = lazy(() => import("./pages/PrintableDoc"));
+const Profile = lazy(() => import("./pages/Profile"));
+const AuthProvider = lazy(() => import("./auth/AuthProvider"));
+const AccountPassword = lazy(() => import("./pages/AccountPassword"));
+const ClientAccess = lazy(() => import("./portal/ClientAccess"));
 const ClientPortal = lazy(() => import("./portal/ClientPortal"));
 
 // Scroll to top on route change
@@ -87,13 +88,14 @@ function AppContent() {
   return (
     <>
       <ScrollToTop />
+      <PageMetadata />
       <div className="app">
         <SiteHeader />
         <main id="contenido" tabIndex={-1}>
           <Suspense
             fallback={
               <p className="portal-loading" role="status">
-                Cargando tu espacio…
+                Cargando página…
               </p>
             }
           >

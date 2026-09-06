@@ -62,6 +62,9 @@ const Footer = () => (
               <Link to="/#contacto">Plantear una consulta</Link>
             </li>
             <li>
+              <Link to="/#preguntas">Preguntas frecuentes</Link>
+            </li>
+            <li>
               <Link to="/clientes/acceso">Área de clientes</Link>
             </li>
             <li>

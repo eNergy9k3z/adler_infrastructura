@@ -8,6 +8,7 @@ import Stats from "../components/Stats";
 import Solutions from "../components/Solutions";
 import Process from "../components/Process";
 import Resources from "../components/Resources";
+import FAQ from "../components/FAQ";
 
 const Home = () => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const Home = () => {
       <About />
       <Process />
       <Resources />
+      <FAQ />
       <Contact />
     </div>
   );

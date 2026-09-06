@@ -63,6 +63,10 @@
         font-size: 1rem;
         cursor: pointer;
       }
+      .table-scroll {
+        max-width: 100%;
+        overflow-x: auto;
+      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -107,11 +111,14 @@
           flex-wrap: wrap;
         }
         table {
-          display: block;
-          overflow-x: auto;
+          width: 100%;
         }
+        p { overflow-wrap: anywhere; }
       }
       @media print {
+        .table-scroll {
+          overflow: visible;
+        }
         body {
           background: white;
         }
@@ -129,6 +136,7 @@
         }
         table {
           display: table;
+          table-layout: auto;
         }
         footer {
           font-size: 0.8rem;
@@ -158,64 +166,78 @@
       </p>
       <section>
         <h2>1. Registro de visita</h2>
-        <table>
-          <tr>
-            <th>Proyecto / ubicación</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Fecha / actividad</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Participantes y función</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Documentos de referencia</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Observaciones y evidencias</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Acciones y responsables</th>
-            <td class="blank"></td>
-          </tr>
-        </table>
+        <div
+          class="table-scroll"
+          role="region"
+          aria-label="Formato de trabajo"
+          tabindex="0"
+        >
+          <table>
+            <tr>
+              <th>Proyecto / ubicación</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Fecha / actividad</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Participantes y función</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Documentos de referencia</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Observaciones y evidencias</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Acciones y responsables</th>
+              <td class="blank"></td>
+            </tr>
+          </table>
+        </div>
       </section>
       <section>
         <h2>2. Relación de cantidades para revisión</h2>
         <p>
           Proyecto: ____________________ &nbsp; Periodo: ____________________
         </p>
-        <table>
-          <tr>
-            <th>Partida / ubicación</th>
-            <th>Unidad</th>
-            <th>Cantidad</th>
-            <th>Soporte / observación</th>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
+        <div
+          class="table-scroll"
+          role="region"
+          aria-label="Formato de trabajo"
+          tabindex="0"
+        >
+          <table>
+            <tr>
+              <th>Partida / ubicación</th>
+              <th>Unidad</th>
+              <th>Cantidad</th>
+              <th>Soporte / observación</th>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
         <p>
           Elaborado por: ____________________ &nbsp; Revisado por:
           ____________________
@@ -223,58 +245,72 @@
       </section>
       <section>
         <h2>3. Seguimiento de cambios</h2>
-        <table>
-          <tr>
-            <th>Referencia / fecha</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Descripción y motivo</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Documentos relacionados</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Efectos por evaluar: alcance, plazo y coste</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Responsable / estado de revisión</th>
-            <td class="blank"></td>
-          </tr>
-          <tr>
-            <th>Decisión y documento de respaldo</th>
-            <td class="blank"></td>
-          </tr>
-        </table>
+        <div
+          class="table-scroll"
+          role="region"
+          aria-label="Formato de trabajo"
+          tabindex="0"
+        >
+          <table>
+            <tr>
+              <th>Referencia / fecha</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Descripción y motivo</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Documentos relacionados</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Efectos por evaluar: alcance, plazo y coste</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Responsable / estado de revisión</th>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <th>Decisión y documento de respaldo</th>
+              <td class="blank"></td>
+            </tr>
+          </table>
+        </div>
       </section>
       <section>
         <h2>4. Registro de entrega y pendientes</h2>
         <p>Proyecto: ____________________ &nbsp; Fecha: ____________________</p>
-        <table>
-          <tr>
-            <th>Entregable / versión</th>
-            <th>Fecha</th>
-            <th>Observaciones / pendientes</th>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
+        <div
+          class="table-scroll"
+          role="region"
+          aria-label="Formato de trabajo"
+          tabindex="0"
+        >
+          <table>
+            <tr>
+              <th>Entregable / versión</th>
+              <th>Fecha</th>
+              <th>Observaciones / pendientes</th>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
         <p>
           Entregado por: ____________________ &nbsp; Recibido por:
           ____________________
@@ -285,8 +321,8 @@
       </section>
       <footer>
         Adler Infrastructura · Alemania / Venezuela<br /><a
-          href="mailto:info@adlerinfraestructura.com"
-          >info@adlerinfraestructura.com</a
+          href="https://adler-infrastructura.vercel.app/#contacto"
+          >Contactar con Adler</a
         >
       </footer>
     </main>
