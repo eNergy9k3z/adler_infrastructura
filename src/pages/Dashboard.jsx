@@ -121,8 +121,24 @@ function ConsultationInbox() {
             <p>Organiza cada conversación y define el siguiente paso.</p>
           </div>
           <div className="inbox-account">
+            <Link
+              className="private-link-button"
+              to="/dashboard/clientes"
+              onClick={(event) => {
+                if (!leaveDetail()) event.preventDefault();
+              }}
+            >
+              Atender solicitudes de clientes
+            </Link>
             <span>{session.user.email}</span>
-            <Link to="/cuenta/contrasena" onClick={(event) => { if (!leaveDetail()) event.preventDefault(); }}>Crear o cambiar contraseña</Link>
+            <Link
+              to="/cuenta/contrasena"
+              onClick={(event) => {
+                if (!leaveDetail()) event.preventDefault();
+              }}
+            >
+              Crear o cambiar contraseña
+            </Link>
             <button
               onClick={() => {
                 if (leaveDetail()) signOut();

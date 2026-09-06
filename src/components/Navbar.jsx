@@ -76,8 +76,8 @@ const Navbar = () => {
             <Link to="/#recursos" onClick={close}>
               Recursos
             </Link>
-            <Link to="/login" className="nav-client" onClick={close}>
-              Acceso privado
+            <Link to="/clientes/acceso" className="nav-client" onClick={close}>
+              Área de clientes
             </Link>
             <Link to="/#contacto" className="nav-contact" onClick={close}>
               Hablemos <ArrowUpRight size={16} />

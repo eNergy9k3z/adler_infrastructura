@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { AuthContext } from "./AuthContext";
-export default function AuthProvider({ children }) {
+export default function AuthProvider({ children, allowClients = false }) {
   const [identity, setIdentity] = useState({ session: null, ready: false });
   const [permission, setPermission] = useState({
     userId: null,
@@ -37,7 +37,12 @@ export default function AuthProvider({ children }) {
         if (active && !controller.signal.aborted) {
           setPermission({
             userId,
-            state: error ? "error" : data ? "authorized" : "denied",
+            state: error
+              ? "error"
+              : data || allowClients
+                ? "authorized"
+                : "denied",
+            isAdmin: Boolean(data),
           });
         }
       })
@@ -53,7 +58,7 @@ export default function AuthProvider({ children }) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [userId, retry]);
+  }, [userId, retry, allowClients]);
   const signOut = useCallback(async () => {
     setLogoutState("closing");
     try {
@@ -90,9 +95,10 @@ export default function AuthProvider({ children }) {
         signOut,
         refreshAccess,
         signOutError: logoutState === "error",
+        isAdmin: permission.userId === userId && Boolean(permission.isAdmin),
       }}
     >
-      {children}
+      <Fragment key={userId || "signed-out"}>{children}</Fragment>
     </AuthContext.Provider>
   );
 }
