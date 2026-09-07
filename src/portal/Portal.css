@@ -201,7 +201,7 @@
   font-size: 1rem;
 }
 .portal-sidebar {
-  background: #18343f;
+  background: #072137;
   color: #e5edf0;
   padding: 32px 22px;
   display: flex;
@@ -210,16 +210,7 @@
   min-width: 0;
 }
 .portal-brand {
-  font-size: 1.8rem;
-  letter-spacing: 0.18em;
-  font-weight: 700;
-  color: white;
-}
-.portal-brand span {
-  display: block;
-  font-size: 0.61rem;
-  letter-spacing: 0.16em;
-  margin-top: 1px;
+  display: inline-block;
 }
 .portal-sidebar .portal-kicker {
   color: #a9c0cb;

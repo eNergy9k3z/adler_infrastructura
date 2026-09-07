@@ -1,3 +1,5 @@
+![Adler Infrastructura](public/brand/adler-logo-morado.png)
+
 # Adler Infrastructura
 
 Consultoría en infraestructura, gestión contractual, materiales e inteligencia artificial aplicada a empresas en Venezuela. React, Vite, Vercel y Supabase.
@@ -40,9 +42,13 @@ El servidor construye el modelo, contexto público y restricciones de privacidad
 
 La integración exige proveedores ZDR sin recopilación y precios máximos de cero; no emplea modelos de pago como alternativa. Sus límites por instancia no constituyen una protección distribuida contra bots. La clave antigua de Gemini no se reutiliza: retirarla del código no la revoca ni la elimina del historial; debe revocarse en el proveedor.
 
-Estado local al 6 de septiembre: portal, exportación Excel y nuevo chatbot preparados, sin publicación conjunta. Las migraciones pendientes deben comprobarse/aplicarse antes del despliegue; OpenRouter necesita clave y prueba real. Las guías de activación y resultados están en la carpeta superior `05_Web` y `pruebas`. La compilación Vite valida el frontend; las pruebas Node cubren el handler, y la ejecución real de la función debe comprobarse en Vercel.
+Estado comprobado el 7 de septiembre de 2026: la versión publicada `d53b81912b1111c37350e8047bbcf892b1c402ea` incluye portal, directorio, exportación Excel y chatbot con IA desactivada. Las migraciones del panel, portal, fotos y nombres/exportación están aplicadas. Las nuevas altas continúan desactivadas; falta completar el correo y los retornos del portal, y comprobar operaciones autenticadas reales. OpenRouter necesita configuración y prueba real. Las guías vigentes están en [Estado de la web](../LEER_PRIMERO.md), [Gestión de clientes](../Gestion_clientes_y_datos_Adler.md) y [Mantenimiento técnico](../Mantenimiento_tecnico_Adler.md). Los scripts reutilizables siguen en `../pruebas`; los informes históricos están en `../../archivo`. La compilación y los simuladores no sustituyen la comprobación del servicio real.
 
 Los servicios y fichas comparten `src/data/services.js`. Las imágenes son ilustrativas. Incorporar casos, cifras o acreditaciones únicamente con respaldo documental.
+
+## Identidad visual
+
+La marca vial en morado utiliza una A integrada con puente y carretera. Los tres PNG oficiales están en `public/brand/`; `BrandLogo.jsx` aplica el encuadre común sin deformar el dibujo. Navbar, pie, panel, portal, fichas, documentos y Excel comparten estas variantes. Los originales y la guía se conservan en `../../06_Identidad_de_marca`.
 
 ## Referencias
 

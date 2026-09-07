@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 import "./Footer.css";
 const Footer = () => (
   <footer className="footer">
@@ -7,7 +8,7 @@ const Footer = () => (
       <div className="footer-main">
         <div className="footer-brand">
           <Link to="/" className="footer-wordmark">
-            ADLER<span>INFRASTRUCTURA</span>
+            <BrandLogo light />
           </Link>
           <p>
             Consultoría técnica, gestión contractual e inteligencia artificial

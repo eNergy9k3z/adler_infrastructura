@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Printer } from "lucide-react";
+import BrandLogo from "../components/BrandLogo";
 import "./ServiceDetail.css";
 const docs = {
   "politica-calidad": {
@@ -53,9 +54,8 @@ export default function PrintableDoc() {
       <style>{`@media print{.navbar,.footer,.whatsapp-float,.chat-button,.chat-window,.document-actions{display:none!important}.adler-page{background:white}.adler-page-intro{padding:0 0 20px;background:white}.adler-page .section{padding:25px 0}.adler-page .container{width:100%;max-width:none}@page{size:A4;margin:20mm}}`}</style>
       <header className="adler-page-intro">
         <div className="container">
-          <span className="eyebrow">
-            ADLER INFRASTRUCTURA / DOCUMENTO DE REFERENCIA
-          </span>
+          <BrandLogo className="document-brand" />
+          <span className="eyebrow">DOCUMENTO DE REFERENCIA</span>
           <h1>{doc?.title || "Documento no encontrado"}</h1>
           {doc && (
             <p>

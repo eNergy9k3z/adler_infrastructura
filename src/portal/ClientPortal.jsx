@@ -14,6 +14,7 @@ import {
 import { useAuth } from "../auth/AuthContext";
 import { supabase } from "../supabaseClient";
 import { useAvatar } from "./useAvatar";
+import BrandLogo from "../components/BrandLogo";
 import { portalError } from "./portalData";
 import ClientProfile from "./ClientProfile";
 import { RequestList, NewRequest, RequestConversation } from "./Requests";
@@ -95,7 +96,7 @@ export default function ClientPortal({ administration = false }) {
         }}
       >
         <Link className="portal-brand" to="/">
-          ADLER<span>INFRASTRUCTURA</span>
+          <BrandLogo light />
         </Link>
         <button
           className="portal-menu-toggle"

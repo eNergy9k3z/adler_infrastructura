@@ -21,9 +21,8 @@
 .inbox-page button:disabled { opacity: .45; cursor: default; }
 .inbox-page :focus-visible { outline: 2px solid #246487; outline-offset: -2px; }
 .inbox-page svg { flex-shrink: 0; }
-.inbox-appbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 22px; background: #163d51; color: white; padding: 0 20px; min-width: 0; }
-.inbox-brand { font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: .15em; }
-.inbox-brand span { display: block; font-size: 7px; font-weight: 400; letter-spacing: .18em; margin-top: 5px; }
+.inbox-appbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 22px; background: #072137; color: white; padding: 0 20px; min-width: 0; }
+.inbox-brand { display: block; flex-shrink: 0; }
 .inbox-app-name { font-size: 17px; padding-left: 20px; border-left: 1px solid #547180; }
 .inbox-search { display: flex; align-items: center; background: #f3f7fa; color: #304e60; border-radius: 4px; height: 34px; width: min(44vw, 620px); margin-left: 26px; }
 .inbox-search:focus-within { background: white; outline: 2px solid #90b9ce; }
@@ -166,8 +165,6 @@
 @media (max-width: 740px) {
   .inbox-page, .inbox-page.folders-open { grid-template-columns: 1fr; grid-template-rows: 96px 52px minmax(0,1fr); min-height: 420px; }
   .inbox-appbar { flex-wrap: wrap; gap: 0; justify-content: space-between; padding: 10px 15px; }
-  .inbox-brand { font-size: 18px; }
-  .inbox-brand span { font-size: 6px; margin-top: 4px; }
   .inbox-account { margin-left: auto; }
   .inbox-account-avatar { width: 27px; height: 27px; }
   .inbox-search { order: 3; flex: 1 0 100%; margin: 9px 0 0; height: 32px; }

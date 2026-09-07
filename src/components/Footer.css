@@ -1,6 +1,6 @@
 .footer {
   padding: 70px 0 0;
-  background: #102630;
+  background: #072137;
   color: #ecf1f4;
 }
 .footer-main {
@@ -11,18 +11,7 @@
 }
 .footer-wordmark {
   display: inline-block;
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  line-height: 1.15;
   margin-bottom: 24px;
-}
-.footer-wordmark span {
-  display: block;
-  font-size: 0.6875rem;
-  letter-spacing: 0.19em;
-  margin-top: 7px;
-  font-weight: 400;
 }
 .footer-brand p {
   font-size: 0.875rem;

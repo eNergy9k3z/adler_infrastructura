@@ -101,8 +101,8 @@ export function contactWorkbookRows(contacts) {
     headers.map((value) => ({
       ...cell(value),
       fontWeight: "bold",
-      color: "#FFFFFF",
-      backgroundColor: "#18343F",
+      textColor: "#FFFFFF",
+      backgroundColor: "#4B246B",
     })),
     ...contacts.map((item) =>
       [
@@ -121,14 +121,49 @@ export function contactWorkbookRows(contacts) {
   ];
 }
 
-export async function createContactWorkbook(contacts) {
+export async function createContactWorkbook(contacts, { logoContent } = {}) {
   const { default: writeExcelFile } = await import("write-excel-file/browser");
-  return writeExcelFile(contactWorkbookRows(contacts), {
+  if (!logoContent) {
+    const response = await fetch("/brand/adler-logo-morado.png", {
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) throw new Error("export_logo_unavailable");
+    logoContent = await response.blob();
+  }
+  // Reserve space above the table: the embedded image must never cover contact data.
+  const rows = [
+    [{ type: String, value: "", height: 44 }],
+    [{ type: String, value: "", height: 44 }],
+    [
+      {
+        type: String,
+        value: "Contactos de Adler",
+        fontWeight: "bold",
+        height: 26,
+      },
+    ],
+    ...contactWorkbookRows(contacts),
+  ];
+  return writeExcelFile(rows, {
     sheet: "Contactos Adler",
     columns: [20, 28, 24, 28, 38, 36, 32, 24, 22, 80].map((width) => ({
       width,
     })),
-    stickyRowsCount: 1,
+    stickyRowsCount: 4,
+    images: [
+      {
+        content: logoContent,
+        contentType: "image/png",
+        width: 240,
+        height: 96,
+        dpi: 96,
+        anchor: { row: 1, column: 1 },
+        offsetX: 8,
+        offsetY: 10,
+        title: "Adler Infrastructura",
+        description: "Logo de Adler Infrastructura",
+      },
+    ],
   }).toBlob();
 }
 

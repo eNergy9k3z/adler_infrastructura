@@ -32,6 +32,7 @@ import {
   downloadContactWorkbook,
 } from "../data/contactExport";
 import { useUnsavedForm } from "../portal/useUnsavedForm";
+import BrandLogo from "../components/BrandLogo";
 import "./Dashboard.css";
 const labels = {
   pendiente: "Pendiente",
@@ -246,7 +247,7 @@ function ConsultationInbox() {
     <section className={`inbox-page ${foldersOpen ? "folders-open" : ""}`}>
       <header className="inbox-appbar">
         <Link className="inbox-brand" to="/">
-          ADLER<span>INFRASTRUCTURA</span>
+          <BrandLogo light />
         </Link>
         <span className="inbox-app-name">Consultas</span>
         <form

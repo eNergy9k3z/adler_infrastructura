@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Printer } from "lucide-react";
 import { servicesData } from "../data/services";
+import BrandLogo from "../components/BrandLogo";
 import "./PrintableSpec.css";
 const PrintableSpec = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const PrintableSpec = () => {
       </div>
       <article className="sheet-paper">
         <header>
-          <strong>ADLER INFRASTRUCTURA</strong>
+          <BrandLogo />
           <span>{service.code} · Ficha de servicio</span>
         </header>
         <h1>{service.title}</h1>

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import logo from "../assets/logo.png";
+import BrandLogo from "./BrandLogo";
 import "./Navbar.css";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,12 +36,7 @@ const Navbar = () => {
             onClick={close}
             aria-label="Adler Infrastructura — Inicio"
           >
-            <span className="brand-symbol">
-              <img src={logo} alt="" width="72" height="72" />
-            </span>
-            <span className="brand-wordmark">
-              ADLER<small>INFRASTRUCTURA</small>
-            </span>
+            <BrandLogo />
           </Link>
           <button
             type="button"

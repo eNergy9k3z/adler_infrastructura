@@ -1,0 +1,51 @@
+.brand-logo {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 4 / 1;
+  flex-shrink: 0;
+}
+.adler-brand .brand-logo {
+  width: 218px;
+}
+.footer-wordmark .brand-logo {
+  width: 240px;
+}
+.portal-brand .brand-logo {
+  width: 194px;
+}
+.inbox-brand .brand-logo {
+  width: 138px;
+  max-height: 40px;
+}
+.document-brand {
+  margin-bottom: 28px;
+}
+.sheet-paper > header {
+  align-items: center;
+  break-inside: avoid;
+}
+.sheet-paper > header .brand-logo {
+  width: 205px;
+}
+@media (max-width: 600px) {
+  .adler-brand .brand-logo {
+    width: 180px;
+  }
+  .portal-brand .brand-logo {
+    width: 178px;
+  }
+  .inbox-brand .brand-logo {
+    width: 118px;
+  }
+}
+@media print {
+  .document-brand,
+  .sheet-paper > header .brand-logo {
+    width: 52mm;
+    height: auto;
+    break-inside: avoid;
+  }
+}
