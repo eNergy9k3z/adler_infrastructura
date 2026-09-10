@@ -1,10 +1,12 @@
 export const knowledgeBase = [
   {
+    courtesy: true,
     keywords: ["hola", "buenos dias", "buenas"],
     response:
       "Bienvenido a Adler Infrastructura. Puedo orientarle sobre servicios de infraestructura, gestión contractual, materiales e inteligencia artificial para empresas.",
   },
   {
+    courtesy: true,
     keywords: ["gracias", "agradecido", "perfecto"],
     response:
       "Gracias por su interés. Si necesita revisar un caso concreto, puede utilizar el formulario de contacto.",

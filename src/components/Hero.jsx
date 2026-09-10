@@ -32,8 +32,10 @@ const Hero = () => (
       </div>
       <figure className="hero-figure">
         <img
-          src="/images/hero-slide-4.png"
+          src="/images/hero-slide-4.webp"
           alt="Imagen ilustrativa de un puente en construcción y su entorno"
+          width="1024"
+          height="1024"
           fetchPriority="high"
         />
         <figcaption>

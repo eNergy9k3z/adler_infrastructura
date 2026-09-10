@@ -18,7 +18,8 @@ const titles = {
 };
 
 export default function PageMetadata() {
-  const { pathname } = useLocation();
+  const { pathname: rawPathname } = useLocation();
+  const pathname = rawPathname.replace(/\/+$/, "") || "/";
   useEffect(() => {
     const parts = pathname.split("/");
     const serviceRoute = /^\/servicios\/[^/]+(?:\/ficha-tecnica)?\/?$/.test(

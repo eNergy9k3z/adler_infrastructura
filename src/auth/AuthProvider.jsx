@@ -72,6 +72,7 @@ export default function AuthProvider({ children, allowClients = false }) {
     }
   }, []);
   const refreshAccess = useCallback(() => {
+    setLogoutState("idle");
     setPermission({ userId: null, state: "loading" });
     setRetry((value) => value + 1);
   }, []);

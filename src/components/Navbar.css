@@ -90,6 +90,9 @@
     display: none;
     position: absolute;
     top: 100%;
+    max-height: calc(100dvh - 110px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     left: 0;
     right: 0;
     background: white;

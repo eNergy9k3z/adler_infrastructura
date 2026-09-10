@@ -180,8 +180,6 @@ function ConsultationInbox() {
       .catch(() => {
         if (!active) return;
         setResult({ items: [], total: 0 });
-        setSelected(null);
-        dirty.current = false;
         setLoadState({ key: requestKey, error: true });
       })
       .finally(() => {

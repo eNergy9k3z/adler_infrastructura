@@ -191,3 +191,29 @@
   color: #566b76;
   margin: 20px 0 0;
 }
+
+.contact-confirmation {
+  padding: 36px;
+  border: 1px solid #d4dce0;
+  border-top: 3px solid #4b246b;
+  background: #faf8fc;
+}
+.contact-confirmation > svg {
+  color: #4b246b;
+  margin-bottom: 20px;
+}
+.contact-confirmation h3 {
+  font-size: 1.65rem;
+  line-height: 1.3;
+}
+.contact-confirmation .btn {
+  margin: 20px 0;
+}
+.contact-confirmation .text-link {
+  display: table;
+}
+@media (max-width: 480px) {
+  .contact-confirmation {
+    padding: 26px 22px;
+  }
+}

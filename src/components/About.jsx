@@ -6,7 +6,7 @@ const About = () => (
     <div className="container about-layout">
       <figure className="about-figure">
         <img
-          src="/images/hero-slide-1.png"
+          src="/images/hero-slide-1.webp"
           alt="Imagen ilustrativa de un enlace vial visto desde el aire"
           loading="lazy"
           width="1024"

@@ -34,7 +34,8 @@ const ClientPortal = lazy(() => import("./portal/ClientPortal"));
 
 // Scroll to top on route change
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname: rawPathname } = useLocation();
+  const pathname = rawPathname.replace(/\/+$/, "") || "/";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,7 +45,8 @@ function ScrollToTop() {
 }
 
 function SiteWidgets() {
-  const { pathname } = useLocation();
+  const { pathname: rawPathname } = useLocation();
+  const pathname = rawPathname.replace(/\/+$/, "") || "/";
   if (
     pathname.startsWith("/clientes") ||
     pathname.startsWith("/dashboard") ||
@@ -60,7 +62,8 @@ function SiteWidgets() {
 }
 
 function SiteHeader() {
-  const { pathname } = useLocation();
+  const { pathname: rawPathname } = useLocation();
+  const pathname = rawPathname.replace(/\/+$/, "") || "/";
   return (pathname.startsWith("/clientes") &&
     ![
       "/clientes/acceso",
@@ -72,7 +75,8 @@ function SiteHeader() {
   );
 }
 function SiteFooter() {
-  const { pathname } = useLocation();
+  const { pathname: rawPathname } = useLocation();
+  const pathname = rawPathname.replace(/\/+$/, "") || "/";
   return (pathname.startsWith("/clientes") &&
     ![
       "/clientes/acceso",
@@ -210,7 +214,34 @@ function AppContent() {
   );
 }
 
-const router = createBrowserRouter([{ path: "*", element: <AppContent /> }]);
+function PageLoadError() {
+  return (
+    <main className="adler-page" id="contenido">
+      <section className="container section">
+        <span className="eyebrow">ADLER INFRASTRUCTURA</span>
+        <h1>No pudimos abrir esta vista.</h1>
+        <p>
+          Compruebe su conexión y vuelva a cargar la página. Si el problema
+          continúa, puede regresar al inicio.
+        </p>
+        <div className="hero-actions">
+          <button
+            className="btn btn-primary"
+            onClick={() => window.location.reload()}
+          >
+            Volver a cargar
+          </button>
+          <a className="text-link" href="/">
+            Ir al inicio
+          </a>
+        </div>
+      </section>
+    </main>
+  );
+}
+const router = createBrowserRouter([
+  { path: "*", element: <AppContent />, errorElement: <PageLoadError /> },
+]);
 export default function App() {
   return <RouterProvider router={router} />;
 }

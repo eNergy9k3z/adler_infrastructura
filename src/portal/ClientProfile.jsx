@@ -6,6 +6,11 @@ import { useAuth } from "../auth/AuthContext";
 import { useAvatar } from "./useAvatar";
 import { useUnsavedForm } from "./useUnsavedForm";
 import { portalError } from "./portalData";
+import {
+  createProfileAttempt,
+  saveProfileAttempt,
+  discardRejectedProfileAttempt,
+} from "./profileSave";
 const profileFields = [
   ["full_name", "Nombre y apellidos", 120, "name"],
   ["company", "Empresa u organización", 160, "organization"],
@@ -37,6 +42,9 @@ export default function ClientProfile({ profile, onSaved }) {
   const [emailNotice, setEmailNotice] = useState("");
   const [emailError, setEmailError] = useState("");
   const pending = useRef(false);
+  const saveAttempt = useRef(null);
+  const [unconfirmed, setUnconfirmed] = useState(false);
+  const [conflict, setConflict] = useState(null);
   const fileInput = useRef(null);
   const avatar = useAvatar(profile.avatar_path, profile.revision);
   const dirty =
@@ -90,52 +98,63 @@ export default function ClientProfile({ profile, onSaved }) {
     setBusy(true);
     setError("");
     setNotice("");
-    let uploadedPath = null;
     try {
-      let path = removePhoto ? null : profile.avatar_path;
-      if (file) {
-        path = `${session.user.id}/${crypto.randomUUID()}`;
-        const { error: uploadError } = await supabase.storage
-          .from("adler-avatars")
-          .upload(path, file, {
-            upsert: false,
-            contentType: file.type,
-            cacheControl: "0",
-          });
-        if (uploadError) throw uploadError;
-        uploadedPath = path;
+      if (!saveAttempt.current) {
+        saveAttempt.current = createProfileAttempt({
+          userId: session.user.id,
+          profile,
+          form,
+          file,
+          removePhoto,
+        });
       }
-      const { data, error: failure } = await supabase.rpc(
-        "adler_portal_save_profile",
-        {
-          p_revision: profile.revision,
-          p_profile: { ...form, avatar_path: path },
-        },
-      );
-      if (failure) throw failure;
+      const attempt = saveAttempt.current;
+      const data = await saveProfileAttempt(supabase, attempt);
       onSaved(data);
       setForm(pickFields(data));
       setFile(null);
       setPreview("");
       setRemovePhoto(false);
+      setUnconfirmed(false);
+      setConflict(null);
+      saveAttempt.current = null;
       setNotice("Perfil actualizado.");
-      if (profile.avatar_path && profile.avatar_path !== path) {
-        const { error: removeError } = await supabase.storage
-          .from("adler-avatars")
-          .remove([profile.avatar_path]);
-        if (removeError)
+      if (
+        !attempt.saveUncertain &&
+        profile.avatar_path &&
+        profile.avatar_path !== data.avatar_path
+      ) {
+        try {
+          const { error: removeError } = await supabase.storage
+            .from("adler-avatars")
+            .remove([profile.avatar_path]);
+          if (removeError) throw removeError;
+        } catch {
           setNotice(
-            "Perfil actualizado. No se pudo eliminar la versión anterior de la foto, que permanece privada.",
+            "Perfil actualizado. La foto anterior permanece privada; no se pudo eliminar.",
           );
+        }
       }
     } catch (failure) {
-      if (uploadedPath && ["40001", "23514", "42501"].includes(failure?.code)) {
-        await supabase.storage
-          .from("adler-avatars")
-          .remove([uploadedPath])
-          .catch(() => {});
+      const attempt = saveAttempt.current;
+      let discarded = false;
+      if (attempt?.definitiveRejection && !attempt.saveUncertain) {
+        try {
+          discarded = await discardRejectedProfileAttempt(supabase, attempt);
+        } catch {
+          /* Retain this attempt for a safe retry. */
+        }
       }
-      setError(portalError(failure));
+      if (discarded) saveAttempt.current = null;
+      setUnconfirmed(!discarded);
+      setConflict(failure.currentProfile || null);
+      setError(
+        failure.currentProfile
+          ? "El perfil cambió en otra sesión. Tu borrador se conserva. Puedes cargar la versión guardada o comprobar de nuevo."
+          : discarded
+            ? portalError(failure)
+            : "No pudimos confirmar el guardado. Conservamos tu borrador y la misma foto; pulsa «Comprobar y reintentar» para continuar sin duplicarla.",
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -194,13 +213,13 @@ export default function ClientProfile({ profile, onSaved }) {
                 accept="image/jpeg,image/png,image/webp"
                 aria-label="Seleccionar foto de perfil"
                 onChange={choosePhoto}
-                disabled={busy}
+                disabled={busy || unconfirmed}
               />
               <button
                 type="button"
                 className="portal-button secondary"
                 onClick={() => fileInput.current?.click()}
-                disabled={busy}
+                disabled={busy || unconfirmed}
               >
                 <Camera size={17} />
                 Cambiar foto
@@ -209,7 +228,7 @@ export default function ClientProfile({ profile, onSaved }) {
                 <button
                   type="button"
                   className="portal-text-button"
-                  disabled={busy}
+                  disabled={busy || unconfirmed}
                   onClick={() => {
                     setRemovePhoto(true);
                     setFile(null);
@@ -236,7 +255,7 @@ export default function ClientProfile({ profile, onSaved }) {
                   }
                   maxLength={maxLength}
                   autoComplete={autoComplete}
-                  disabled={busy}
+                  disabled={busy || unconfirmed}
                   placeholder={key === "website" ? "https://" : undefined}
                 />
               </label>
@@ -251,7 +270,7 @@ export default function ClientProfile({ profile, onSaved }) {
               onChange={(e) =>
                 setForm((values) => ({ ...values, bio: e.target.value }))
               }
-              disabled={busy}
+              disabled={busy || unconfirmed}
             />
           </label>
           <span className="portal-hint">
@@ -268,6 +287,33 @@ export default function ClientProfile({ profile, onSaved }) {
               {notice}
             </p>
           )}
+          {conflict && (
+            <button
+              type="button"
+              className="portal-button secondary"
+              disabled={busy}
+              onClick={() => {
+                if (
+                  !window.confirm(
+                    "Se sustituirá tu borrador por el perfil guardado en la otra sesión. ¿Continuar?",
+                  )
+                )
+                  return;
+                onSaved(conflict);
+                setForm(pickFields(conflict));
+                setFile(null);
+                setPreview("");
+                setRemovePhoto(false);
+                saveAttempt.current = null;
+                setUnconfirmed(false);
+                setConflict(null);
+                setError("");
+                setNotice("Se cargó la versión guardada del perfil.");
+              }}
+            >
+              Cargar versión guardada y descartar mi borrador
+            </button>
+          )}
           <div className="portal-save-row">
             <span className="portal-hint">
               {dirty
@@ -276,7 +322,11 @@ export default function ClientProfile({ profile, onSaved }) {
             </span>
             <button className="portal-button" disabled={busy || !dirty}>
               <Save size={17} />
-              {busy ? "Guardando…" : "Guardar perfil"}
+              {busy
+                ? "Guardando…"
+                : unconfirmed
+                  ? "Comprobar y reintentar"
+                  : "Guardar perfil"}
             </button>
           </div>
         </form>

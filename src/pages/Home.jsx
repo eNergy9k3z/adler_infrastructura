@@ -26,11 +26,11 @@ const Home = () => {
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const timer = window.setTimeout(
-      () =>
-        element.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }),
-      0,
-    );
+    const timer = window.setTimeout(() => {
+      element.setAttribute("tabindex", "-1");
+      element.focus({ preventScroll: true });
+      element.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+    }, 0);
     return () => window.clearTimeout(timer);
   }, [location]);
 

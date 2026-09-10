@@ -42,3 +42,45 @@
     font-size: 0.8125rem;
   }
 }
+
+.resource-library {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  margin-top: 48px;
+}
+.resource-library h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+.resource-library p {
+  font-size: 0.875rem;
+}
+.resource-sheets {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.resource-sheets li {
+  border-bottom: 1px solid #d0d8df;
+}
+.resource-sheets a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 0;
+  font-size: 0.875rem;
+}
+.resource-sheets a:hover {
+  color: #4b246b;
+}
+.resource-sheets svg {
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .resource-library {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}

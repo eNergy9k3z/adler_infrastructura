@@ -463,6 +463,10 @@ function Conversation({ administration, base, requestId }) {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [notice, setNotice] = useState("");
   const [loadingOlder, setLoadingOlder] = useState(false);
+  const generation = useRef(0);
+  const olderPending = useRef(false);
+  const serverStatus = useRef("");
+  const [refreshing, setRefreshing] = useState(false);
   const pending = useRef(false);
   const messageId = useRef(crypto.randomUUID());
   const activeId = useRef(requestId);
@@ -470,6 +474,10 @@ function Conversation({ administration, base, requestId }) {
     activeId.current = requestId;
   }, [requestId]);
   const load = useCallback(async () => {
+    const version = ++generation.current;
+    const isCurrent = () =>
+      activeId.current === requestId && generation.current === version;
+    setRefreshing(true);
     try {
       const [
         { data, error: requestError },
@@ -487,7 +495,7 @@ function Conversation({ administration, base, requestId }) {
           .order("sequence", { ascending: false })
           .limit(51),
       ]);
-      if (activeId.current !== requestId) return;
+      if (!isCurrent()) return;
       if (requestError) throw requestError;
       if (messageError) throw messageError;
       if (!data) {
@@ -498,7 +506,11 @@ function Conversation({ administration, base, requestId }) {
         return;
       }
       setRequest(data);
-      setSelectedStatus(data.status);
+      const previousStatus = serverStatus.current;
+      setSelectedStatus((draft) =>
+        !draft || draft === previousStatus ? data.status : draft,
+      );
+      serverStatus.current = data.status;
       setMessages(rows.slice(0, 50).reverse());
       setMore(rows.length > 50);
       setError("");
@@ -507,7 +519,7 @@ function Conversation({ administration, base, requestId }) {
         .select("*")
         .eq("user_id", data.client_id)
         .maybeSingle();
-      if (activeId.current !== requestId) return;
+      if (!isCurrent()) return;
       setProfile(client);
       const seenAt = rows
         .slice(0, 50)
@@ -521,9 +533,12 @@ function Conversation({ administration, base, requestId }) {
         p_seen_at: seenAt,
       });
     } catch (failure) {
-      if (activeId.current === requestId) setError(portalError(failure));
+      if (isCurrent()) setError(portalError(failure));
     } finally {
-      if (activeId.current === requestId) setLoading(false);
+      if (isCurrent()) {
+        setLoading(false);
+        setRefreshing(false);
+      }
     }
   }, [requestId]);
   useEffect(() => {
@@ -532,7 +547,10 @@ function Conversation({ administration, base, requestId }) {
       activeId.current = null;
     };
   }, [load]);
-  useUnsavedForm(Boolean(body));
+  useUnsavedForm(
+    Boolean(body) ||
+      Boolean(administration && request && selectedStatus !== request.status),
+  );
   async function send(event) {
     event.preventDefault();
     if (pending.current || !body.trim()) return;
@@ -587,6 +605,8 @@ function Conversation({ administration, base, requestId }) {
       );
       if (failure) throw failure;
       setRequest(data);
+      serverStatus.current = data.status;
+      setSelectedStatus(data.status);
       setNotice("Estado actualizado.");
     } catch (failure) {
       setError(portalError(failure));
@@ -596,6 +616,11 @@ function Conversation({ administration, base, requestId }) {
     }
   }
   async function older() {
+    if (olderPending.current || refreshing || !messages.length) return;
+    olderPending.current = true;
+    const version = generation.current;
+    const isCurrent = () =>
+      activeId.current === requestId && generation.current === version;
     setLoadingOlder(true);
     try {
       const { data, error: failure } = await supabase
@@ -605,13 +630,15 @@ function Conversation({ administration, base, requestId }) {
         .lt("sequence", messages[0].sequence)
         .order("sequence", { ascending: false })
         .limit(51);
+      if (!isCurrent()) return;
       if (failure) throw failure;
       setMessages((rows) => [...data.slice(0, 50).reverse(), ...rows]);
       setMore(data.length > 50);
     } catch (failure) {
-      setError(portalError(failure));
+      if (isCurrent()) setError(portalError(failure));
     } finally {
-      setLoadingOlder(false);
+      olderPending.current = false;
+      if (activeId.current === requestId) setLoadingOlder(false);
     }
   }
   if (loading)
@@ -658,10 +685,10 @@ function Conversation({ administration, base, requestId }) {
             <button
               className="portal-text-button"
               onClick={load}
-              disabled={busy || savingStatus}
+              disabled={busy || savingStatus || refreshing}
             >
               <RefreshCw size={15} />
-              Actualizar
+              {refreshing ? "Actualizando…" : "Actualizar"}
             </button>
           </div>
           <article className="portal-message original">
@@ -675,7 +702,7 @@ function Conversation({ administration, base, requestId }) {
             <button
               className="portal-text-button portal-load-older"
               onClick={older}
-              disabled={loadingOlder}
+              disabled={loadingOlder || refreshing}
             >
               {loadingOlder ? "Cargando…" : "Cargar mensajes anteriores"}
             </button>
@@ -752,7 +779,7 @@ function Conversation({ administration, base, requestId }) {
                 </span>
                 <button
                   className="portal-button"
-                  disabled={busy || savingStatus || !body.trim()}
+                  disabled={busy || savingStatus || refreshing || !body.trim()}
                 >
                   <Send size={16} />
                   {busy
@@ -783,7 +810,7 @@ function Conversation({ administration, base, requestId }) {
                   id="request-status"
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  disabled={busy || savingStatus}
+                  disabled={busy || savingStatus || refreshing}
                 >
                   {Object.entries(portalStatuses).map(([value, label]) => (
                     <option key={value} value={value}>
@@ -795,7 +822,10 @@ function Conversation({ administration, base, requestId }) {
                   className="portal-button secondary"
                   onClick={saveStatus}
                   disabled={
-                    busy || savingStatus || selectedStatus === request.status
+                    busy ||
+                    savingStatus ||
+                    refreshing ||
+                    selectedStatus === request.status
                   }
                 >
                   {savingStatus ? "Guardando…" : "Guardar estado"}

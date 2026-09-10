@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import profileImg from "../assets/cecil_profile.png";
+import profileImg from "../assets/cecil_profile.webp";
 import "./ServiceDetail.css";
 const Profile = () => (
   <div className="adler-page">

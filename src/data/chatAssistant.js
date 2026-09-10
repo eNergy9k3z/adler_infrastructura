@@ -13,7 +13,13 @@ export function basicChatResponse(query) {
         ? text.split(/[^a-z0-9]+/).includes(keyword.trim())
         : text.includes(keyword),
     ).length;
-    if (score > highestScore) {
+    if (
+      score > 0 &&
+      (!bestMatch ||
+        (bestMatch.courtesy && !topic.courtesy) ||
+        (Boolean(bestMatch.courtesy) === Boolean(topic.courtesy) &&
+          score > highestScore))
+    ) {
       highestScore = score;
       bestMatch = topic;
     }

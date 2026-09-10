@@ -42,13 +42,15 @@ El servidor construye el modelo, contexto público y restricciones de privacidad
 
 La integración exige proveedores ZDR sin recopilación y precios máximos de cero; no emplea modelos de pago como alternativa. Sus límites por instancia no constituyen una protección distribuida contra bots. La clave antigua de Gemini no se reutiliza: retirarla del código no la revoca ni la elimina del historial; debe revocarse en el proveedor.
 
-Estado comprobado el 7 de septiembre de 2026: la versión publicada `d53b81912b1111c37350e8047bbcf892b1c402ea` incluye portal, directorio, exportación Excel y chatbot con IA desactivada. Las migraciones del panel, portal, fotos y nombres/exportación están aplicadas. Las nuevas altas continúan desactivadas; falta completar el correo y los retornos del portal, y comprobar operaciones autenticadas reales. OpenRouter necesita configuración y prueba real. Las guías vigentes están en [Estado de la web](../LEER_PRIMERO.md), [Gestión de clientes](../Gestion_clientes_y_datos_Adler.md) y [Mantenimiento técnico](../Mantenimiento_tecnico_Adler.md). Los scripts reutilizables siguen en `../pruebas`; los informes históricos están en `../../archivo`. La compilación y los simuladores no sustituyen la comprobación del servicio real.
+Configuración comprobada el 9 de septiembre de 2026: las altas de Supabase siguen desactivadas, la verificación del correo es obligatoria y el chatbot responde `available: false`. El portal, el directorio y la exportación existen; falta completar el correo y comprobar el recorrido de alta y determinadas operaciones con una sesión real. Las guías vigentes están en [Estado de la web](../LEER_PRIMERO.md), [Gestión de clientes](../Gestion_clientes_y_datos_Adler.md), [Mantenimiento técnico](../Mantenimiento_tecnico_Adler.md) e [Ideas de ampliación](../Ideas_de_ampliacion_Adler.md). Los scripts reutilizables siguen en `../pruebas`; los informes fechados están en `../../archivo`. Las pruebas locales no sustituyen la comprobación del servicio real.
+
+La revisión de septiembre protege borradores de notas y estados ante errores o recargas concurrentes. `src/portal/profileSave.js` reutiliza el intento de guardado y la ruta de la foto, y reconcilia respuestas inciertas con el perfil propio. Ante un conflicto no sobrescribe la versión del servidor ni elimina una foto potencialmente referenciada. La recuperación del acceso repite la comprobación de permisos.
 
 Los servicios y fichas comparten `src/data/services.js`. Las imágenes son ilustrativas. Incorporar casos, cifras o acreditaciones únicamente con respaldo documental.
 
 ## Identidad visual
 
-La marca vial en morado utiliza una A integrada con puente y carretera. Los tres PNG oficiales están en `public/brand/`; `BrandLogo.jsx` aplica el encuadre común sin deformar el dibujo. Navbar, pie, panel, portal, fichas, documentos y Excel comparten estas variantes. Los originales y la guía se conservan en `../../06_Identidad_de_marca`.
+La marca vial en morado utiliza una A integrada con puente y carretera. Los tres PNG oficiales están en `public/brand/`; `BrandLogo.jsx` aplica el encuadre común sin deformar el dibujo. Las versiones WebP de los logos y las fotografías reducen la descarga en pantalla, sin sustituir los PNG de origen. `favicon-64.png` es la variante pequeña del símbolo. Navbar, pie, panel, portal, fichas, documentos y Excel comparten la misma identidad. Los originales y la guía se conservan en `../../06_Identidad_de_marca`.
 
 ## Referencias
 

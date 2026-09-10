@@ -4,7 +4,7 @@ export default function BrandLogo({ light = false, className = "" }) {
   return (
     <img
       className={`brand-logo ${className}`.trim()}
-      src={`/brand/adler-logo-${light ? "claro" : "morado"}.png`}
+      src={`/brand/adler-logo-${light ? "claro" : "morado"}.webp`}
       alt="Adler Infrastructura"
       width="880"
       height="220"
